@@ -1,12 +1,14 @@
 package com.poly.datn.sd18.service;
 
+import com.poly.datn.sd18.dto.ProductRequest;
+import com.poly.datn.sd18.dto.ProductResponse;
 import com.poly.datn.sd18.entity.Category;
 import com.poly.datn.sd18.entity.Product;
 
 import java.util.List;
 
 public interface ProductService {
-    List<Product> getAll();
+    List<ProductResponse> getAll();
 
     Product findById(int id);
 

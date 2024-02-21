@@ -1,5 +1,7 @@
 package com.poly.datn.sd18.service.impl;
 
+import com.poly.datn.sd18.dto.ProductRequest;
+import com.poly.datn.sd18.dto.ProductResponse;
 import com.poly.datn.sd18.entity.Product;
 import com.poly.datn.sd18.repository.ProductRepository;
 import com.poly.datn.sd18.service.ProductService;
@@ -16,8 +18,8 @@ public class ProductServiceImpl implements ProductService {
     ProductRepository productRepository;
 
     @Override
-    public List<Product> getAll() {
-        return productRepository.findAll();
+    public List<ProductResponse> getAll() {
+        return productRepository.getAll();
     }
 
     @Override

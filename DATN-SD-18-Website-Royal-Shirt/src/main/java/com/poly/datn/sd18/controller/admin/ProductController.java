@@ -1,6 +1,7 @@
 package com.poly.datn.sd18.controller.admin;
 
 import com.poly.datn.sd18.dto.ProductRequest;
+import com.poly.datn.sd18.dto.ProductResponse;
 import com.poly.datn.sd18.entity.Product;
 import com.poly.datn.sd18.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,7 @@ public class ProductController {
 
     @GetMapping()
     public String getAll(Model model) {
-        List<Product> lists = productService.getAll();
+        List<ProductResponse> lists = productService.getAll();
         model.addAttribute("lists", lists);
         return "/admin/product/index";
     }
