@@ -1,10 +1,13 @@
 <div xmlns:th="http://www.thymeleaf.org" th:fragment="script">
     <script th:src="@{/admin/doc/js/jquery-3.2.1.min.js}"></script>
+<!--    <script th:src="@{/admin/doc/js/plugins/jquery-ui.custom.min.js}"></script>-->
     <!--===============================================================================================-->
     <script th:src="@{/admin/doc/js/popper.min.js}"></script>
     <script src="https://unpkg.com/boxicons@latest/dist/boxicons.js"></script>
     <!--===============================================================================================-->
     <script th:src="@{/admin/doc/js/bootstrap.min.js}"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<!--    <script src="src/jquery.table2excel.js"></script>-->
     <!--===============================================================================================-->
     <script th:src="@{/admin/doc/js/main.js}"></script>
     <!--===============================================================================================-->
@@ -12,6 +15,18 @@
     <!--===============================================================================================-->
     <script type="text/javascript" th:src="@{/admin/doc/js/plugins/chart.js}"></script>
     <!--===============================================================================================-->
+    <script type="text/javascript" th:src="@{/admin/doc/js/plugins/jquery.dataTables.min.js}"></script>
+    <script type="text/javascript" th:src="@{/admin/doc/js/plugins/dataTables.bootstrap.min.js}"></script>
+    <script type="text/javascript">$('#sampleTable').DataTable();</script>
+
+    <!-- Thư viện SweetAlert2-->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+    <!-- Thư viện moment-->
+    <script type="text/javascript" th:src="@{/admin/doc/js/plugins/moment.min.js}"></script>
+
     <script type="text/javascript">
         var data = {
           labels: ["Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5", "Tháng 6"],
