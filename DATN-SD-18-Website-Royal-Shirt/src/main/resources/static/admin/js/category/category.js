@@ -3,6 +3,9 @@ $(document).ready(function () {
     $('#showFormAdd').click(function () {
         $('#CategoryModal').modal('show');
     });
+    $('#closeFormAdd').click(function () {
+        $('#CategoryModal').modal('hide');
+    });
 });
 
 //Add and update category
@@ -142,6 +145,8 @@ function updateCategoryForm(element) {
             $('#CategoryModal').on('hidden.bs.modal', function () {
                 // Xóa thuộc tính category-id-update khi modal đóng
                 $('#categoryForm').removeAttr('category-id-update');
+                // Làm mới input
+                $('#categoryName').val(null);
             });
         },
         error: function (error) {
@@ -169,6 +174,7 @@ function toggleStatus(checkbox) {
                 title: 'Thành công!',
                 text: 'Trạng thái đã được cập nhật thành công!'
             });
+
         },
         error: function (error) {
             // Xử lý lỗi, nếu cần

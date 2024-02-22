@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{admin/layout/head :: head}"></head>
+
+<link rel="stylesheet" th:href="@{/admin/css/product/product.css}">
+
+<body onload="time()" class="app sidebar-mini rtl">
+<!-- Navbar-->
+<div th:replace="~{admin/layout/header :: header}"></div>
+<!-- Sidebar menu-->
+<div th:replace="~{admin/layout/sidebar :: sidebar}"></div>
+
+
+
+<div th:replace="~{admin/layout/script :: script}"></div>
+<script th:src="@{/admin/js/product/product.js}"></script>
+</body>
+
+</html>

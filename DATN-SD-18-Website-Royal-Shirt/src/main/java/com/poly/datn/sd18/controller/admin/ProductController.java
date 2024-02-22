@@ -26,6 +26,11 @@ public class ProductController {
         return "/admin/product/index";
     }
 
+    @GetMapping("/add")
+    public String add() {
+        return "/admin/product/add-product";
+    }
+
     @PostMapping("/checkDuplicateName")
     public ResponseEntity<?> checkDuplicateName(@RequestBody ProductRequest productRequest){
         List<Product> lists = productService.findByName(productRequest.getName());
