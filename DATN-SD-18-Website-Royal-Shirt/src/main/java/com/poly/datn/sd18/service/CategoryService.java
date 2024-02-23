@@ -8,6 +8,8 @@ import java.util.List;
 public interface CategoryService {
     List<Category> getAll();
 
+    List<Category> getAllActive();
+
     Category findById(int id);
 
     List<Category> findByName(String name);

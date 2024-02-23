@@ -5,7 +5,7 @@ function toggleStatus(checkbox) {
     //Sử dụng jQuery
     $.ajax({
         type: "POST",
-        url: "/admin/product/setStatus/" + productId,
+        url: "/admin/rest/product/setStatus/" + productId,
         success: function (response) {
             // Xử lý thành công, nếu cần
             console.log("Cập nhật trạng thái thành công");

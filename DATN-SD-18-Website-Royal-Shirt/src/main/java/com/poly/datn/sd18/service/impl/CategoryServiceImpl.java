@@ -24,6 +24,11 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    public List<Category> getAllActive() {
+        return categoryRepository.getAllActive();
+    }
+
+    @Override
     public Category findById(int id) {
         return categoryRepository.findById(id).get();
     }

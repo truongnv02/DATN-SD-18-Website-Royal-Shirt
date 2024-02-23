@@ -1,0 +1,27 @@
+.icon-button {
+    color: #0091ff;
+    transition: color 0.3s;
+    font-size: 45px;
+}
+
+.icon-button:hover {
+    color: #0066cc;
+}
+
+.thead_tr, .tfoot_tr {
+    background-color: #ef5e1e;
+    color: white;
+}
+
+.custom-switch .custom-control-input:checked + .custom-control-label::before {
+    background-color: #00bb00;
+}
+
+.stt, .trang_thai, .tinh_nang {
+    text-align: center;
+    justify-content: center;
+}
+
+.ten_chat_lieu {
+    text-align: left;
+}

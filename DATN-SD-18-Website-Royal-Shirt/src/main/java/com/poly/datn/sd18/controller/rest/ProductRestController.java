@@ -1,34 +1,55 @@
 package com.poly.datn.sd18.controller.rest;
 
-import com.poly.datn.sd18.dto.rest.ProductRestRequest;
-import com.poly.datn.sd18.entity.Color;
-import com.poly.datn.sd18.entity.Size;
-import com.poly.datn.sd18.repository.ColorRepository;
-import com.poly.datn.sd18.repository.SizeRepository;
+import com.poly.datn.sd18.dto.ProductRequest;
+import com.poly.datn.sd18.entity.Product;
+import com.poly.datn.sd18.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/admin/rest/product")
 public class ProductRestController {
     @Autowired
-    SizeRepository sizeRepository;
+    ProductService productService;
 
-    @Autowired
-    ColorRepository colorRepository;
+    @PostMapping("/checkDuplicateName")
+    public ResponseEntity<?> checkDuplicateName(@RequestBody ProductRequest productRequest){
+        List<Product> lists = productService.findByName(productRequest.getName());
+        boolean isDuplicateName = false;
+        if(lists.isEmpty()){
+            isDuplicateName = true;
+        }
+        return ResponseEntity.ok(Map.of("isDuplicateName",isDuplicateName));
+    }
 
-    @GetMapping()
-    public ResponseEntity<?> getAll(){
-        List<Color> listColor = colorRepository.findAll();
-        List<Size> listSize = sizeRepository.findAll();
+    @PostMapping("/add")
+    public ResponseEntity<?> add(@RequestBody Product product) {
+        return ResponseEntity.ok(productService.add(product));
+    }
 
-        ProductRestRequest productRestRequest = new ProductRestRequest(listColor,listSize);
+    @GetMapping("/formUpdate/{id}")
+    public ResponseEntity<?> formUpdate(@PathVariable("id") int id, Model model) {
+        Product product = productService.findById(id);
+        if (product != null) {
+            model.addAttribute("product", product);
+            return ResponseEntity.ok(product);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 
-        return ResponseEntity.ok(productRestRequest);
+    @PutMapping("/update/{id}")
+    public ResponseEntity<?> update(@RequestBody Product product, @PathVariable("id") int id) {
+        return ResponseEntity.ok(productService.update(product, id));
+    }
+
+    @PostMapping("/setStatus/{id}")
+    public ResponseEntity<?> update(@PathVariable("id") int id) {
+        return ResponseEntity.ok(productService.setStatus(id));
     }
 }

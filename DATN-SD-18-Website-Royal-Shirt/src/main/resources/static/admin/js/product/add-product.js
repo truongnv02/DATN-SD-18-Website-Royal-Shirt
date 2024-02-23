@@ -8,7 +8,6 @@ function readURL(input, thumbimage) {
     }
     else { // Sử dụng cho IE
         $("#thumbimage").attr('src', input.value);
-
     }
     $("#thumbimage").show();
     $('.filename').text($("#uploadfile").val());
@@ -56,7 +55,7 @@ $(document).ready(function() {
 
     // Gọi API để lấy thông tin từ server
     $.ajax({
-        url: '/admin/rest/product', // Thay đổi URL tương ứng với đường dẫn API của bạn
+        url: '/admin/rest/add-product',
         type: 'GET',
         success: function(data) {
             // Tạo options màu sắc từ danh sách màu trong productListResponse
