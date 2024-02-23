@@ -1,51 +1,51 @@
 //Show form
 $(document).ready(function () {
-    $('#showFormCategory').click(function () {
-        $('#CategoryModal').modal('show');
+    $('#showFormBrand').click(function () {
+        $('#BrandModal').modal('show');
     });
-    $('#closeFormCategory').click(function () {
-        $('#CategoryModal').modal('hide');
+    $('#closeFormBrand').click(function () {
+        $('#BrandModal').modal('hide');
     });
 });
 
-//Add and update category
-function saveCategory() {
+//Add and update brand
+function saveBrand() {
     // Lấy dữ liệu từ biểu mẫu
-    var categoryName = $("#categoryName").val().trim();
+    var brandName = $("#brandName").val().trim();
     var currentTime = moment().format('YYYY-MM-DD');
     var status = 0;
-    var categoryId = $("#categoryForm").attr("category-id-update");
+    var brandId = $("#brandForm").attr("brand-id-update");
 
     // Check thông tin
-    if (!checkInputCategory(categoryName)) {
+    if (!checkInputBrand(brandName)) {
         return;
     }
 
     var dataToSend = {
-        name: categoryName,
+        name: brandName,
         status: status,
     }
 
-    // Nếu categoryId tồn tại -> update, ngược lại -> add
-    if (categoryId) {
-        dataToSend.id = categoryId;
+    // Nếu brandId tồn tại -> update, ngược lại -> add
+    if (brandId) {
+        dataToSend.id = brandId;
         dataToSend.updatedDate = currentTime;
     } else {
-        // Kiểm tra trùng tên danh mục
-        if (!checkDuplicateCategory(categoryName)) {
+        // Kiểm tra trùng tên thương hiệu
+        if (!checkDuplicateBrand(brandName)) {
             Swal.fire({
                 icon: 'error',
                 title: 'Lỗi!',
-                text: 'Tên danh mục đã tồn tại!'
+                text: 'Tên thương hiệu đã tồn tại!'
             });
             return false;
         }
         dataToSend.createdDate = currentTime;
     }
 
-    var url = categoryId ? "/admin/rest/category/update/" + categoryId : "/admin/rest/category/add";
+    var url = brandId ? "/admin/rest/brand/update/" + brandId : "/admin/rest/brand/add";
 
-    var method = categoryId ? "PUT" : "POST";
+    var method = brandId ? "PUT" : "POST";
 
     // Gửi yêu cầu AJAX
     $.ajax({
@@ -54,48 +54,48 @@ function saveCategory() {
         contentType: "application/json",
         data: JSON.stringify(dataToSend),
         success: function (response) {
-            console.log("Lưu danh mục thành công!");
+            console.log("Lưu thương hiệu thành công!");
 
             Swal.fire({
                 icon: 'success',
                 title: 'Thành công!',
-                text: 'Lưu danh mục thành công!',
+                text: 'Lưu thương hiệu thành công!',
                 didClose: function () {
                     location.reload();
                 }
             });
         },
         error: function (error) {
-            console.error("Lỗi khi lưu danh mục:", error);
+            console.error("Lỗi khi lưu thương hiệu:", error);
 
             Swal.fire({
                 icon: 'error',
                 title: 'Lỗi!',
-                text: 'Có lỗi xảy ra khi lưu danh mục!'
+                text: 'Có lỗi xảy ra khi lưu thương hiệu!'
             });
         }
     });
 }
 
 // Check thông tin
-function checkInputCategory(categoryName) {
+function checkInputBrand(brandName) {
     // Kiểm tra xem các trường có rỗng không
-    if (categoryName === "") {
+    if (brandName === "") {
         Swal.fire({
             icon: 'error',
             title: 'Lỗi!',
-            text: 'Vui lòng điền đầy đủ thông tin danh mục!'
+            text: 'Vui lòng điền đầy đủ thông tin thương hiệu!'
         });
         return false;
     }
 
-    //Check Tên danh mục
+    //Check Tên thương hiệu
     var nameRegex = /^[a-zA-ZÀ-ỹ\s]+$/;
-    if (!nameRegex.test(categoryName)) {
+    if (!nameRegex.test(brandName)) {
         Swal.fire({
             icon: 'error',
             title: 'Lỗi!',
-            text: 'Tên danh mục chỉ được chứa chữ cái và khoảng trắng!'
+            text: 'Tên thương hiệu chỉ được chứa chữ cái và khoảng trắng!'
         });
         return false;
     }
@@ -104,53 +104,53 @@ function checkInputCategory(categoryName) {
 }
 
 
-// Check trùng Tên danh mục
-function checkDuplicateCategory(categoryName) {
+// Check trùng Tên thương hiệu
+function checkDuplicateBrand(brandName) {
     var isDuplicateName;
-    // Gửi yêu cầu AJAX để kiểm tra trùng tên danh mục
+    // Gửi yêu cầu AJAX để kiểm tra trùng tên thương hiệu
     $.ajax({
         type: "POST",
-        url: "/admin/rest/category/checkDuplicateName",
+        url: "/admin/rest/brand/checkDuplicateName",
         contentType: "application/json",
-        data: JSON.stringify({name: categoryName}),
+        data: JSON.stringify({name: brandName}),
         async: false,
         success: function (response) {
             isDuplicateName = response.isDuplicateName;
         },
         error: function (error) {
-            console.error("Lỗi khi kiểm tra trùng tên danh mục:", error);
+            console.error("Lỗi khi kiểm tra trùng tên thương hiệu:", error);
         }
     });
     return isDuplicateName;
 }
 
 
-// Hàm để cập nhật biểu mẫu với dữ liệu danh mục
-function updateCategoryForm(element) {
-    var categoryId = element.getAttribute("data-category-id");
+// Hàm để cập nhật biểu mẫu với dữ liệu thương hiệu
+function updateBrandForm(element) {
+    var brandId = element.getAttribute("data-brand-id");
     // Thêm thuộc tính để kiểm tra xem add hay update
-    $('#categoryForm').attr('category-id-update', categoryId);
-    // Thực hiện AJAX request để lấy dữ liệu danh mục từ backend
+    $('#brandForm').attr('brand-id-update', brandId);
+    // Thực hiện AJAX request để lấy dữ liệu thương hiệu từ backend
     $.ajax({
         type: 'GET',
-        url: '/admin/rest/category/formUpdate/' + categoryId,
-        success: function (category) {
+        url: '/admin/rest/brand/formUpdate/' + brandId,
+        success: function (brand) {
             // Hiển thị hộp thoại modal
-            $('#CategoryModal').modal('show');
+            $('#BrandModal').modal('show');
 
             // Điền dữ liệu vào các trường biểu mẫu
-            $('#categoryName').val(category.name);
+            $('#brandName').val(brand.name);
 
             // Lắng nghe sự kiện đóng modal
-            $('#CategoryModal').on('hidden.bs.modal', function () {
-                // Xóa thuộc tính category-id-update khi modal đóng
-                $('#categoryForm').removeAttr('category-id-update');
+            $('#BrandModal').on('hidden.bs.modal', function () {
+                // Xóa thuộc tính brand-id-update khi modal đóng
+                $('#brandForm').removeAttr('brand-id-update');
                 // Làm mới input
-                $('#categoryName').val(null);
+                $('#brandName').val(null);
             });
         },
         error: function (error) {
-            console.log('Error fetching category data:', error);
+            console.log('Error fetching brand data:', error);
             // Xử lý lỗi nếu cần
         }
     });
@@ -158,12 +158,12 @@ function updateCategoryForm(element) {
 
 //Set Status
 function toggleStatus(checkbox) {
-    var categoryId = checkbox.getAttribute("data-category-id");
-    // Gửi yêu cầu AJAX để cập nhật trạng thái của danh mục
+    var brandId = checkbox.getAttribute("data-brand-id");
+    // Gửi yêu cầu AJAX để cập nhật trạng thái của thương hiệu
     //Sử dụng jQuery
     $.ajax({
         type: "POST",
-        url: "/admin/rest/category/setStatus/" + categoryId,
+        url: "/admin/rest/brand/setStatus/" + brandId,
         success: function (response) {
             // Xử lý thành công, nếu cần
             console.log("Cập nhật trạng thái thành công");

@@ -2,7 +2,9 @@ package com.poly.datn.sd18.controller.admin;
 
 import com.poly.datn.sd18.dto.ProductRequest;
 import com.poly.datn.sd18.dto.ProductResponse;
+import com.poly.datn.sd18.entity.Category;
 import com.poly.datn.sd18.entity.Product;
+import com.poly.datn.sd18.service.CategoryService;
 import com.poly.datn.sd18.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +21,9 @@ public class ProductController {
     @Autowired
     ProductService productService;
 
+    @Autowired
+    CategoryService categoryService;
+
     @GetMapping()
     public String getAll(Model model) {
         List<ProductResponse> lists = productService.getAll();
@@ -27,7 +32,9 @@ public class ProductController {
     }
 
     @GetMapping("/add")
-    public String add() {
+    public String add(Model model) {
+        List<Category> listCategory = categoryService.getAll();
+        model.addAttribute("listCategory", listCategory);
         return "/admin/product/add-product";
     }
 

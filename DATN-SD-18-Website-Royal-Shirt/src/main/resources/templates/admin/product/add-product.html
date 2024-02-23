@@ -3,7 +3,7 @@
 
 <head th:replace="~{admin/layout/head :: head}"></head>
 
-<link rel="stylesheet" th:href="@{/admin/css/product/product.css}">
+<link rel="stylesheet" th:href="@{/admin/css/product/add-product.css}">
 
 <body onload="time()" class="app sidebar-mini rtl">
 <!-- Navbar-->
@@ -11,10 +11,147 @@
 <!-- Sidebar menu-->
 <div th:replace="~{admin/layout/sidebar :: sidebar}"></div>
 
+<main class="app-content">
+    <div class="app-title">
+        <ul class="app-breadcrumb breadcrumb">
+            <li class="breadcrumb-item">Danh sách sản phẩm</li>
+            <li class="breadcrumb-item"><a href="#">Thêm sản phẩm</a></li>
+        </ul>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="tile">
+                <h3 class="tile-title">Tạo mới sản phẩm</h3>
+                <div class="tile-body">
+                    <form class="row">
+                        <div class="form-group col-md-3">
+                            <label class="control-label">Tên sản phẩm</label>
+                            <input class="form-control" type="text">
+                        </div>
 
+                        <div class="form-group col-md-3">
+                            <label for="exampleSelect1" class="control-label">Danh mục</label>
+                            <div class="d-flex">
+                                <select class="form-control">
+                                    <option value="" disabled selected hidden>-- Chọn danh mục --</option>
+                                    <option th:each="category : ${listCategory}" th:value="${category.id}"
+                                            th:text="${category.name}"></option>
+                                </select>
+                                <button id="showFormCategory" class="btn add-button" type="button"><i
+                                        class="fa-solid fa-plus fa-2xl add-icon"></i></button>
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-3">
+                            <label for="exampleSelect1" class="control-label">Thương hiệu</label>
+                            <div class="d-flex">
+                                <select class="form-control" id="exampleSelect1">
+                                    <option>-- Chọn thương hiệu --</option>
+                                    <option>Phong vũ</option>
+                                    <option>Thế giới di động</option>
+                                    <option>FPT</option>
+                                    <option>Võ Trường</option>
+                                </select>
+                                <button class="btn add-button" type="button"><i
+                                        class="fa-solid fa-plus fa-2xl add-icon"></i></button>
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-3">
+                            <label for="exampleSelect1" class="control-label">Chất liệu</label>
+                            <div class="d-flex">
+                                <select class="form-control">
+                                    <option>-- Chọn chất liệu --</option>
+                                    <option>Còn hàng</option>
+                                    <option>Hết hàng</option>
+                                </select>
+                                <button class="btn add-button" type="button"><i
+                                        class="fa-solid fa-plus fa-2xl add-icon"></i></button>
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-3">
+                            <label for="exampleSelect1" class="control-label">Màu sắc</label>
+                            <div class="d-flex">
+                                <select class="form-control" id="select-colors" placeholder="Chọn màu sắc..."></select>
+                                <button class="btn add-button" type="button"><i
+                                        class="fa-solid fa-plus fa-2xl add-icon"></i></button>
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-3">
+                            <label for="exampleSelect1" class="control-label">Kích thước</label>
+                            <div class="d-flex">
+                                <select class="form-control" id="select-sizes" placeholder="Chọn kích thước..."></select>
+                                <button class="btn add-button" type="button"><i
+                                        class="fa-solid fa-plus fa-2xl add-icon"></i></button>
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-12">
+                            <label class="control-label">Ảnh sản phẩm</label>
+                            <div id="myfileupload">
+                                <input type="file" id="uploadfile" name="ImageUpload" onchange="readURL(this);"/>
+                            </div>
+                            <div id="thumbbox">
+                                <img height="450" width="400" alt="Thumb image" id="thumbimage" style="display: none"/>
+                                <a class="removeimg" href="javascript:"></a>
+                            </div>
+                            <div id="boxchoice">
+                                <a href="javascript:" class="Choicefile"><i class="fas fa-cloud-upload-alt"></i> Chọn
+                                    ảnh</a>
+                                <p style="clear:both"></p>
+                            </div>
+
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label class="control-label">Mô tả sản phẩm</label>
+                            <textarea class="form-control" name="mota" id="mota"></textarea>
+                            <script>CKEDITOR.replace('mota');</script>
+                        </div>
+                    </form>
+                </div>
+                    <button class="btn btn-save" type="button">Lưu lại</button>
+                <a class="btn btn-cancel" th:href="@{/admin/product}">Hủy bỏ</a>
+            </div>
+        </div>
+    </div>
+</main>
+
+<!-- Modal danh mục -->
+<div class="modal fade" id="CategoryModal" tabindex="-1" role="dialog"
+     aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Thêm Danh Mục</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Your form fields for category name and description go here -->
+                <form id="categoryForm">
+                    <div class="form-group">
+                        <label for="categoryName">Tên Danh Mục:</label>
+                        <input type="text" class="form-control" id="categoryName"
+                               name="categoryName"
+                               placeholder="Tên danh mục...">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="saveCategory()">Lưu</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="closeFormCategory">Đóng
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div th:replace="~{admin/layout/script :: script}"></div>
-<script th:src="@{/admin/js/product/product.js}"></script>
+<script th:src="@{/admin/js/product/add-product.js}"></script>
+<script th:src="@{/admin/js/category/category.js}"></script>
 </body>
 
 </html>
