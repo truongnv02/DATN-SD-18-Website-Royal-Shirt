@@ -26,7 +26,7 @@
                     <form class="row">
                         <div class="form-group col-md-3">
                             <label class="control-label">Tên sản phẩm</label>
-                            <input class="form-control" type="text">
+                            <input class="form-control" id="input-product-name" type="text">
                         </div>
 
                         <div class="form-group col-md-3">
@@ -50,7 +50,7 @@
                                     <option th:each="brand : ${listBrand}" th:value="${brand.id}"
                                             th:text="${brand.name}"></option>
                                 </select>
-                                <button class="btn add-button" type="button"><i
+                                <button id="showFormBrand" class="btn add-button" type="button"><i
                                         class="fa-solid fa-plus fa-2xl add-icon"></i></button>
                             </div>
                         </div>
@@ -63,7 +63,7 @@
                                     <option th:each="material : ${listMaterial}" th:value="${material.id}"
                                             th:text="${material.name}"></option>
                                 </select>
-                                <button class="btn add-button" type="button"><i
+                                <button id="showFormMaterial" class="btn add-button" type="button"><i
                                         class="fa-solid fa-plus fa-2xl add-icon"></i></button>
                             </div>
                         </div>
@@ -72,7 +72,7 @@
                             <label for="exampleSelect1" class="control-label">Màu sắc</label>
                             <div class="d-flex">
                                 <select class="form-control" id="select-colors" placeholder="Chọn màu sắc..."></select>
-                                <button class="btn add-button" type="button"><i
+                                <button id="showFormColor" class="btn add-button" type="button"><i
                                         class="fa-solid fa-plus fa-2xl add-icon"></i></button>
                             </div>
                         </div>
@@ -80,28 +80,30 @@
                         <div class="form-group col-md-3">
                             <label for="exampleSelect1" class="control-label">Kích thước</label>
                             <div class="d-flex">
-                                <select class="form-control" id="select-sizes" placeholder="Chọn kích thước..."></select>
-                                <button class="btn add-button" type="button"><i
+                                <select class="form-control" id="select-sizes"
+                                        placeholder="Chọn kích thước..."></select>
+                                <button id="showFormSize" class="btn add-button" type="button"><i
                                         class="fa-solid fa-plus fa-2xl add-icon"></i></button>
                             </div>
                         </div>
 
+                        <!--Thêm ảnh-->
                         <div class="form-group col-md-12">
                             <label class="control-label">Ảnh sản phẩm</label>
                             <div id="myfileupload">
-                                <input type="file" id="uploadfile" name="ImageUpload" onchange="readURL(this);"/>
+                                <input type="file" id="uploadfile" name="ImageUpload" multiple
+                                       onchange="readURL(this)"/>
                             </div>
-                            <div id="thumbbox">
-                                <img height="450" width="400" alt="Thumb image" id="thumbimage" style="display: none"/>
-                                <a class="removeimg" href="javascript:"></a>
+                            <div id="thumbbox" class="d-flex">
+
                             </div>
                             <div id="boxchoice">
                                 <a href="javascript:" class="Choicefile"><i class="fas fa-cloud-upload-alt"></i> Chọn
                                     ảnh</a>
                                 <p style="clear:both"></p>
                             </div>
-
                         </div>
+
                         <div class="form-group col-md-12">
                             <label class="control-label">Mô tả sản phẩm</label>
                             <textarea class="form-control" name="mota" id="mota"></textarea>
@@ -109,14 +111,83 @@
                         </div>
                     </form>
                 </div>
-                    <button class="btn btn-save" type="button">Lưu lại</button>
+                <button class="btn btn-save" type="button" onclick="showListProductDetail()">Danh sách
+                    biến thể
+                </button>
                 <a class="btn btn-cancel" th:href="@{/admin/product}">Hủy bỏ</a>
             </div>
         </div>
     </div>
 </main>
 
-<!-- Modal danh mục -->
+<div class="app-content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="tile">
+                <h3 class="tile-title">Danh sách biến thể</h3>
+                <div class="tile-body">
+                    <form class="row">
+                        <div class="form-group col-md-12">
+
+                            <table class="table table-hover table-bordered js-copytextarea" cellpadding="0"
+                                   cellspacing="0"
+                                   border="0"
+                                   id="sampleTable">
+                                <thead>
+                                <tr>
+                                    <th class="stt" width="20">STT</th>
+                                    <th class="ten_danh_muc">Tên Sản Phẩm</th>
+                                    <th class="so_luong" width="100">Số Lượng</th>
+                                    <th class="gia_ban" width="220">Giá bán</th>
+                                    <th class="tinh_nang" width="110">Tính Năng</th>
+                                </tr>
+                                </thead>
+
+                                <tbody id="listProductDetail">
+                                <!-- -->
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </form>
+                </div>
+                <a class="btn btn-save" type="button" href="">Lưu</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Thương Hiệu -->
+<div class="modal fade" id="BrandModal" tabindex="-1" role="dialog"
+     aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Thêm Thương Hiệu</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Your form fields for brand name and description go here -->
+                <form id="brandForm">
+                    <div class="form-group">
+                        <label for="brandName">Tên Thương Hiệu:</label>
+                        <input type="text" class="form-control" id="brandName"
+                               name="brandName"
+                               placeholder="Tên thương hiệu...">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="saveBrand()">Lưu</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="closeFormBrand">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Danh Mục -->
 <div class="modal fade" id="CategoryModal" tabindex="-1" role="dialog"
      aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -147,9 +218,117 @@
     </div>
 </div>
 
+<!-- Modal Màu Sắc -->
+<div class="modal fade" id="ColorModal" tabindex="-1" role="dialog"
+     aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Thêm Màu Sắc</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Your form fields for color name and description go here -->
+                <form id="colorForm">
+                    <div class="form-group">
+                        <label for="colorName">Tên Màu Sắc:</label>
+                        <input type="text" class="form-control" id="colorName"
+                               name="colorName"
+                               placeholder="Tên màu sắc...">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="saveColor()">Lưu</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="closeFormColor">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Chất Liệu -->
+<div class="modal fade" id="MaterialModal" tabindex="-1" role="dialog"
+     aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Thêm Chất Liệu</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Your form fields for material name and description go here -->
+                <form id="materialForm">
+                    <div class="form-group">
+                        <label for="materialName">Tên Chất Liệu:</label>
+                        <input type="text" class="form-control" id="materialName"
+                               name="materialName"
+                               placeholder="Tên chất liệu...">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="saveMaterial()">Lưu</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="closeFormMaterial">Đóng
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Kích Thước -->
+<div class="modal fade" id="SizeModal" tabindex="-1" role="dialog"
+     aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Thêm Kích Thước</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Your form fields for size name and description go here -->
+                <form id="sizeForm">
+                    <div class="form-group">
+                        <label for="sizeName">Kích Thước:</label>
+                        <input type="text" class="form-control" id="sizeName"
+                               name="sizeName"
+                               placeholder="Kích thước...">
+                    </div>
+                    <div class="form-group">
+                        <label for="sizeName">Dài Áo:</label>
+                        <input type="number" class="form-control" id="sizeShirtLength"
+                               name="sizeShirtLength"
+                               placeholder="Dài áo...">
+                    </div>
+                    <div class="form-group">
+                        <label for="sizeName">Ngang Áo:</label>
+                        <input type="number" class="form-control" id="sizeShirtWidth"
+                               name="sizeShirtWidth"
+                               placeholder="Ngang áo...">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="saveSize()">Lưu</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="closeFormSize">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <div th:replace="~{admin/layout/script :: script}"></div>
 <script th:src="@{/admin/js/product/add-product.js}"></script>
+<script th:src="@{/admin/js/brand/brand.js}"></script>
 <script th:src="@{/admin/js/category/category.js}"></script>
+<script th:src="@{/admin/js/color/color.js}"></script>
+<script th:src="@{/admin/js/material/material.js}"></script>
+<script th:src="@{/admin/js/size/size.js}"></script>
 </body>
 
 </html>

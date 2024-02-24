@@ -80,3 +80,91 @@
 .add-icon {
     color: #3c3c3c;
 }
+
+#thumbbox {
+    overflow: auto;
+}
+
+.image-item {
+    float: left;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    position: relative;
+}
+
+.thumbimage {
+    max-width: 150px;
+    max-height: 150px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.image-product-container {
+    position: relative;
+    display: inline-block;
+    margin-right: 10px; /* Khoảng cách giữa các ảnh */
+}
+
+.removeimg {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: #fff;
+    padding: 2px 5px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    text-decoration: none;
+    color: #333;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.tile {
+    margin-bottom: 0;
+}
+
+/*.so_luong {*/
+/*    text-align: center;*/
+/*}*/
+
+/* Tùy chỉnh ô số lượng */
+.stt, .so_luong, .gia_ban, .tinh_nang {
+    position: relative;
+    text-align: center;
+}
+
+.so_luong input[type="number"] {
+    width: 80px; /* Độ rộng của ô nhập liệu */
+    padding: 5px; /* Khoảng cách padding */
+    font-size: 14px; /* Kích thước chữ */
+    text-align: center; /* Canh giữa nội dung */
+    border: 1px solid #ccc; /* Viền xung quanh */
+    border-radius: 4px; /* Bo tròn góc */
+    box-sizing: border-box; /* Kích thước tính cả padding và border */
+}
+
+.gia_ban input[type="number"] {
+    width: 130px; /* Độ rộng của ô nhập liệu */
+    padding: 5px; /* Khoảng cách padding */
+    font-size: 14px; /* Kích thước chữ */
+    text-align: center; /* Canh giữa nội dung */
+    border: 1px solid #ccc; /* Viền xung quanh */
+    border-radius: 4px; /* Bo tròn góc */
+    box-sizing: border-box; /* Kích thước tính cả padding và border */
+}
+
+/* Nếu muốn thay đổi màu sắc hoặc kiểu nền khi ô nhập liệu có giá trị */
+.so_luong input[type="number"]:not(:placeholder-shown), .gia_ban input[type="number"]:not(:placeholder-shown) {
+    background-color: #f0f8ff; /* Màu nền khi có giá trị */
+    color: #000; /* Màu chữ khi có giá trị */
+}
+
+/* Tùy chỉnh khi hover vào ô nhập liệu */
+.so_luong input[type="number"]:hover {
+    border-color: #4caf50; /* Viền khi hover */
+}
+
+#gia_ban::after {
+    content: attr(data-raw-value) " VND";
+    width: 100%; /* Đảm bảo nằm ở cuối cùng */
+}
