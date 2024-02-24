@@ -26,6 +26,6 @@
 }
 
 .anh img {
-    width: 70px;
-    height: 90px;
+    max-width: 120px;
+    max-height: 150px;
 }

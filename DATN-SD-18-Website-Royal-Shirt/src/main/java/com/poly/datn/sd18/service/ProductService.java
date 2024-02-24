@@ -14,7 +14,7 @@ public interface ProductService {
 
     List<Product> findByName(String name);
 
-    Product add(Product product);
+    Product add(ProductRequest productRequest);
 
     Product update(Product product, int id);
 

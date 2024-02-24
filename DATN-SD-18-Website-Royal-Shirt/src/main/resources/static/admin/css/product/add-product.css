@@ -128,12 +128,13 @@
 /*}*/
 
 /* Tùy chỉnh ô số lượng */
-.stt, .so_luong, .gia_ban, .tinh_nang {
+.stt, .trong_luong, .so_luong, .gia_ban, .tinh_nang {
     position: relative;
     text-align: center;
 }
 
-.so_luong input[type="number"] {
+.so_luong input[type="number"],
+.trong_luong input[type="number"] {
     width: 80px; /* Độ rộng của ô nhập liệu */
     padding: 5px; /* Khoảng cách padding */
     font-size: 14px; /* Kích thước chữ */
@@ -154,17 +155,25 @@
 }
 
 /* Nếu muốn thay đổi màu sắc hoặc kiểu nền khi ô nhập liệu có giá trị */
-.so_luong input[type="number"]:not(:placeholder-shown), .gia_ban input[type="number"]:not(:placeholder-shown) {
+.so_luong input[type="number"]:not(:placeholder-shown),
+.trong_luong input[type="number"]:not(:placeholder-shown),
+.gia_ban input[type="number"]:not(:placeholder-shown) {
     background-color: #f0f8ff; /* Màu nền khi có giá trị */
     color: #000; /* Màu chữ khi có giá trị */
 }
 
 /* Tùy chỉnh khi hover vào ô nhập liệu */
-.so_luong input[type="number"]:hover {
+.so_luong input[type="number"]:hover,
+.trong_luong input[type="number"]:hover {
     border-color: #4caf50; /* Viền khi hover */
 }
 
 #gia_ban::after {
     content: attr(data-raw-value) " VND";
+    width: 100%; /* Đảm bảo nằm ở cuối cùng */
+}
+
+#trong_luong::after {
+    content: attr(data-raw-value) " gram";
     width: 100%; /* Đảm bảo nằm ở cuối cùng */
 }

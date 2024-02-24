@@ -33,7 +33,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product add(Product product) {
+    public Product add(ProductRequest productRequest) {
+        Product product = productRequest.map(new Product());
         return productRepository.save(product);
     }
 

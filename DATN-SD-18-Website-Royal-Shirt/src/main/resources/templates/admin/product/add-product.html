@@ -30,9 +30,9 @@
                         </div>
 
                         <div class="form-group col-md-3">
-                            <label for="exampleSelect1" class="control-label">Danh mục</label>
+                            <label for="select-category" class="control-label">Danh mục</label>
                             <div class="d-flex">
-                                <select class="form-control">
+                                <select class="form-control" id="select-category">
                                     <option value="" disabled selected hidden>-- Chọn danh mục --</option>
                                     <option th:each="category : ${listCategory}" th:value="${category.id}"
                                             th:text="${category.name}"></option>
@@ -43,9 +43,9 @@
                         </div>
 
                         <div class="form-group col-md-3">
-                            <label for="exampleSelect1" class="control-label">Thương hiệu</label>
+                            <label for="select-brand" class="control-label">Thương hiệu</label>
                             <div class="d-flex">
-                                <select class="form-control" id="exampleSelect1">
+                                <select class="form-control" id="select-brand">
                                     <option value="" disabled selected hidden>-- Chọn thương hiệu --</option>
                                     <option th:each="brand : ${listBrand}" th:value="${brand.id}"
                                             th:text="${brand.name}"></option>
@@ -56,9 +56,9 @@
                         </div>
 
                         <div class="form-group col-md-3">
-                            <label for="exampleSelect1" class="control-label">Chất liệu</label>
+                            <label for="select-material" class="control-label">Chất liệu</label>
                             <div class="d-flex">
-                                <select class="form-control">
+                                <select class="form-control" id="select-material">
                                     <option value="" disabled selected hidden>-- Chọn chất liệu --</option>
                                     <option th:each="material : ${listMaterial}" th:value="${material.id}"
                                             th:text="${material.name}"></option>
@@ -69,7 +69,7 @@
                         </div>
 
                         <div class="form-group col-md-3">
-                            <label for="exampleSelect1" class="control-label">Màu sắc</label>
+                            <label for="select-colors" class="control-label">Màu sắc</label>
                             <div class="d-flex">
                                 <select class="form-control" id="select-colors" placeholder="Chọn màu sắc..."></select>
                                 <button id="showFormColor" class="btn add-button" type="button"><i
@@ -78,7 +78,7 @@
                         </div>
 
                         <div class="form-group col-md-3">
-                            <label for="exampleSelect1" class="control-label">Kích thước</label>
+                            <label for="select-sizes" class="control-label">Kích thước</label>
                             <div class="d-flex">
                                 <select class="form-control" id="select-sizes"
                                         placeholder="Chọn kích thước..."></select>
@@ -106,8 +106,7 @@
 
                         <div class="form-group col-md-12">
                             <label class="control-label">Mô tả sản phẩm</label>
-                            <textarea class="form-control" name="mota" id="mota"></textarea>
-                            <script>CKEDITOR.replace('mota');</script>
+                            <textarea class="form-control ckeditor" id="input-product-description"></textarea>
                         </div>
                     </form>
                 </div>
@@ -136,9 +135,10 @@
                                 <thead>
                                 <tr>
                                     <th class="stt" width="20">STT</th>
-                                    <th class="ten_danh_muc">Tên Sản Phẩm</th>
-                                    <th class="so_luong" width="100">Số Lượng</th>
-                                    <th class="gia_ban" width="220">Giá bán</th>
+                                    <th class="ten_san_pham">Tên Sản Phẩm</th>
+                                    <th class="trong_luong" width="130">Trọng Lượng</th>
+                                    <th class="so_luong" width="90">Số Lượng</th>
+                                    <th class="gia_ban" width="180">Giá Bán</th>
                                     <th class="tinh_nang" width="110">Tính Năng</th>
                                 </tr>
                                 </thead>
@@ -151,7 +151,7 @@
                         </div>
                     </form>
                 </div>
-                <a class="btn btn-save" type="button" href="">Lưu</a>
+                <a class="btn btn-save" type="button" onclick="save()">Lưu</a>
             </div>
         </div>
     </div>

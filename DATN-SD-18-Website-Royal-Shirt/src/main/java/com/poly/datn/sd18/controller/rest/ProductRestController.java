@@ -28,8 +28,8 @@ public class ProductRestController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<?> add(@RequestBody Product product) {
-        return ResponseEntity.ok(productService.add(product));
+    public ResponseEntity<?> add(@RequestBody ProductRequest productRequest) {
+        return ResponseEntity.ok(productService.add(productRequest));
     }
 
     @GetMapping("/formUpdate/{id}")
