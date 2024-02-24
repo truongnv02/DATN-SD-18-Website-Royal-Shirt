@@ -53,7 +53,7 @@ public class StaffController {
                                     @RequestParam("uploadfile") MultipartFile file,
                                     BindingResult result) {
         try {
-            staffService.createStaff(staff, file);
+            Staff staff1 = staffService.createStaff(staff);
             return ResponseEntity.ok().body("Staff added successfully.");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to add staff.");

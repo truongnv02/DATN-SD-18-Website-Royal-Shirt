@@ -3,6 +3,9 @@ $(document).ready(function () {
     $('#showModalRole').click(function () {
         $('#roleModal').modal('show');
     });
+    $('#closeModalRole').click(function () {
+        $('#roleModal').modal('hide');
+    });
 });
 
 function saveRole() {
@@ -11,29 +14,29 @@ function saveRole() {
 
     // Kiểm tra xem các trường có rỗng không
     if (name === "") {
-        Swal.fire({
-            icon: 'error',
-            title: 'Lỗi!',
-            text: 'Vui lòng điền đầy đủ thông tin!'
+        swal({
+            title: "Lỗi!",
+            text: "Vui lòng điền đầy đủ thông tin!",
+            icon: "error"
         });
         return;
     }
 
     var nameRegex = /^[a-zA-ZÀ-ỹ\s]+$/;
     if (!nameRegex.test(name)) {
-        Swal.fire({
-            icon: 'error',
-            title: 'Lỗi!',
-            text: 'Tên chỉ được chứa chữ cái và khoảng trắng!'
+        swal({
+            title: "Lỗi!",
+            text: "Tên chỉ được chứa chữ cái và khoảng trắng!",
+            icon: "error"
         });
         return;
     }
 
-    var url ="/admin/roles/create";
+    var url = "/admin/roles/create";
     var method = "POST";
     var dataToSend = {
-            name: name,
-        }
+        name: name,
+    };
 
     // Gửi yêu cầu AJAX
     $.ajax({
@@ -43,53 +46,25 @@ function saveRole() {
         data: JSON.stringify(dataToSend),
         success: function(response) {
             console.log("Lưu thành công!");
-            toastr.options = {
-                            "closeButton": false,
-                            "debug": false,
-                            "newestOnTop": true,
-                            "progressBar": true,
-                            "positionClass": "toast-top-right",
-                            "preventDuplicates": false,
-                            "onclick": null,
-                            "showDuration": "300",
-                            "hideDuration": "1000",
-                            "timeOut": "1000",
-                            "extendedTimeOut": "1000",
-                            "showEasing": "swing",
-                            "hideEasing": "linear",
-                            "showMethod": "fadeIn",
-                            "hideMethod": "fadeOut"
-                        };
-            toastr.success("Thành công!", "", {
-                    onHidden: function() { // Đoạn mã callback
-                        // Đóng modal
-                        $('#roleModal').modal('hide');
-                        // Reload lại trang
-                        location.reload();
-                    }
-                });
+            Swal.fire({
+                title: "Thành công!",
+                text: "Lưu dữ liệu thành công!",
+                icon: "success",
+                didClose: function () {
+                    location.reload();
+                }
+            });
         },
         error: function(error) {
             console.error("Lỗi khi lưu:", error);
-            toastr.options = {
-                "closeButton": false,
-                "debug": false,
-                "newestOnTop": true,
-                "progressBar": true,
-                "positionClass": "toast-top-right",
-                "preventDuplicates": false,
-                "onclick": null,
-                "showDuration": "300",
-                "hideDuration": "1000",
-                "timeOut": "1000",
-                "extendedTimeOut": "1000",
-                "showEasing": "swing",
-                "hideEasing": "linear",
-                "showMethod": "fadeIn",
-                "hideMethod": "fadeOut"
-            };
-             toastr.success("Thất bại!");
+            Swal.fire({
+                title: "Thất bại!",
+                text: "Đã xảy ra lỗi khi lưu dữ liệu!",
+                icon: "error"
+            });
         }
     });
 }
+
+
 

@@ -47,22 +47,8 @@ public class StaffServiceImpl implements StaffService {
     }
 
     @Override
-    public Staff createStaff(Staff staff, MultipartFile image) {
-        try {
-            if (image != null && !image.isEmpty()) {
-                String imageName = StringUtils.cleanPath(image.getOriginalFilename());
-                imageName = UUID.randomUUID().toString() + "_" + imageName;
-                Path imagePath = Paths.get("images");
-                Files.createDirectories(imagePath);
-                Path targetLocation = imagePath.resolve(imageName);
-                Files.copy(image.getInputStream(), targetLocation);
-                staff.setAvatar(imageName);
-            }
-            return staffRepository.save(staff);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
+    public Staff createStaff(Staff staff) {
+        return staffRepository.save(staff);
     }
 
 
@@ -78,6 +64,19 @@ public class StaffServiceImpl implements StaffService {
 
     @Override
     public Staff setStatusStaff(Integer id) {
+        if (id == null) {
+            throw new IllegalArgumentException("ID nhân viên không được để trống");
+        }
+
+        Staff staff = findStaffById(id);
+        if (staff != null) {
+            if (staff.getStatus() == 0) {
+                staff.setStatus(1);
+            } else {
+                staff.setStatus(0);
+            }
+            return staffRepository.save(staff);
+        }
         return null;
     }
 }
