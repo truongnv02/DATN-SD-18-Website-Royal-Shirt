@@ -2,6 +2,7 @@ package com.poly.datn.sd18.controller.admin;
 
 import com.poly.datn.sd18.entity.Role;
 import com.poly.datn.sd18.entity.Staff;
+import com.poly.datn.sd18.model.dto.StaffDTO;
 import com.poly.datn.sd18.service.RoleService;
 import com.poly.datn.sd18.service.StaffService;
 import jakarta.validation.Valid;
@@ -12,8 +13,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -45,19 +48,47 @@ public class StaffController {
     public String formCreate(Model model) {
         List<Role> listRole = roleService.getAllRole();
         model.addAttribute("listRole", listRole);
+        model.addAttribute("staff", new Staff());
         return "admin/staff/create";
     }
 
     @PostMapping("/create")
-    public ResponseEntity<?> saveStaff(@Valid @ModelAttribute Staff staff,
-                                    @RequestParam("uploadfile") MultipartFile file,
+    public String saveStaff(@Valid @ModelAttribute StaffDTO staffDTO,
+                                    @RequestParam("imageStaff") MultipartFile file,
                                     BindingResult result) {
-        try {
-            Staff staff1 = staffService.createStaff(staff);
-            return ResponseEntity.ok().body("Staff added successfully.");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to add staff.");
+        if (result.hasErrors()) {
+            return "admin/staff/create";
+        }else {
+            Staff staff = staffService.createStaff(staffDTO, file);
+            return "redirect:/admin/staffs";
         }
     }
 
+    @GetMapping("/findId/{id}")
+    @ResponseBody
+    public ResponseEntity<?> getStaffById(@PathVariable("id") Integer id) {
+        try {
+            Staff staff = staffService.findStaffById(id);
+            if (staff != null) {
+                return ResponseEntity.ok(staff);
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/update/{id}")
+    public ResponseEntity<?> updateStaff(@Valid @ModelAttribute StaffDTO staffDTO,
+                                         @RequestParam("imageStaff") MultipartFile file,
+                                         @PathVariable("id") Integer id,
+                                         BindingResult result) {
+        try {
+            Staff staff = staffService.updateStaff(staffDTO, id, file);
+            return ResponseEntity.ok(staff);
+        }catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 }

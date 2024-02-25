@@ -99,32 +99,32 @@
                             </a>
                         </div>
                     </div>
-                    <form  enctype="multipart/form-data" >
+                    <form method="post" th:action="@{/admin/staffs/create}" th:object="${staff}" enctype="multipart/form-data" >
                         <div class="row">
                             <div class="form-group col-md-6">
                                 <label class="control-label">Họ và tên</label>
-                                <input class="form-control" type="text" required name="name" id="name">
+                                <input class="form-control" type="text" required name="name" id="name" th:field="*{name}">
                             </div>
                             <div class="form-group col-md-6">
                                 <label class="control-label">Địa chỉ email</label>
-                                <input class="form-control" type="text" required name="email" id="email">
+                                <input class="form-control" type="text" required name="email" id="email" th:field="*{email}">
                             </div>
                             <div class="form-group  col-md-6">
                                 <label class="control-label">Số điện thoại</label>
-                                <input class="form-control" type="text" required name="phone" id="phone">
+                                <input class="form-control" type="text" required name="phone" id="phone" th:field="*{phone}">
                             </div>
                             <div class="form-group col-md-6">
                                 <label class="control-label">Địa chỉ</label>
-                                <input class="form-control" type="text" name="address" id="address">
+                                <input class="form-control" type="text" name="address" id="address" th:field="*{address}">
                             </div>
                             <div class="form-group col-md-6">
                                 <label class="control-label">Mật khẩu</label>
-                                <input class="form-control" type="password" name="password" id="password">
+                                <input class="form-control" type="password" name="password" id="password" th:field="*{password}">
                             </div>
                             <div class="form-group  col-md-6">
                                 <label for="role" class="control-label">Chức vụ</label>
-                                <select class="form-control" id="role" name="role">
-                                    <option>--Chọn chức vụ--</option>
+                                <select class="form-control" id="role" name="role" th:field="*{role}">
+                                    <option th:value="null">--Chọn chức vụ--</option>
                                     <option th:each="role : ${listRole}"
                                             th:value="${role.id}"
                                             th:text="${role.name}"></option>
@@ -133,7 +133,7 @@
                             <div class="form-group col-md-12">
                                 <label class="control-label">Ảnh 3x4 nhân viên</label>
                                 <div id="myfileupload">
-                                    <input type="file" id="uploadfile" name="ImageUpload" onchange="readURL(this);"/>
+                                    <input type="file" id="uploadfile" name="imageStaff" onchange="readURL(this);"/>
                                 </div>
                                 <div id="thumbbox">
                                     <img height="350" width="300" alt="Thumb image" id="thumbimage" style="display: none"/>
@@ -145,11 +145,11 @@
                                     <p style="clear:both"></p>
                                 </div>
                             </div>
+                            <button class="btn btn-save" type="submit">Lưu lại</button>
+                            <a class="btn btn-cancel" th:href="@{/admin/staffs}">Hủy bỏ</a>
                         </div>
                     </form>
                 </div>
-                <button class="btn btn-save" type="button" onclick="saveStaff()">Lưu lại</button>
-                <a class="btn btn-cancel" th:href="@{/admin/staffs}">Hủy bỏ</a>
             </div>
         </div>
     </div>

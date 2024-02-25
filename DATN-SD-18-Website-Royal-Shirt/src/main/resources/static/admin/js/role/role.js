@@ -32,7 +32,7 @@ function saveRole() {
         return;
     }
 
-    var url = "/admin/roles/create";
+    var url = "/admin/rest/roles/create";
     var method = "POST";
     var dataToSend = {
         name: name,

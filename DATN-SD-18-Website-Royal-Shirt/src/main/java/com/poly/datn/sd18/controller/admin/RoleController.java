@@ -20,21 +20,4 @@ public class RoleController {
     public List<Role> getAllRoles() {
         return roleService.getAllRole();
     }
-
-    @PostMapping("/create") // Sửa đường dẫn endpoint
-    public ResponseEntity<?> createRole(@RequestBody RoleDTO roleDTO) {
-        try {
-            Role role = roleService.createRole(roleDTO);
-            return ResponseEntity.ok(role);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Lỗi khi tạo chức vụ");
-        }
-    }
-
-    @PutMapping("/update/{id}")
-    public ResponseEntity<?> updateRole(@PathVariable("id") Integer id,
-                                        @RequestBody RoleDTO roleDTO) {
-        Role updatedRole = roleService.updateRole(roleDTO, id);
-        return ResponseEntity.ok(updatedRole);
-    }
 }

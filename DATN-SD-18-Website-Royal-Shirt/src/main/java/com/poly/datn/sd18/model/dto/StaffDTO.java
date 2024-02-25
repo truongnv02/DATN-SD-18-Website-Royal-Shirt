@@ -17,7 +17,7 @@ public class StaffDTO {
 
     private String phone;
 
-    private MultipartFile avatar;
+    private String  avatar;
 
     private String address;
 

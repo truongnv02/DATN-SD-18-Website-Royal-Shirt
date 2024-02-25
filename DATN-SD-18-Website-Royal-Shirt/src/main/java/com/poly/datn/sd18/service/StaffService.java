@@ -13,8 +13,8 @@ public interface StaffService {
     Page<Staff> getAllStaffPages(Integer pageNo);
     List<Staff> searchStaffByName(String name);
     List<Staff> searchStaffByStatus(Integer status);
-    Staff createStaff(Staff staff);
+    Staff createStaff(StaffDTO staffDTO, MultipartFile multipartFile);
     Staff findStaffById(Integer id);
-    Staff updateStaff(Staff staff, Integer id);
+    Staff updateStaff(StaffDTO staffDTO, Integer id, MultipartFile file);
     Staff setStatusStaff(Integer id);
 }

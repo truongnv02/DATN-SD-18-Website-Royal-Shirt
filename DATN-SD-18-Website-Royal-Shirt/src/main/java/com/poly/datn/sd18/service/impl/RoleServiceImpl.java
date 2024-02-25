@@ -6,6 +6,7 @@ import com.poly.datn.sd18.repository.RoleRepository;
 import com.poly.datn.sd18.service.RoleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -20,6 +21,7 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
+    @Transactional
     public Role createRole(RoleDTO roleDTO) {
         Role role = Role.builder()
                 .name(roleDTO.getName())
@@ -27,6 +29,7 @@ public class RoleServiceImpl implements RoleService {
         return roleRepository.save(role);
     }
 
+    @Transactional
     @Override
     public Role updateRole(RoleDTO roleDTO, Integer id) {
         Role role = roleRepository.findById(id).orElse(null);
@@ -41,4 +44,5 @@ public class RoleServiceImpl implements RoleService {
     public Role findByIdRole(Integer id) {
         return roleRepository.findById(id).orElse(null);
     }
+
 }

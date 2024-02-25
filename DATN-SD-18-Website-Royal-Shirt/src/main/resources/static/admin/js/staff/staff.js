@@ -34,41 +34,6 @@ $(document).ready(function () {
     });
 })
 
-function saveStaff() {
-    // Lấy dữ liệu từ các trường nhập liệu
-    var name = document.getElementById('name').value;
-    var email = document.getElementById('email').value;
-    var phone = document.getElementById('phone').value;
-    var address = document.getElementById('address').value;
-    var password = document.getElementById('password').value;
-    var role = document.getElementById('role').value;
-    var image = document.getElementById('uploadfile').files[0]; // lấy tệp ảnh được chọn
-
-    // Tạo FormData object để gửi dữ liệu và tệp ảnh lên server
-    var formData = new FormData();
-    formData.append('name', name);
-    formData.append('email', email);
-    formData.append('phone', phone);
-    formData.append('address', address);
-    formData.append('password', password);
-    formData.append('role', role);
-    formData.append('image', image);
-
-    // Gửi yêu cầu AJAX
-    $.ajax({
-        url: '/admin/staffs/create',
-        type: 'POST',
-        data: formData,
-        processData: false,
-        contentType: false,
-        success: function(data) {
-          alert('File uploaded successfully!');
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
-          alert('An error occurred while uploading the file: ' + errorThrown);
-        }
-      });
-}
 
 function setStatusStaff(button) {
     var staffId = button.getAttribute("data-id");
@@ -109,16 +74,44 @@ function setStatusStaff(button) {
     });
 }
 
+function updateStaff(staffId) {
+    // Lấy modal
+    var modal = document.getElementById('showModalStaff');
 
+    // Lấy thông tin của nhân viên từ server và điền vào modal
+    var apiUrl = '/admin/staffs/findId/' + staffId;
 
+    fetch(apiUrl)
+        .then(function(response) {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(function(data) {
+            // Điền thông tin của nhân viên vào modal
+            document.getElementById('name').value = data.name;
+            document.getElementById('email').value = data.email;
+            document.getElementById('phone').value = data.phone;
+            document.getElementById('address').value = data.address;
+            document.getElementById('role').value = data.roleId;
 
+            // Hiển thị ảnh của nhân viên nếu có
+            var avatarImg = document.getElementById('avatar');
+            if (data.avatar) {
+                avatarImg.src = 'data:image/jpeg;base64,' + data.avatar;
+                avatarImg.style.display = 'block';
+            } else {
+                avatarImg.style.display = 'none';
+            }
 
-
-
-
-
-
-
+            // Hiển thị modal sau khi điền thông tin
+            modal.style.display = 'block';
+        })
+        .catch(function(error) {
+            console.error('Error updating staff:', error);
+        });
+}
 
 
 
