@@ -130,14 +130,10 @@
                             <td class="dai_ao" th:text="${size.shirtLength}"></td>
                             <td class="ngang_ao" th:text="${size.shirtWidth}"></td>
                             <td class="trang_thai">
-                                <div class="custom-control custom-switch">
-                                    <input type="checkbox" class="custom-control-input"
-                                           th:checked="${size.status == 0}"
-                                           th:attr="data-size-id=${size.id},id=#{${size.id}}"
-                                           onclick="toggleStatus(this)" id="toggleSwitch${size.id}">
-                                    <label class="custom-control-label"
-                                           th:attr="for=#{${size.id}}"></label>
-                                </div>
+                                <label class="switch">
+                                    <input type="checkbox" onclick="toggleStatus(this)" th:attr="data-size-id=${size.id},id=#{${size.id}}" th:checked="${size.status == 0}">
+                                    <span class="slider"></span>
+                                </label>
                             </td>
                             <td class="table-td-center tinh_nang">
                                 <button class="btn btn-primary btn-sm edit" type="button"

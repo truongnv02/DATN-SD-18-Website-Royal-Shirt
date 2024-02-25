@@ -114,14 +114,10 @@
                             <td class="stt" th:text="${index.index + 1}"></td>
                             <td class="ten_danh_muc" th:text="${material.name}"></td>
                             <td class="trang_thai">
-                                <div class="custom-control custom-switch">
-                                    <input type="checkbox" class="custom-control-input"
-                                           th:checked="${material.status == 0}"
-                                           th:attr="data-material-id=${material.id},id=#{${material.id}}"
-                                           onclick="toggleStatus(this)" id="toggleSwitch${material.id}">
-                                    <label class="custom-control-label"
-                                           th:attr="for=#{${material.id}}"></label>
-                                </div>
+                                <label class="switch">
+                                    <input type="checkbox" onclick="toggleStatus(this)" th:attr="data-material-id=${material.id},id=#{${material.id}}" th:checked="${material.status == 0}">
+                                    <span class="slider"></span>
+                                </label>
                             </td>
                             <td class="table-td-center tinh_nang">
                                 <button class="btn btn-primary btn-sm edit" type="button"

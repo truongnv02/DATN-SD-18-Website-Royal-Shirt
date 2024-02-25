@@ -1,6 +1,5 @@
 package com.poly.datn.sd18.repository;
 
-import com.poly.datn.sd18.dto.ProductRequest;
 import com.poly.datn.sd18.dto.ProductResponse;
 import com.poly.datn.sd18.entity.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -27,6 +26,7 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
             "    images i ON p.id = i.product_id\n" +
             "        AND i.id = (SELECT MIN(id) FROM images WHERE product_id = p.id)\n" +
             "GROUP BY\n" +
-            "    p.id, p.name, p.description, p.status, i.url_image;", nativeQuery = true)
+            "    p.id, p.name, p.description, p.status, i.url_image\n" +
+            "ORDER BY p.id", nativeQuery = true)
     List<ProductResponse> getAll();
 }

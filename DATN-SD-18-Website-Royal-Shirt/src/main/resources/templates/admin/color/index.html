@@ -114,14 +114,10 @@
                             <td class="stt" th:text="${index.index + 1}"></td>
                             <td class="ten_mau_sac" th:text="${color.name}"></td>
                             <td class="trang_thai">
-                                <div class="custom-control custom-switch">
-                                    <input type="checkbox" class="custom-control-input"
-                                           th:checked="${color.status == 0}"
-                                           th:attr="data-color-id=${color.id},id=#{${color.id}}"
-                                           onclick="toggleStatus(this)" id="toggleSwitch${color.id}">
-                                    <label class="custom-control-label"
-                                           th:attr="for=#{${color.id}}"></label>
-                                </div>
+                                <label class="switch">
+                                    <input type="checkbox" onclick="toggleStatus(this)" th:attr="data-color-id=${color.id},id=#{${color.id}}" th:checked="${color.status == 0}">
+                                    <span class="slider"></span>
+                                </label>
                             </td>
                             <td class="table-td-center tinh_nang">
                                 <button class="btn btn-primary btn-sm edit" type="button"

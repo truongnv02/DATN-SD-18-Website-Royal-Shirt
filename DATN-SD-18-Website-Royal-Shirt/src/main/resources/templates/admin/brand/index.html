@@ -85,7 +85,9 @@
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-primary" onclick="saveBrand()">Lưu</button>
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal" id="closeFormBrand">Đóng</button>
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                                            id="closeFormBrand">Đóng
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -114,14 +116,12 @@
                             <td class="stt" th:text="${index.index + 1}"></td>
                             <td class="ten_thuong_hieu" th:text="${brand.name}"></td>
                             <td class="trang_thai">
-                                <div class="custom-control custom-switch">
-                                    <input type="checkbox" class="custom-control-input"
-                                           th:checked="${brand.status == 0}"
+                                <label class="switch">
+                                    <input type="checkbox" onclick="toggleStatus(this)"
                                            th:attr="data-brand-id=${brand.id},id=#{${brand.id}}"
-                                           onclick="toggleStatus(this)" id="toggleSwitch${brand.id}">
-                                    <label class="custom-control-label"
-                                           th:attr="for=#{${brand.id}}"></label>
-                                </div>
+                                           th:checked="${brand.status == 0}">
+                                    <span class="slider"></span>
+                                </label>
                             </td>
                             <td class="table-td-center tinh_nang">
                                 <button class="btn btn-primary btn-sm edit" type="button"
