@@ -1,6 +1,8 @@
 //Show form
 $(document).ready(function () {
     $('#showFormSize').click(function () {
+        //Chỉnh sửa tên modal
+        $('.modal-title').text("Thêm Kích Thước");
         $('#SizeModal').modal('show');
     });
     $('#closeFormSize').click(function () {
@@ -149,6 +151,9 @@ function checkDuplicateSize(sizeName) {
 
 // Hàm để cập nhật biểu mẫu với dữ liệu kích thước
 function updateSizeForm(element) {
+    //Chỉnh sửa tên modal
+    $('.modal-title').text("Chỉnh sửa Kích Thước");
+
     var sizeId = element.getAttribute("data-size-id");
     // Thêm thuộc tính để kiểm tra xem add hay update
     $('#sizeForm').attr('size-id-update', sizeId);

@@ -1,6 +1,7 @@
 //Show form
 $(document).ready(function () {
     $('#showFormBrand').click(function () {
+        $('.modal-title').text("Thêm Thương Hiệu");
         $('#BrandModal').modal('show');
     });
     $('#closeFormBrand').click(function () {
@@ -127,6 +128,9 @@ function checkDuplicateBrand(brandName) {
 
 // Hàm để cập nhật biểu mẫu với dữ liệu thương hiệu
 function updateBrandForm(element) {
+    //Chỉnh sửa tên modal
+    $('.modal-title').text("Chỉnh sửa Thương Hiệu");
+
     var brandId = element.getAttribute("data-brand-id");
     // Thêm thuộc tính để kiểm tra xem add hay update
     $('#brandForm').attr('brand-id-update', brandId);

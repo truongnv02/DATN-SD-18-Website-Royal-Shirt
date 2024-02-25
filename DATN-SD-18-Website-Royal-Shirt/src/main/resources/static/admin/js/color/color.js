@@ -1,6 +1,8 @@
 //Show form
 $(document).ready(function () {
     $('#showFormColor').click(function () {
+        //Chỉnh sửa tên modal
+        $('.modal-title').text("Thêm Màu Sắc");
         $('#ColorModal').modal('show');
     });
     $('#closeFormColor').click(function () {
@@ -127,6 +129,9 @@ function checkDuplicateColor(colorName) {
 
 // Hàm để cập nhật biểu mẫu với dữ liệu màu sắc
 function updateColorForm(element) {
+    //Chỉnh sửa tên modal
+    $('.modal-title').text("Chỉnh sửa Màu Sắc");
+
     var colorId = element.getAttribute("data-color-id");
     // Thêm thuộc tính để kiểm tra xem add hay update
     $('#colorForm').attr('color-id-update', colorId);

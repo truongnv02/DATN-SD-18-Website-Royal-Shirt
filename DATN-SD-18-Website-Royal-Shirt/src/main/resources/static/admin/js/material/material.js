@@ -1,6 +1,8 @@
 //Show form
 $(document).ready(function () {
     $('#showFormMaterial').click(function () {
+        //Chỉnh sửa tên modal
+        $('.modal-title').text("Thêm Chất Liệu");
         $('#MaterialModal').modal('show');
     });
     $('#closeFormMaterial').click(function () {
@@ -127,6 +129,9 @@ function checkDuplicateMaterial(materialName) {
 
 // Hàm để cập nhật biểu mẫu với dữ liệu chất liệu
 function updateMaterialForm(element) {
+    //Chỉnh sửa tên modal
+    $('.modal-title').text("Chỉnh sửa Chất Liệu");
+
     var materialId = element.getAttribute("data-material-id");
     // Thêm thuộc tính để kiểm tra xem add hay update
     $('#materialForm').attr('material-id-update', materialId);

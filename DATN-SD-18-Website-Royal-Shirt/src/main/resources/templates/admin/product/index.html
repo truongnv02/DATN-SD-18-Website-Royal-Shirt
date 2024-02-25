@@ -27,7 +27,8 @@
                     <div class="row element-button">
                         <div class="col-sm-2">
 
-                            <a class="btn btn-add btn-sm" th:href="@{/admin/product/add}" id="showFormAdd" title="Thêm"><i class="fas fa-plus"></i>
+                            <a class="btn btn-add btn-sm" th:href="@{/admin/product/add}" id="showFormAdd" title="Thêm"><i
+                                    class="fas fa-plus"></i>
                                 Tạo mới</a>
                         </div>
                         <div class="col-sm-2">
@@ -62,7 +63,85 @@
                         </div>
                     </div>
 
-                    <!-- Modal -->
+                    <!-- Modal Sản Phẩm -->
+                    <div class="modal fade" id="ProductModal" tabindex="-1" role="dialog"
+                         aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Chỉnh sửa thông tin Sản Phẩm</h5>
+                                </div>
+                                <div class="row modal-body ">
+                                    <!--Tên sản phẩm-->
+                                    <div class="form-group col-md-6">
+                                        <label class="control-label">Tên sản phẩm</label>
+                                        <input class="form-control" type="text" id="product-name">
+                                    </div>
+
+                                    <!--Danh mục-->
+                                    <div class="form-group col-md-6">
+                                        <label class="control-label">Danh mục</label>
+                                        <select class="form-control" id="product-category">
+                                            <option th:each="category : ${listCategory}" th:value="${category.id}"
+                                                    th:text="${category.name}"></option>
+                                        </select>
+                                    </div>
+
+                                    <!--Thương hiệu-->
+                                    <div class="form-group col-md-6">
+                                        <label class="control-label">Thương hiệu</label>
+                                        <select class="form-control" id="product-brand">
+                                            <option th:each="brand : ${listBrand}" th:value="${brand.id}"
+                                                    th:text="${brand.name}"></option>
+                                        </select>
+                                    </div>
+
+                                    <!--Chất liệu-->
+                                    <div class="form-group col-md-6">
+                                        <label class="control-label">Chất liệu</label>
+                                        <select class="form-control" id="product-material">
+                                            <option th:each="material : ${listMaterial}" th:value="${material.id}"
+                                                    th:text="${material.name}"></option>
+                                        </select>
+                                    </div>
+
+                                    <!--ảnh-->
+                                    <div class="form-group col-md-12">
+                                        <label class="control-label">Ảnh sản phẩm</label>
+                                        <div id="myfileupload">
+                                            <input type="file" id="uploadfile" name="ImageUpload" multiple
+                                                   onchange="readURL(this)"/>
+                                        </div>
+                                        <div id="thumbbox" class="d-flex">
+
+                                        </div>
+                                        <div id="boxchoice">
+                                            <a href="javascript:" class="Choicefile"><i class="fas fa-cloud-upload-alt"></i> Chọn
+                                                ảnh</a>
+                                            <p style="clear:both"></p>
+                                        </div>
+                                    </div>
+
+                                    <!--Mô tả-->
+                                    <div class="form-group col-md-12">
+                                        <label class="control-label">Mô tả sản phẩm</label>
+                                        <textarea class="form-control ckeditor"
+                                                  id="product-description"></textarea>
+                                    </div>
+                                </div>
+                                <div class="form-group modal-footer">
+                                    <button type="button" class="btn btn-primary">Danh sách biến thể</button>
+                                    <button type="button" class="btn btn-success" onclick="save()">Lưu
+                                    </button>
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                                            id="closeFormProduct">Đóng
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Table -->
                     <table class="table table-hover table-bordered js-copytextarea" cellpadding="0" cellspacing="0"
                            border="0"
                            id="sampleTable">
@@ -93,7 +172,9 @@
                             <th class="so_luong_ton" th:text="${product.quantity}"></th>
                             <td class="trang_thai">
                                 <label class="switch">
-                                    <input type="checkbox" onclick="toggleStatus(this)" th:attr="data-product-id=${product.id},id=#{${product.id}}" th:checked="${product.status == 0}">
+                                    <input type="checkbox" onclick="toggleStatus(this)"
+                                           th:attr="data-product-id=${product.id},id=#{${product.id}}"
+                                           th:checked="${product.status == 0}">
                                     <span class="slider"></span>
                                 </label>
                             </td>

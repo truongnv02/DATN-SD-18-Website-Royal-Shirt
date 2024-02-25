@@ -1,6 +1,7 @@
 //Show form
 $(document).ready(function () {
     $('#showFormCategory').click(function () {
+        $('.modal-title').text("Thêm Danh Mục");
         $('#CategoryModal').modal('show');
     });
     $('#closeFormCategory').click(function () {
@@ -127,6 +128,9 @@ function checkDuplicateCategory(categoryName) {
 
 // Hàm để cập nhật biểu mẫu với dữ liệu danh mục
 function updateCategoryForm(element) {
+    //Chỉnh sửa tên modal
+    $('.modal-title').text("Chỉnh sửa Danh Mục");
+
     var categoryId = element.getAttribute("data-category-id");
     // Thêm thuộc tính để kiểm tra xem add hay update
     $('#categoryForm').attr('category-id-update', categoryId);

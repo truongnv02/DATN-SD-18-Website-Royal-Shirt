@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class ImageServiceImpl implements ImageService {
@@ -15,8 +17,20 @@ public class ImageServiceImpl implements ImageService {
     ImageRepository imageRepository;
 
     @Override
+    public List<Image> getALlByProductId(Integer id) {
+        return imageRepository.getALlByProductId(id);
+    }
+
+    @Override
     public Image add(ImageRequest imageRequest) {
         Image image = imageRequest.map(new Image());
         return imageRepository.save(image);
     }
+
+    @Override
+    public String deleteAllByProductId(Integer productId) {
+        imageRepository.deleteAllByProductId(productId);
+        return "Xóa thành công ảnh với ProductId: " + productId;
+    }
+
 }

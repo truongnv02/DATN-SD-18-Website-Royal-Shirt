@@ -409,6 +409,7 @@ function saveImage(productId) {
             url: "/admin/rest/image/add",
             contentType: "application/json",
             data: JSON.stringify(dataToSend),
+            async: false,
             success: function (response) {
                 console.log("Lưu Ảnh thành công!");
             },
