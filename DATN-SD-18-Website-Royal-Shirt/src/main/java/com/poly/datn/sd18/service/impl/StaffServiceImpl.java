@@ -2,26 +2,16 @@ package com.poly.datn.sd18.service.impl;
 
 import com.poly.datn.sd18.entity.Staff;
 import com.poly.datn.sd18.model.dto.StaffDTO;
-import com.poly.datn.sd18.repository.RoleRepository;
 import com.poly.datn.sd18.repository.StaffRepository;
 import com.poly.datn.sd18.service.StaffService;
 import com.poly.datn.sd18.util.ImageUpload;
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.Base64;
 import java.util.List;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -52,6 +42,10 @@ public class StaffServiceImpl implements StaffService {
     @Override
     public Staff createStaff(StaffDTO staffDTO, MultipartFile file) {
         try {
+            Staff existingEmail = staffRepository.findStaffByEmail(staffDTO.getEmail());
+            if (existingEmail != null) {
+                throw new RuntimeException("Email đã tồn tại");
+            }
             Staff staff = Staff.builder()
                     .name(staffDTO.getName())
                     .email(staffDTO.getEmail())
@@ -84,6 +78,10 @@ public class StaffServiceImpl implements StaffService {
     public Staff updateStaff(StaffDTO staffDTO, Integer id, MultipartFile file) {
         try{
             Staff staff = findStaffById(id);
+            Staff existingEmail = staffRepository.findStaffByEmail(staffDTO.getEmail());
+            if (existingEmail != null) {
+                throw new RuntimeException("Email đã tồn tại");
+            }
             if (staff != null) {
                 staff.setName(staffDTO.getName());
                 staff.setEmail(staffDTO.getEmail());
