@@ -83,7 +83,6 @@
         <source>16</source>
         <target>16</target>
         <compilerArgs>--enable-preview
-            <arg>21</arg>
         </compilerArgs>
     </configuration>
 </plugin>
