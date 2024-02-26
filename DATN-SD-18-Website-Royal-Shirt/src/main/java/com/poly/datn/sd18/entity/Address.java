@@ -5,6 +5,8 @@ import lombok.*;
 
 import java.io.Serializable;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -29,11 +31,14 @@ public class Address extends BaseEntity implements Serializable {
 
     @Column(name = "full_address")
     private String fullAddress;
+    @Column(name = "phone")
+    private String phone;
 
     @Column(name = "status")
     private Integer status;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "customer_id", referencedColumnName = "id")
     private Customer customer;
 }
