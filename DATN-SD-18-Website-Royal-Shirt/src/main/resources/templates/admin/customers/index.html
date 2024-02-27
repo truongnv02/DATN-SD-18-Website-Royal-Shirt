@@ -60,6 +60,11 @@
                                     title="Thêm"><i class="fas fa-plus"></i>
                                     Tạo mới khách hàng</a>
                             </div>
+                            <div class="col-sm-5 d-flex align-items-center ">
+                                <input type="radio" name="status" value="all" checked> Tất cả &nbsp;
+                                <input type="radio" name="status" value="active"> Hoạt động &nbsp;
+                                <input type="radio" name="status" value="inactive"> Không hoạt động &nbsp;
+                            </div>
                             <!-- Modal -->
                             <div class="modal fade" id="modalId" tabindex="-1" role="dialog"
                                 aria-labelledby="modalTitleId" aria-hidden="true">
@@ -257,8 +262,8 @@
                                             th:object="${newCustomer}" method="post" enctype="multipart/form-data">
                                             <div class="form-group">
                                                 <label for="name">Mã khách hàng:</label>
-                                                <input type="text" class="form-control" id="customerId" th:field="*{id}"
-                                                    required>
+                                                <input readonly type="text" class="form-control" id="customerId"
+                                                    th:field="*{id}" required>
                                             </div>
                                             <div class="form-group">
                                                 <label for="name">Họ và tên:</label>
@@ -274,12 +279,29 @@
                                             <div class="form-group">
                                                 <label for="avatar">Ảnh đại diện:</label>
                                                 <input type="file" class="form-control-file" name="newAvatarFile"
-                                                    accept="image/*">
+                                                    accept="image/*" onchange="previewAvatar(event)">
                                             </div>
-                                            <center><img id="avatarImage" style="object-fit: cover;" alt="Avatar"
+                                            <center>
+                                                <img id="avatarImage" style="object-fit: cover;" alt="Avatar"
                                                     width="250" height="250">
                                                 <div><span id="customerAvatar"></span></div>
                                             </center>
+
+                                            <script>
+                                                function previewAvatar(event) {
+                                                    var input = event.target;
+                                                    var reader = new FileReader();
+
+                                                    reader.onload = function () {
+                                                        var dataURL = reader.result;
+                                                        var avatarImage = document.getElementById('avatarImage');
+                                                        avatarImage.src = dataURL;
+                                                    };
+
+                                                    reader.readAsDataURL(input.files[0]);
+                                                }
+                                            </script>
+
 
                                             <input type="text" class="form-control-file" id="customerAvatar"
                                                 hidden="true" name="avatar" accept="image/*">
@@ -422,7 +444,7 @@
                                             th:object="${newCustomerAdrr}" method="post">
                                             <div class="form-group">
                                                 <label for="name">Mã khách hàng:</label>
-                                                <input type="text" id="customerAdrrId" class="form-control"
+                                                <input readonly type="text" id="customerAdrrId" class="form-control"
                                                     th:field="*{customer.id}" required>
                                             </div>
                                             <div class="form-group">
@@ -481,40 +503,115 @@
                                 });
                             });
                         </script>
+
+
+
+
                         <table class="table table-hover table-bordered js-copytextarea" cellpadding="0" cellspacing="0"
                             border="0" id="sampleTable">
                             <thead>
                                 <tr>
-                                    <th width="10"><input type="checkbox" id="all"></th>
-                                    <th>Số thứ tự</th>
-                                    <th width="150">Họ và tên</th>
-                                    <th width="100">Số điện thoại</th>
-                                    <th>Ảnh đại diện</th>
-                                    <th>Trạng thái</th>
+                                    <!-- <th width="10"><input type="checkbox" id="all"></th> -->
+                                    <th>STT</th>
+                                    <th width="150">Ảnh đại diện</th>
+                                    <th width="100">Họ tên</th>
+                                    <th>Số điện thoại</th>
+                                    <th>Email</th>
                                     <!-- <th>Ngày tạo</th>
                                     <th>Ngày cập nhật</th> -->
-                                    <th>Email</th>
+                                    <th>Trạng thái</th>
                                     <th>Tính năng</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="allCustomers">
                                 <!-- Duyệt danh sách khách hàng và hiển thị từng dòng -->
                                 <tr th:each="cus, stat : ${listCus}">
-                                    <td width="10"><input type="checkbox" name="check1" th:value="${stat.index + 1}"
-                                            th:id="'check' + ${stat.index + 1}"></td>
+                                    <!-- <td width="10"><input type="checkbox" name="check1" th:value="${stat.index + 1}"
+                                            th:id="'check' + ${stat.index + 1}"></td> -->
 
-                                    <td th:text="${stat.index + 1}"></td>
-                                    <td th:text="${cus.name}"></td>
-                                    <td th:text="${cus.phone}"></td>
+                                    <td width="10" th:text="${stat.index + 1}"></td>
                                     <td>
                                         <img style="object-fit: cover;" th:src="@{'/img/' + ${cus.avatar}}" alt="Avatar"
                                             width="100" height="100">
                                     </td>
-
+                                    <td th:text="${cus.name}"></td>
+                                    <td th:text="${cus.phone}"></td>
+                                    <td th:text="${cus.email}"></td>
                                     <td th:text="${cus.status == 1 ? 'Kích hoạt' : 'Không kích hoạt'}"></td>
                                     <!-- <td th:text="${#dates.format(cus.createDate, 'dd-MM-yyyy')}"></td>
                                     <td th:text="${#dates.format(cus.updateDate, 'dd-MM-yyyy')}"></td> -->
+
+                                    <td class="table-td-center">
+                                        <button class="btn btn-primary btn-sm trash deleteCustomer"
+                                            th:attr="data-id=${cus.id}" title=" Xóa">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                        <a class="btn btn-primary btn-sm edit viewCustomerBtn" data-toggle="modal"
+                                            data-target="#cus"
+                                            th:attr="data-id=${cus.id},data-name=${cus.name},data-phone=${cus.phone},data-avatar=${cus.avatar},
+                                            data-status=${cus.status},data-createdate=${cus.createDate},data-updatedate=${cus.updateDate},data-password=${cus.password},data-email=${cus.email}"
+                                            title="Sửa" id="show-emp"><i class="fas fa-edit"></i></a>
+                                        <a class="btn btn-primary btn-sm addAddr"
+                                            th:href="@{/admin/customers/address/{customerId}(customerId=${cus.id})}">
+                                            <i class="fa-solid fa-location-dot" style="color: #141415;"></i>
+                                        </a>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tbody id="activeCustomers">
+                                <!-- Duyệt danh sách khách hàng và hiển thị từng dòng -->
+                                <tr th:each="cus, stat : ${listCusStatus1}" th:if="${cus.status == 1}">
+                                    <!-- <td width="10"><input type="checkbox" name="check1" th:value="${stat.index + 1}"
+                                            th:id="'check' + ${stat.index + 1}"></td> -->
+
+                                    <td width="10" th:text="${stat.index + 1}"></td>
+                                    <td>
+                                        <img style="object-fit: cover;" th:src="@{'/img/' + ${cus.avatar}}" alt="Avatar"
+                                            width="100" height="100">
+                                    </td>
+                                    <td th:text="${cus.name}"></td>
+                                    <td th:text="${cus.phone}"></td>
                                     <td th:text="${cus.email}"></td>
+                                    <td th:text="${cus.status == 1 ? 'Kích hoạt' : 'Không kích hoạt'}"></td>
+                                    <!-- <td th:text="${#dates.format(cus.createDate, 'dd-MM-yyyy')}"></td>
+                                    <td th:text="${#dates.format(cus.updateDate, 'dd-MM-yyyy')}"></td> -->
+
+                                    <td class="table-td-center">
+                                        <button class="btn btn-primary btn-sm trash deleteCustomer"
+                                            th:attr="data-id=${cus.id}" title=" Xóa">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                        <a class="btn btn-primary btn-sm edit viewCustomerBtn" data-toggle="modal"
+                                            data-target="#cus"
+                                            th:attr="data-id=${cus.id},data-name=${cus.name},data-phone=${cus.phone},data-avatar=${cus.avatar},
+                                            data-status=${cus.status},data-createdate=${cus.createDate},data-updatedate=${cus.updateDate},data-password=${cus.password},data-email=${cus.email}"
+                                            title="Sửa" id="show-emp"><i class="fas fa-edit"></i></a>
+                                        <a class="btn btn-primary btn-sm addAddr"
+                                            th:href="@{/admin/customers/address/{customerId}(customerId=${cus.id})}">
+                                            <i class="fa-solid fa-location-dot" style="color: #141415;"></i>
+                                        </a>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tbody id="inactiveCustomers">
+                                <!-- Duyệt danh sách khách hàng và hiển thị từng dòng -->
+                                <tr th:each="cus, stat : ${listCusStatus2}" th:if="${cus.status == 2}">
+                                    <!-- <td width="10"><input type="checkbox" name="check1" th:value="${stat.index + 1}"
+                                            th:id="'check' + ${stat.index + 1}"></td> -->
+
+                                    <td width="10" th:text="${stat.index + 1}"></td>
+                                    <td>
+                                        <img style="object-fit: cover;" th:src="@{'/img/' + ${cus.avatar}}" alt="Avatar"
+                                            width="100" height="100">
+                                    </td>
+                                    <td th:text="${cus.name}"></td>
+                                    <td th:text="${cus.phone}"></td>
+                                    <td th:text="${cus.email}"></td>
+                                    <td th:text="${cus.status == 1 ? 'Kích hoạt' : 'Không kích hoạt'}"></td>
+                                    <!-- <td th:text="${#dates.format(cus.createDate, 'dd-MM-yyyy')}"></td>
+                                    <td th:text="${#dates.format(cus.updateDate, 'dd-MM-yyyy')}"></td> -->
                                     <td class="table-td-center">
                                         <button class="btn btn-primary btn-sm trash deleteCustomer"
                                             th:attr="data-id=${cus.id}" title=" Xóa">
@@ -535,6 +632,32 @@
                             </tbody>
                         </table>
 
+
+                        <script>
+                            document.getElementById('allCustomers').style.display = '';
+                            document.getElementById('activeCustomers').style.display = 'none';
+                            document.getElementById('inactiveCustomers').style.display = 'none';
+                            document.querySelectorAll('input[name="status"]').forEach(function (radio) {
+                                radio.addEventListener('change', function () {
+                                    var status = this.value;
+                                    if (status === 'all') {
+                                        document.getElementById('allCustomers').style.display = '';
+                                        document.getElementById('activeCustomers').style.display = 'none';
+                                        document.getElementById('inactiveCustomers').style.display = 'none';
+                                    } else if (status === 'active') {
+                                        document.getElementById('allCustomers').style.display = 'none';
+                                        document.getElementById('activeCustomers').style.display = '';
+                                        document.getElementById('inactiveCustomers').style.display = 'none';
+                                    } else if (status === 'inactive') {
+                                        document.getElementById('allCustomers').style.display = 'none';
+                                        document.getElementById('activeCustomers').style.display = 'none';
+                                        document.getElementById('inactiveCustomers').style.display = '';
+                                    }
+                                });
+                            });
+
+
+                        </script>
                         <!-- Script to show modal and populate customer details -->
                         <script th:inline="javascript">
                             $(document).ready(function () {
@@ -645,7 +768,7 @@
                     <div class="row">
                         <div class="form-group col-md-6">
                             <label class="control-label">Mã khách hàng</label>
-                            <input class="form-control" type="text" required value="#CD2187" disabled>
+                            <input readonly class="form-control" type="text" required value="#CD2187" disabled>
                         </div>
                         <div class="form-group col-md-6">
                             <label class="control-label">Họ và tên</label>

@@ -34,11 +34,11 @@ public class Customer implements Serializable {
     private String password;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "created_date")
+    @Column(name = "createdDate")
     private Date createDate;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "updated_date")
+    @Column(name = "updatedDate")
     private Date updateDate;
 
     @Column(name = "status")

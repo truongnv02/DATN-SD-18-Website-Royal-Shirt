@@ -23,6 +23,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InvalidObjectException;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -50,7 +51,22 @@ public class CustomersController {
         List<Customer> listCus = customerRepository.findAll();
         // Đảo ngược danh sách
         Collections.reverse(listCus);
+        // Khởi tạo hai danh sách riêng biệt
+        List<Customer> listCusStatus1 = new ArrayList<>();
+        List<Customer> listCusStatus2 = new ArrayList<>();
+
+        // Duyệt qua danh sách người dùng và phân loại vào hai danh sách tương ứng
+        for (Customer cus : listCus) {
+            if (cus.getStatus() == 1) {
+                listCusStatus1.add(cus);
+            } else if (cus.getStatus() == 2) {
+                listCusStatus2.add(cus);
+            }
+        }
+
         model.addAttribute("listCus", listCus);
+        model.addAttribute("listCusStatus1", listCusStatus1);
+        model.addAttribute("listCusStatus2", listCusStatus2);
         for (Customer cus : listCus) {
             List<Address> addresses = cus.getListAddresses();
             if (addresses != null) {
@@ -147,10 +163,39 @@ public class CustomersController {
     public String address(@PathVariable int id, Model model) {
         // Tạo một đối tượng Customer mới
         Customer customer = customerRepository.findById(id).orElse(null);
+
+        // Lấy danh sách địa chỉ từ đối tượng customer
+        List<Address> addresses = customer.getListAddresses();
+
+        // Tạo danh sách mới để lưu trữ các phần tử được sắp xếp
+        List<Address> sortedAddresses = new ArrayList<>();
+
+        // Duyệt qua danh sách địa chỉ và thêm các phần tử có status = 1 vào đầu danh
+        // sách mới
+        for (Address address : addresses) {
+            if (address.getStatus() == 1) {
+                sortedAddresses.add(address);
+            }
+        }
+
+        // Tiếp tục duyệt qua danh sách địa chỉ và thêm các phần tử còn lại vào cuối
+        // danh sách mới
+        for (Address address : addresses) {
+            if (address.getStatus() != 1) {
+                sortedAddresses.add(address);
+            }
+        }
+
+        // Gán danh sách mới cho thuộc tính getListAddresses của đối tượng customer
+        customer.setListAddresses(sortedAddresses);
+
         model.addAttribute("customer", customer);
         // Tạo một đối tượng địa chỉ mới
         Address newCustomerAdrr = new Address();
         model.addAttribute("newCustomerAdrr", newCustomerAdrr);
+
+        Address editCustomerAdrr = new Address();
+        model.addAttribute("editCustomerAdrr", newCustomerAdrr);
         return "admin/customers/address";
     }
 
@@ -161,10 +206,54 @@ public class CustomersController {
         Customer obj = customerRepository.findById(address.getCustomer().getId()).orElse(null);
         // Nếu khách hàng tồn tại, xóa khách hàng và lưu thay đổi vào repository
         address.setCustomer(obj);
-        address.setStatus(1);
+        address.setStatus(2);
         addressRepository.saveAndFlush(address);
         // Chuyển hướng về trang danh sách khách hàng hoặc trang chính
         return "redirect:/admin/customers/address/" + address.getCustomer().getId();
+    }
+
+    @PostMapping("/editAddress")
+    public String editAddress(@ModelAttribute("editCustomerAdrr") Address address) {
+        // Tìm khách hàng cần edit trong repository
+        Customer obj = customerRepository.findById(address.getCustomer().getId()).orElse(null);
+        Address newObj = addressRepository.findById(address.getId()).orElse(address);
+        // cập nhật thay đổi vào repository
+        address.setCustomer(obj);
+        address.setStatus(newObj.getStatus());
+        address.setCreatedAt(newObj.getCreatedAt());
+        address.setUpdatedAt(newObj.getCreatedAt());
+        addressRepository.saveAndFlush(address);
+        // Chuyển hướng về trang danh sách khách hàng hoặc trang chính
+        return "redirect:/admin/customers/address/" + address.getCustomer().getId();
+    }
+
+    @GetMapping("/removeAddress/{customerId}/{addressId}")
+    public String removeAddress(@PathVariable int customerId, @PathVariable int addressId) {
+        System.out.println("id ne:" + addressId);
+        addressRepository.deleteById(addressId);
+        return "redirect:/admin/customers/address/" + customerId;
+    }
+
+    @GetMapping("/changeAddress/{customerId}/{id}")
+    public String changeAddress(@PathVariable int customerId, @PathVariable int id) {
+        Customer obj = customerRepository.findById(customerId).orElse(null);
+        if (obj != null) {
+            List<Address> addresses = obj.getListAddresses();
+            if (addresses != null && !addresses.isEmpty()) {
+                for (Address address : addresses) {
+                    if (address.getId() == id) {
+                        // Tìm thấy địa chỉ cần thay đổi, cập nhật trạng thái và lưu vào cơ sở dữ liệu
+                        address.setStatus(1);
+                        addressRepository.saveAndFlush(address);
+                    } else {
+                        address.setStatus(2);
+                        addressRepository.saveAndFlush(address);
+                    }
+                }
+            }
+            return "redirect:/admin/customers/address/" + customerId;
+        }
+        return "redirect:/admin/customers"; // Xử lý trường hợp obj == null
     }
 
 }
