@@ -157,8 +157,6 @@ function updateProductForm(element) {
             $('#product-brand').val(product.brand.id);
             $('#product-material').val(product.material.id);
             CKEDITOR.instances['product-description'].setData(product.description);
-
-
         },
         error: function (error) {
             console.log('Error fetching product data:', error);
@@ -272,4 +270,9 @@ function saveImage(productId){
             return false;
         }
     });
+}
+
+function getListProductDetail(){
+    var productId = $('#ProductModal').attr("product-id-update");
+    window.location.href = "/admin/product-detail/" + productId;
 }
