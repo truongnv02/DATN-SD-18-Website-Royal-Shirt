@@ -6,6 +6,7 @@ import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
@@ -24,7 +25,7 @@ public class BaseEntity {
     @PrePersist
     protected void onCreate() {
         createdAt = LocalDateTime.now();
-//        updatedAt = LocalDateTime.now();
+        updatedAt = LocalDateTime.now();
     }
 
     @PreUpdate

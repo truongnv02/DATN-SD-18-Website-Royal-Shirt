@@ -29,5 +29,5 @@ public class Image extends BaseEntity implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "product_id", referencedColumnName = "id")
-    private Color color;
+    private Product product;
 }
