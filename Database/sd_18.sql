@@ -148,6 +148,7 @@ create table [customers] (
 	[avatar] nvarchar(max),
 	[password] nvarchar(max),
 	[status] int,
+	[email] nvarchar(max),
 	[created_date] datetime,
 	[updated_date] datetime,
 );
@@ -161,6 +162,7 @@ create table [addresses] (
 	[city] nvarchar(max),
 	[full_address] nvarchar(max),
 	[status] int,
+	[phone] nvarchar(10),
 	[created_date] datetime,
 	[updated_date] datetime,
 	foreign key (customer_id) references [customers](id),
