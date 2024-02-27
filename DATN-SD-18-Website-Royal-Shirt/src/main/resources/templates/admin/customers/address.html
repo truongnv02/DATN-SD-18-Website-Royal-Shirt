@@ -71,24 +71,21 @@
                                 cellspacing="0" border="0" id="sampleTable">
                                 <thead>
                                     <tr>
-                                        <th width="10"><input type="checkbox" id="all"></th>
                                         <th>STT</th>
                                         <th>Số điện thoại</th>
-                                        <th width="100">Xã/Phường</th>
-                                        <th width="100">Quận/Huyện</th>
+                                        <th >Xã/Phường</th>
+                                        <th >Quận/Huyện</th>
                                         <th>Tỉnh/Thành phố</th>
                                         <th>Địa chỉ cụ thể</th>
                                         <!-- <th>Địa chỉ</th> -->
                                         <th>Trạng thái</th>
-
                                         <th>Tính năng</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <!-- Duyệt danh sách khách hàng và hiển thị từng dòng -->
                                     <tr th:each="obj,stat : ${customer.listAddresses}">
-                                        <td width="10"><input type="checkbox" name="check1" value="1"></td>
-                                        <td width="10" th:text="${stat.index + 1}"></td>
+                                        <th width="10" th:text="${stat.index + 1}"></th>
                                         <td th:text="${obj.phone}"></td>
                                         <td th:text="${obj.ward}"></td>
                                         <td th:text="${obj.district}"></td>

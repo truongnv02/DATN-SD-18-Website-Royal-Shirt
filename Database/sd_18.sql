@@ -1,5 +1,6 @@
 use master
 go
+
 if EXISTS ( select name
                 from sys.databases
                 where name = N'sd_18' )
@@ -12,8 +13,8 @@ go
 create table [roles] (
 	[id] int primary key identity(1, 1),
 	[name] nvarchar(max) not null,
-	[created_date] datetime,
-	[updated_date] datetime
+	[created_date] date,
+	[updated_date] date
 );
 go
 
@@ -26,8 +27,8 @@ create table [admins] (
 	[address] nvarchar(max),
 	[password] nvarchar(max),
 	[status] int default 0,
-	[created_date] datetime,
-	[updated_date] datetime,
+	[created_date] date,
+	[updated_date] date,
 	[role_id] int,
 	foreign key (role_id) references [roles](id),
 );
@@ -37,8 +38,8 @@ create table [brands] (
 	[id] int primary key identity(1, 1),
 	[name] nvarchar(max) not null,
 	[status] int default 0,
-	[created_date] datetime,
-	[updated_date] datetime
+	[created_date] date,
+	[updated_date] date
 );
 go
 
@@ -46,8 +47,8 @@ create table [colors] (
 	[id] int primary key identity(1, 1),
 	[name] nvarchar(max) not null,
 	[status] int default 0,
-	[created_date] datetime,
-	[updated_date] datetime
+	[created_date] date,
+	[updated_date] date
 );
 go
 
@@ -55,8 +56,8 @@ create table [categories] (
 	[id] int primary key identity(1, 1),
 	[name] nvarchar(max) not null,
 	[status] int default 0,
-	[created_date] datetime,
-	[updated_date] datetime
+	[created_date] date,
+	[updated_date] date
 );
 go
 
@@ -64,8 +65,8 @@ create table [materials] (
 	[id] int primary key identity(1, 1),
 	[name] nvarchar(max) not null,
 	[status] int default 0,
-	[created_date] datetime,
-	[updated_date] datetime
+	[created_date] date,
+	[updated_date] date
 );
 go
 
@@ -75,8 +76,8 @@ create table [sizes] (
 	[status] int default 0,
 	[shirt_length] int,
 	[shirt_width] int,
-	[created_date] datetime,
-	[updated_date] datetime
+	[created_date] date,
+	[updated_date] date
 );
 go
 
@@ -88,8 +89,8 @@ create table [discounts] (
 	[discount] float,
 	[start_date] date,
 	[end_date] date,
-	[created_date] datetime,
-	[updated_date] datetime,
+	[created_date] date,
+	[updated_date] date,
 );
 go
 
@@ -98,8 +99,8 @@ create table [products] (
 	[name] nvarchar(max),
 	[status] int default 0,
 	[description] nvarchar(max),
-	[created_date] datetime,
-	[updated_date] datetime,
+	[created_date] date,
+	[updated_date] date,
 	[category_id] int,
 	[brand_id] int,
 	[material_id] int,
@@ -118,8 +119,8 @@ create table [product_details] (
 	[price] float,
 	[weight] float,
 	[status] int default 0,
-	[created_date] datetime,
-	[updated_date] datetime,
+	[created_date] date,
+	[updated_date] date,
 	[product_id] int,
 	[size_id] int,
 	[color_id] int,
@@ -135,8 +136,8 @@ create table [images] (
 	[name] nvarchar(max),
 	[url_image] nvarchar(max),
 	[status] int,
-	[created_date] datetime,
-	[updated_date] datetime,
+	[created_date] date,
+	[updated_date] date,
 	foreign key (product_id) references [products](id),
 );
 go
@@ -174,8 +175,8 @@ create table [evaluates] (
 	[id] int primary key identity(1, 1),
 	[star] int,
 	[content] nvarchar(max),
-	[created_date] datetime,
-	[updated_date] datetime,
+	[created_date] date,
+	[updated_date] date,
 	[customer_id] int,
 	[product_detail_id] int,
 	foreign key (customer_id) references [customers](id),
@@ -186,8 +187,8 @@ go
 create table [carts] (
 	[id] int primary key identity(1, 1),
 	[status] int,
-	[created_date] datetime,
-	[updated_date] datetime,
+	[created_date] date,
+	[updated_date] date,
 	[customer_id] int,
 	foreign key (customer_id) references [customers](id),
 );
@@ -198,8 +199,8 @@ create table [cart_details] (
 	[quantity] int,
 	[price] float,
 	[status] int,
-	[created_date] datetime,
-	[updated_date] datetime,
+	[created_date] date,
+	[updated_date] date,
 	[cart_id] int,
 	[product_detail_id] int,
 	foreign key (cart_id) references [carts](id),
@@ -212,8 +213,8 @@ create table [transactions] (
 	[name] nvarchar(max),
 	[description] nvarchar(max),
 	[status] int,
-	[created_date] datetime,
-	[updated_date] datetime,
+	[created_date] date,
+	[updated_date] date,
 );
 go
 
@@ -228,11 +229,11 @@ create table [orders] (
 	[shopping] nvarchar(max),
 	[address] nvarchar(max),
 	[status] int,
-	[confirm_date] datetime,
-	[ship_date] datetime,
-	[success_date] datetime,
-	[created_date] datetime,
-	[updated_date] datetime,
+	[confirm_date] date,
+	[ship_date] date,
+	[success_date] date,
+	[created_date] date,
+	[updated_date] date,
 	[admin_id] int,
 	[customer_id] int,
 	[transaction_id] int,
@@ -247,8 +248,8 @@ create table [order_details] (
 	[quantity] int,
 	[price] float,
 	[status] int,
-	[created_date] datetime,
-	[updated_date] datetime,
+	[created_date] date,
+	[updated_date] date,
 	[order_id] int,
 	[product_detail_id] int,
 	foreign key (order_id) references [orders](id),
