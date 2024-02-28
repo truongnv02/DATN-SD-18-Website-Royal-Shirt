@@ -80,12 +80,9 @@
     <artifactId>maven-compiler-plugin</artifactId>
     <version>3.8.1</version> <!-- Đảm bảo bạn sử dụng phiên bản mới nhất của plugin -->
     <configuration>
-        <source>21</source>
-        <target>21</target>
-        <compilerArgs>
-            <arg>--release</arg>
-            <arg>21</arg>
-        </compilerArgs>
+        <source>16</source>
+        <target>16</target>
+        <compilerArgs>--enable-preview</compilerArgs>
     </configuration>
 </plugin>
 
