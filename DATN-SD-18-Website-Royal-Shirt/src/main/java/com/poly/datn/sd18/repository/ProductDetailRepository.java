@@ -1,6 +1,7 @@
 package com.poly.datn.sd18.repository;
 
 import com.poly.datn.sd18.dto.ProductDetailResponse;
+import com.poly.datn.sd18.dto.SizeResponse;
 import com.poly.datn.sd18.entity.ProductDetail;
 import com.poly.datn.sd18.entity.Size;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -45,17 +46,17 @@ public interface ProductDetailRepository extends JpaRepository<ProductDetail, In
 
     @Query(value = "SELECT sizes.id, \n" +
             "\t   sizes.name, \n" +
-            "\t   sizes.status, \n" +
             "\t   sizes.shirt_length, \n" +
-            "\t   sizes.shirt_width\n" +
+            "\t   sizes.shirt_width,\n" +
+            "\t   sizes.status\n" +
             "FROM sizes\n" +
             "\t   CROSS JOIN colors\n" +
-            "WHERE colors.id = 1\n" +
+            "WHERE colors.id = :colorId\n" +
             "      AND NOT EXISTS (\n" +
             "          SELECT *\n" +
             "          FROM product_details\n" +
             "          WHERE color_id = :colorId\n" +
             "              AND size_id = sizes.id\n" +
             "              AND product_id = :productId)",nativeQuery = true)
-    List<Size> getListSizeAddProductDetail(@Param("colorId") Integer colorId,@Param("productId") Integer productId);
+    List<SizeResponse> getListSizeAddProductDetail(@Param("productId") Integer productId,@Param("colorId") Integer colorId);
 }

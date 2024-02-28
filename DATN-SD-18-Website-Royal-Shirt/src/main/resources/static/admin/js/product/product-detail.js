@@ -1,24 +1,74 @@
+var productId = $('#product-id').attr("data-product-id");
+
 //Show form
 $(document).ready(function () {
-    $('#showFormProductDetail').click(function () {
-        $('#UpdateProductDetailModal').modal('show');
-    });
-    $('#closeFormProductDetail').click(function () {
-        $('#UpdateProductDetailModal').modal('hide');
+    //Mở form add
+    $('#showFormProductDetailAdd').click(function () {
+        $('#AddProductDetailModal').modal('show');
     });
 
-    var productId = $('#product-id').attr("data-product-id");
+    //Đóng form add
+    $('#closeFormProductDetailAdd').click(function () {
+        $('#AddProductDetailModal').modal('hide');
+    });
+    //Đóng form update
+    $('#closeFormProductDetailUpdate').click(function () {
+        $('#UpdateProductDetailModal').modal('hide');
+    });
 
     getListURL(productId);
 
 });
 
-function getListURL(productId){
+//Lấy danh sách size add
+function getSize(selectElement) {
+    $("#select-size").empty();
+    var colorId = selectElement.value;
+
+    var dataToSend = {
+        productId: productId,
+        colorId: colorId
+    }
+
+    $.ajax({
+        type: "POST",
+        url: "/admin/rest/product-detail/getListSizeAddProductDetail",
+        contentType: "application/json",
+        data: JSON.stringify(dataToSend),
+        success: function (response) {
+            console.log("Lấy danh sách Size thành công!");
+            renderListSize(response);
+        },
+        error: function (error) {
+            console.error("Lỗi khi lấy danh sách Size:", error);
+            return false;
+        }
+    });
+}
+
+//Render danh sách size add
+function renderListSize(listSize) {
+    for (var i = 0; i < listSize.length; i++) {
+
+        var value = listSize[i].id;
+
+        var name = listSize[i].name;
+
+        var sizeSelect = $(
+            '<option value="' + value + '">' + name + '</option>'
+        )
+
+        $(sizeSelect).appendTo("#select-size");
+
+    }
+}
+
+function getListURL(productId) {
     listUrlImage = [];
     $.ajax({
         type: "GET",
         url: "/admin/rest/image/findByProductId/" + productId,
-        success: function (response){
+        success: function (response) {
             console.log("Lấy ảnh thành công!");
             for (var i = 0; i < response.length; i++) {
                 listUrlImage.push(response[i].urlImage);
@@ -62,13 +112,13 @@ function writeURL() {
     console.log('writeURL');
 }
 
-function updateProductDetailForm(element){
+function updateProductDetailForm(element) {
     var productDetailId = element.getAttribute("data-product-detail-id")
     var productDetailColor = element.getAttribute("data-product-detail-color")
     var productDetailSize = element.getAttribute("data-product-detail-size")
 
     // Thêm thuộc tính productDetailId vào modal để update
-    $('#ProductDetailModal').attr('product-detail-id-update', productDetailId);
+    $('#UpdateProductDetailModal').attr('product-detail-id-update', productDetailId);
 
     // Thực hiện AJAX request để lấy dữ sản phẩm mục từ backend
     $.ajax({
@@ -76,7 +126,7 @@ function updateProductDetailForm(element){
         url: '/admin/rest/product-detail/formUpdate/' + productDetailId,
         success: function (productDetail) {
             // Hiển thị hộp thoại modal
-            $('#ProductDetailModal').modal('show');
+            $('#UpdateProductDetailModal').modal('show');
 
             // Điền dữ liệu vào các trường biểu mẫu
             $('#product-detail-color').text("Màu sắc: " + productDetailColor);
@@ -92,12 +142,21 @@ function updateProductDetailForm(element){
     });
 }
 
-function save() {
-    var productDetailId = $('#ProductDetailModal').attr("product-detail-id-update");
+function saveUpdate() {
+    var productDetailId = $('#UpdateProductDetailModal').attr("product-detail-id-update");
     var productDetailWeight = $('#product-detail-weight').val();
     var productDetailQuantity = $("#product-detail-quantity").val();
     var productDetailPrice = $("#product-detail-price").val();
     var productDetailStatus = 0;
+
+    if (productDetailWeight == 0 || productDetailQuantity == 0 || productDetailPrice == 0){
+        Swal.fire({
+            icon: 'error',
+            title: 'Lỗi!',
+            text: 'Vui lòng nhập đầy đủ thông tin!'
+        });
+        return;
+    }
 
     var dataToSend = {
         id: productDetailId,
@@ -111,6 +170,63 @@ function save() {
     $.ajax({
         type: "PUT",
         url: "/admin/rest/product-detail/update/" + productDetailId,
+        contentType: "application/json",
+        data: JSON.stringify(dataToSend),
+        success: function (response) {
+            console.log("Lưu Biến Thể thành công!");
+
+            Swal.fire({
+                icon: 'success',
+                title: 'Thành công!',
+                text: 'Lưu Biến Thể thành công!',
+                didClose: function () {
+                    location.reload();
+                }
+            });
+        },
+        error: function (error) {
+            console.error("Lỗi khi lưu Biến Thể:", error);
+
+            Swal.fire({
+                icon: 'error',
+                title: 'Lỗi!',
+                text: 'Có lỗi xảy ra khi lưu Biến Thể!'
+            });
+        }
+    });
+}
+
+function saveAdd() {
+    var productDetailColor = $('#select-color').val();
+    var productDetailSize = $('#select-size').val();
+    var productDetailWeight = $('#add-product-detail-weight').val();
+    var productDetailQuantity = $("#add-product-detail-quantity").val();
+    var productDetailPrice = $("#add-product-detail-price").val();
+    var productDetailStatus = 0;
+
+    if (productDetailColor == null || productDetailSize == null || productDetailWeight == 0 || productDetailQuantity == 0 || productDetailPrice == 0){
+        Swal.fire({
+            icon: 'error',
+            title: 'Lỗi!',
+            text: 'Vui lòng nhập đầy đủ thông tin!!'
+        });
+        return;
+    }
+
+        var dataToSend = {
+            productId: productId,
+            colorId: productDetailColor,
+            sizeId: productDetailSize,
+            weight: productDetailWeight,
+            quantity: productDetailQuantity,
+            price: productDetailPrice,
+            status: productDetailStatus
+        }
+
+    // Gửi yêu cầu AJAX
+    $.ajax({
+        type: "POST",
+        url: "/admin/rest/product-detail/add",
         contentType: "application/json",
         data: JSON.stringify(dataToSend),
         success: function (response) {

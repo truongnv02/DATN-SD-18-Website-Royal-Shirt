@@ -2,6 +2,7 @@ package com.poly.datn.sd18.service.impl;
 
 import com.poly.datn.sd18.dto.ProductDetailRequest;
 import com.poly.datn.sd18.dto.ProductDetailResponse;
+import com.poly.datn.sd18.dto.SizeResponse;
 import com.poly.datn.sd18.entity.Product;
 import com.poly.datn.sd18.entity.ProductDetail;
 import com.poly.datn.sd18.entity.Size;
@@ -25,8 +26,8 @@ public class ProductDetailServiceImpl implements ProductDetailService {
     }
 
     @Override
-    public List<Size> getListSizeAddProductDetail(Integer colorId, Integer productId) {
-        return productDetailRepository.getListSizeAddProductDetail(colorId, productId);
+    public List<SizeResponse> getListSizeAddProductDetail(Integer productId, Integer colorId) {
+        return productDetailRepository.getListSizeAddProductDetail(productId, colorId);
     }
 
     @Override
