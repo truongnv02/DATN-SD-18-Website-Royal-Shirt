@@ -1,11 +1,9 @@
 package com.poly.datn.sd18.service.impl;
 
-import com.poly.datn.sd18.dto.ProductDetailRequest;
-import com.poly.datn.sd18.dto.ProductDetailResponse;
-import com.poly.datn.sd18.dto.SizeResponse;
-import com.poly.datn.sd18.entity.Product;
+import com.poly.datn.sd18.dto.request.ProductDetailRequest;
+import com.poly.datn.sd18.dto.response.ProductDetailResponse;
+import com.poly.datn.sd18.dto.response.SizeResponse;
 import com.poly.datn.sd18.entity.ProductDetail;
-import com.poly.datn.sd18.entity.Size;
 import com.poly.datn.sd18.repository.ProductDetailRepository;
 import com.poly.datn.sd18.service.ProductDetailService;
 import lombok.RequiredArgsConstructor;

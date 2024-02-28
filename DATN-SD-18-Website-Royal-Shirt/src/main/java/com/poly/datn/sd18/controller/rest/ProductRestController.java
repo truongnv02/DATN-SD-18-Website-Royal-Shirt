@@ -1,6 +1,6 @@
 package com.poly.datn.sd18.controller.rest;
 
-import com.poly.datn.sd18.dto.ProductRequest;
+import com.poly.datn.sd18.dto.request.ProductRequest;
 import com.poly.datn.sd18.entity.Product;
 import com.poly.datn.sd18.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;

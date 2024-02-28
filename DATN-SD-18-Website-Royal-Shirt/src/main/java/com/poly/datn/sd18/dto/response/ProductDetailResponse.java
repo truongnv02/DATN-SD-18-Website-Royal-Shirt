@@ -1,4 +1,4 @@
-package com.poly.datn.sd18.dto;
+package com.poly.datn.sd18.dto.response;
 
 public interface ProductDetailResponse {
     Integer getId();

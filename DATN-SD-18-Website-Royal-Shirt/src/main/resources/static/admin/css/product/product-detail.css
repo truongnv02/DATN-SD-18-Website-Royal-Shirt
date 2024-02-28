@@ -23,7 +23,7 @@
 }
 
 #trong_luong::after {
-    content: attr(data-raw-value) " gram";
+    content: attr(data-raw-value) " Gram";
     width: 100%; /* Đảm bảo nằm ở cuối cùng */
 }
 

@@ -1,17 +1,12 @@
 package com.poly.datn.sd18.controller.rest;
 
-import com.poly.datn.sd18.dto.ProductDetailRequest;
-import com.poly.datn.sd18.dto.ProductRequest;
-import com.poly.datn.sd18.entity.Product;
+import com.poly.datn.sd18.dto.request.ProductDetailRequest;
 import com.poly.datn.sd18.entity.ProductDetail;
 import com.poly.datn.sd18.service.ProductDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/admin/rest/product-detail")

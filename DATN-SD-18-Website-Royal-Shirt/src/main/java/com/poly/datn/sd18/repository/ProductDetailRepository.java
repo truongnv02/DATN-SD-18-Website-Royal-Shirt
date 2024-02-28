@@ -1,9 +1,8 @@
 package com.poly.datn.sd18.repository;
 
-import com.poly.datn.sd18.dto.ProductDetailResponse;
-import com.poly.datn.sd18.dto.SizeResponse;
+import com.poly.datn.sd18.dto.response.ProductDetailResponse;
+import com.poly.datn.sd18.dto.response.SizeResponse;
 import com.poly.datn.sd18.entity.ProductDetail;
-import com.poly.datn.sd18.entity.Size;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

@@ -1,4 +1,4 @@
-package com.poly.datn.sd18.dto;
+package com.poly.datn.sd18.dto.request;
 
 import com.poly.datn.sd18.entity.Image;
 import com.poly.datn.sd18.entity.Product;

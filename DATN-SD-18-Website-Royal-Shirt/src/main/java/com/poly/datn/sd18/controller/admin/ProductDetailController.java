@@ -1,9 +1,8 @@
 package com.poly.datn.sd18.controller.admin;
 
-import com.poly.datn.sd18.dto.ProductDetailResponse;
+import com.poly.datn.sd18.dto.response.ProductDetailResponse;
 import com.poly.datn.sd18.entity.Color;
 import com.poly.datn.sd18.entity.Product;
-import com.poly.datn.sd18.entity.ProductDetail;
 import com.poly.datn.sd18.service.ColorService;
 import com.poly.datn.sd18.service.ProductDetailService;
 import com.poly.datn.sd18.service.ProductService;
