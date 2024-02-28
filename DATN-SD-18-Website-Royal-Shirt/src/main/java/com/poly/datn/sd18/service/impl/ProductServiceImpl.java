@@ -61,4 +61,14 @@ public class ProductServiceImpl implements ProductService {
         }
         return null;
     }
+
+    @Override
+    public Integer quantityByColorId(Integer productId, Integer colorId) {
+        return productRepository.quantityByColorId(productId,colorId);
+    }
+
+    @Override
+    public Integer quantityBySizeId(Integer productId, Integer colorId) {
+        return productRepository.quantityBySizeId(productId,colorId);
+    }
 }

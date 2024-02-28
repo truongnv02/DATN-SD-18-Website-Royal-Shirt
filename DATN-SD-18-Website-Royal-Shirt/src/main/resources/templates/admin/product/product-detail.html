@@ -38,11 +38,45 @@
                             <label class="control-label">Tên sản phẩm: </label>
                             <label th:text="${product.name}"></label>
                         </div>
+
                         <!-- Ảnh Sản Phẩm -->
                         <div class=" col-md-12">
                             <label class="control-label">Ảnh sản phẩm:</label>
                             <div id="thumbbox" class="d-flex">
 
+                            </div>
+                        </div>
+
+                        <!-- Số lượng -->
+                        <div class="col-md-12">
+                            <label class="control-label">Thống kê số lượng:</label>
+
+                            <!-- Số lượng thông qua màu -->
+                            <div class="d-flex row-quantity">
+                                <div class="col-md-2 color-quantity">
+                                    <select class="form-control" id="select-color-quantity" onchange="getQuantityByColor(this)">
+                                        <option value="" disabled selected hidden>Chọn màu</option>
+                                        <option th:each="color : ${listColor}" th:value="${color.id}"
+                                                th:text="${color.name}"></option>
+                                    </select>
+                                </div>
+                                <div class="col-md-2 div-quantity" id="div-quantity-color">
+                                    <label id="label-quantity-color" class="label-quantity"></label>
+                                </div>
+                            </div>
+
+                            <!-- Số lượng thông qua kích thước -->
+                            <div class="d-flex row-quantity">
+                                <div class="col-md-2 color-quantity">
+                                    <select class="form-control" id="select-size-quantity" onchange="getQuantityBySize(this)">
+                                        <option value="" disabled selected hidden>Chọn kích thước</option>
+                                        <option th:each="size : ${listSize}" th:value="${size.id}"
+                                                th:text="${size.name}"></option>
+                                    </select>
+                                </div>
+                                <div class="col-md-2 div-quantity" id="div-quantity-size">
+                                    <label id="label-quantity-size" class="label-quantity"></label>
+                                </div>
                             </div>
                         </div>
                     </form>
@@ -170,7 +204,8 @@
                                     <div class="form-group col-md-6">
                                         <label class="control-label">Kích Thước</label>
                                         <div class="d-flex">
-                                            <select class="form-control" id="select-size" placeholder="Chọn kích thước...">
+                                            <select class="form-control" id="select-size"
+                                                    placeholder="Chọn kích thước...">
                                                 <option value="" disabled selected hidden>-- Chọn Kích Thước --</option>
                                             </select>
                                             <button id="showFormSize" class="btn add-button" type="button"><i

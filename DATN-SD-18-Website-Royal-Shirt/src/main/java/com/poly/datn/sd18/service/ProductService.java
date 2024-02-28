@@ -18,4 +18,8 @@ public interface ProductService {
     Product update(Product product, int id);
 
     Product setStatus(int id);
+
+    Integer quantityByColorId(Integer productId, Integer colorId);
+
+    Integer quantityBySizeId(Integer productId, Integer colorId);
 }

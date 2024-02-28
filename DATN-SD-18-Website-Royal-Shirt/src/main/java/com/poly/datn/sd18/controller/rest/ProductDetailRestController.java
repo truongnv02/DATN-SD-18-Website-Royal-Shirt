@@ -14,9 +14,9 @@ public class ProductDetailRestController {
     @Autowired
     ProductDetailService productDetailService;
 
-    @PostMapping("/getListSizeAddProductDetail")
-    public ResponseEntity<?> getListSizeAddProductDetail(@RequestBody ProductDetailRequest productDetailRequest){
-        return ResponseEntity.ok(productDetailService.getListSizeAddProductDetail(productDetailRequest.getProductId(),productDetailRequest.getColorId()));
+    @GetMapping("/getListSizeAddProductDetail")
+    public ResponseEntity<?> getListSizeAddProductDetail(@RequestParam Integer productId, @RequestParam Integer colorId){
+        return ResponseEntity.ok(productDetailService.getListSizeAddProductDetail(productId, colorId));
     }
 
     @PostMapping("/add")

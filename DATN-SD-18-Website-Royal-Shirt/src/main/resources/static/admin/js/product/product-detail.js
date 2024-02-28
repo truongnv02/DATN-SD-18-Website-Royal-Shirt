@@ -2,6 +2,8 @@ var productId = $('#product-id').attr("data-product-id");
 
 //Show form
 $(document).ready(function () {
+    $("#div-quantity-color").hide();
+    $("#div-quantity-size").hide();
     //Mở form add
     $('#showFormProductDetailAdd').click(function () {
         $('#AddProductDetailModal').modal('show');
@@ -31,10 +33,10 @@ function getSize(selectElement) {
     }
 
     $.ajax({
-        type: "POST",
+        type: "GET",
         url: "/admin/rest/product-detail/getListSizeAddProductDetail",
         contentType: "application/json",
-        data: JSON.stringify(dataToSend),
+        data: dataToSend,
         success: function (response) {
             console.log("Lấy danh sách Size thành công!");
             renderListSize(response);
@@ -61,6 +63,73 @@ function renderListSize(listSize) {
         $(sizeSelect).appendTo("#select-size");
 
     }
+}
+
+//Lấy số lượng thông qua màu
+function getQuantityByColor(selectElement) {
+
+    var colorId = selectElement.value;
+
+    var dataToSend = {
+        productId: productId,
+        colorId: colorId
+    }
+
+    $.ajax({
+        type: "GET",
+        url: "/admin/rest/product/quantityByColorId",
+        contentType: "application/json",
+        data: dataToSend,
+        success: function (response) {
+            console.log("Lấy số lượng Màu sắc thành công!");
+            if (response === "") {
+                $("#label-quantity-color").text(0);
+            } else {
+                $("#label-quantity-color").text(response);
+            }
+
+            $("#div-quantity-color").show();
+
+        },
+        error: function (error) {
+            console.error("Lỗi khi lấy số lượng Màu sắc:", error);
+            return false;
+        }
+    });
+}
+
+//Lấy số lượng thông qua màu
+function getQuantityBySize(selectElement) {
+
+    var sizeId = selectElement.value;
+
+    var dataToSend = {
+        productId: productId,
+        sizeId: sizeId
+    }
+
+    $.ajax({
+        type: "GET",
+        url: "/admin/rest/product/quantityBySizeId",
+        contentType: "application/json",
+        data: dataToSend,
+        success: function (response) {
+            console.log("Lấy số lượng Kích thước thành công!");
+
+            if (response === "") {
+                $("#label-quantity-size").text(0);
+            } else {
+                $("#label-quantity-size").text(response);
+            }
+
+            $("#div-quantity-size").show();
+
+        },
+        error: function (error) {
+            console.error("Lỗi khi lấy số lượng Kích thước:", error);
+            return false;
+        }
+    });
 }
 
 function getListURL(productId) {
@@ -149,7 +218,7 @@ function saveUpdate() {
     var productDetailPrice = $("#product-detail-price").val();
     var productDetailStatus = 0;
 
-    if (productDetailWeight == 0 || productDetailQuantity == 0 || productDetailPrice == 0){
+    if (productDetailWeight == 0 || productDetailQuantity == 0 || productDetailPrice == 0) {
         Swal.fire({
             icon: 'error',
             title: 'Lỗi!',
@@ -204,7 +273,7 @@ function saveAdd() {
     var productDetailPrice = $("#add-product-detail-price").val();
     var productDetailStatus = 0;
 
-    if (productDetailColor == null || productDetailSize == null || productDetailWeight == 0 || productDetailQuantity == 0 || productDetailPrice == 0){
+    if (productDetailColor == null || productDetailSize == null || productDetailWeight == 0 || productDetailQuantity == 0 || productDetailPrice == 0) {
         Swal.fire({
             icon: 'error',
             title: 'Lỗi!',
@@ -213,15 +282,15 @@ function saveAdd() {
         return;
     }
 
-        var dataToSend = {
-            productId: productId,
-            colorId: productDetailColor,
-            sizeId: productDetailSize,
-            weight: productDetailWeight,
-            quantity: productDetailQuantity,
-            price: productDetailPrice,
-            status: productDetailStatus
-        }
+    var dataToSend = {
+        productId: productId,
+        colorId: productDetailColor,
+        sizeId: productDetailSize,
+        weight: productDetailWeight,
+        quantity: productDetailQuantity,
+        price: productDetailPrice,
+        status: productDetailStatus
+    }
 
     // Gửi yêu cầu AJAX
     $.ajax({
