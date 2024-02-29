@@ -1,5 +1,6 @@
 use master
 go
+
 if EXISTS ( select name
                 from sys.databases
                 where name = N'sd_18' )
