@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.io.Serializable;
+import java.util.List;
 
 @Getter
 @Setter
@@ -26,6 +27,7 @@ public class Product extends BaseEntity implements Serializable {
 
     @Column(name = "description")
     private String description;
+
 
     @ManyToOne
     @JoinColumn(name = "category_id", referencedColumnName = "id")

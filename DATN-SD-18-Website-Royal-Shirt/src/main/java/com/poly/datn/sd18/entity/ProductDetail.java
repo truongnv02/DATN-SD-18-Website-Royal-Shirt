@@ -33,7 +33,7 @@ public class ProductDetail extends BaseEntity implements Serializable {
     @Column(name = "status")
     private Integer status;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "product_id", referencedColumnName = "id")
     private Product product;
 

@@ -1,17 +1,17 @@
 <div xmlns:th="http://www.thymeleaf.org" th:fragment="sidebar">
     <div class="app-sidebar__overlay" data-toggle="sidebar"></div>
     <aside class="app-sidebar">
-        <div class="app-sidebar__user"><img class="app-sidebar__user-avatar" src="/images/hay.jpg" width="50px"
+        <div class="app-sidebar__user"><img class="app-sidebar__user-avatar" th:src="@{/image/staff-logo.jpg}" width="50px"
                                             alt="User Image">
             <div>
-                <p class="app-sidebar__user-name"><b>Võ Trường</b></p>
+                <p class="app-sidebar__user-name"><b>User Name</b></p>
                 <p class="app-sidebar__user-designation">Chào mừng bạn trở lại</p>
             </div>
         </div>
         <hr>
         <ul class="app-menu">
             <li>
-                <a class="app-menu__item haha" href="phan-mem-ban-hang.html">
+                <a class="app-menu__item haha" th:href="@{/admin/counter1}">
                     <i class='app-menu__icon bx bx-cart-alt'></i>
                     <span class="app-menu__label">POS Bán Hàng</span>
                 </a>
@@ -35,9 +35,39 @@
                 </a>
             </li>
             <li>
-                <a class="app-menu__item" href="table-data-product.html">
+                <a class="app-menu__item" th:href="@{/admin/product}">
                     <i class='app-menu__icon bx bx-purchase-tag-alt'></i>
                     <span class="app-menu__label">Quản lý sản phẩm</span>
+                </a>
+            </li>
+            <li>
+                <a class="app-menu__item" th:href="@{/admin/category}">
+                    <i class='app-menu__icon bx bx-purchase-tag-alt'></i>
+                    <span class="app-menu__label">Quản lý Danh Mục</span>
+                </a>
+            </li>
+            <li>
+                <a class="app-menu__item" th:href="@{/admin/brand}">
+                    <i class='app-menu__icon bx bx-purchase-tag-alt'></i>
+                    <span class="app-menu__label">Quản lý Thương Hiệu</span>
+                </a>
+            </li>
+            <li>
+                <a class="app-menu__item" th:href="@{/admin/material}">
+                    <i class='app-menu__icon bx bx-purchase-tag-alt'></i>
+                    <span class="app-menu__label">Quản lý Chất Liệu</span>
+                </a>
+            </li>
+            <li>
+                <a class="app-menu__item" th:href="@{/admin/color}">
+                    <i class='app-menu__icon bx bx-purchase-tag-alt'></i>
+                    <span class="app-menu__label">Quản lý Màu Sắc</span>
+                </a>
+            </li>
+            <li>
+                <a class="app-menu__item" th:href="@{/admin/size}">
+                    <i class='app-menu__icon bx bx-purchase-tag-alt'></i>
+                    <span class="app-menu__label">Quản lý Kích Thước</span>
                 </a>
             </li>
             <li>
