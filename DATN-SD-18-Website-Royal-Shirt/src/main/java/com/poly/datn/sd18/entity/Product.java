@@ -4,6 +4,10 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.io.Serializable;
+import java.util.List;
+import java.util.ListIterator;
+
+import javax.print.attribute.standard.Media;
 
 @Getter
 @Setter
@@ -42,4 +46,10 @@ public class Product extends BaseEntity implements Serializable {
     @ManyToOne
     @JoinColumn(name = "discount_id", referencedColumnName = "id")
     private Discount discount;
+
+    @OneToMany(mappedBy = "product")
+    private List<ProductDetail> productDetails;
+
+    @OneToMany(mappedBy = "product")
+    private List<Image> images;
 }

@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.io.Serializable;
+import java.util.List;
 
 @Getter
 @Setter
@@ -22,13 +23,13 @@ public class ProductDetail extends BaseEntity implements Serializable {
     private Integer quantity;
 
     @Column(name = "cost")
-    private Float cost; //TODO giá nhập
+    private Float cost; // TODO giá nhập
 
     @Column(name = "price")
-    private Float price; //TODO giá bán
+    private Float price; // TODO giá bán
 
     @Column(name = "weight")
-    private Float weight; //TODO khối lượng của áo
+    private Float weight; // TODO khối lượng của áo
 
     @Column(name = "status")
     private Integer status;
@@ -44,4 +45,7 @@ public class ProductDetail extends BaseEntity implements Serializable {
     @ManyToOne
     @JoinColumn(name = "color_id", referencedColumnName = "id")
     private Color color;
+
+    @OneToMany(mappedBy = "productDetail")
+    private List<Evaluate> evaluates;
 }

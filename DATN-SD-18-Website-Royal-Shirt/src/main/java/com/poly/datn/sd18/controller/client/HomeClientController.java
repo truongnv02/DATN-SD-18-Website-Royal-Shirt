@@ -28,13 +28,13 @@ public class HomeClientController {
         return "client/pages/about";
     }
 
-    @GetMapping("/single-product")
-    public String productClient() {
+    @GetMapping("/single")
+    public String singleProductClient() {
         return "client/product/single-product";
     }
 
     @GetMapping("/product")
-    public String singleProductClient() {
+    public String productClient() {
         return "client/product/product";
     }
 }

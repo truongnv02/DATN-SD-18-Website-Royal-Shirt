@@ -7,6 +7,12 @@
                         <div class="left floatleft">
                             <p><i class="mdi mdi-clock"></i> Mon-Fri : 09:00-19:00</p>
                         </div>
+                        <div class="center floatleft">
+                            <form>
+                                <input type="text" placeholder="Search..." name="keyword" th:value="${keyword}" />
+                                <button type="submit"><i class="mdi mdi-magnify"></i></button>
+                            </form>
+                        </div>
                     </div>
                     <div class="middel-top clearfix">
                         <ul class="clearfix right floatright">
@@ -20,12 +26,6 @@
                             </li>
                             <li>
                                 <a href="#"><i class="mdi mdi-settings"></i></a>
-                                <ul>
-                                    <li><a href="my-account.html">My account</a></li>
-                                    <li><a href="cart.html">My cart</a></li>
-                                    <li><a href="wishlist.html">My wishlist</a></li>
-                                    <li><a href="checkout.html">Check out</a></li>
-                                </ul>
                             </li>
                         </ul>
                         <div class="right floatright">
@@ -52,9 +52,9 @@
                         <nav>
                             <ul>
                                 <li><a th:href="@{/}">Home</a></li>
-                                <li><a href="#">Shop</a>
+                                <li><a th:href="@{/products}">Shop</a>
                                     <ul class="magamenu">
-                                        <li class="banner"><a href="#"><img th:src="@{/client/img/maga1.webp}" alt="" /></a></li>
+                                        <li class="banner"><a th:href="@{/products}"><img th:src="@{/client/img/maga1.webp}" alt="" /></a></li>
                                         <li><h5>men’s wear</h5>
                                             <ul>
                                                 <li><a href="#">Shirts & Top</a></li>
@@ -79,7 +79,7 @@
                                                 <li><a href="#">Women Watch</a></li>
                                             </ul>
                                         </li>
-                                        <li class="banner"><a href="shop.html"><img th:src="@{/client/img/maga2.webp}" alt="" /></a></li>
+                                        <li class="banner"><a th:href="@{/products}"><img th:src="@{/client/img/maga2.webp}" alt="" /></a></li>
                                     </ul>
                                 </li>
                                 <li><a th:href="@{/blog}">Blog</a></li>
@@ -94,7 +94,7 @@
                             <nav id="dropdown">
                                 <ul>
                                     <li><a th:href="@{/}">Home</a></li>
-                                    <li><a href="shop.html">Shop</a>
+                                    <li><a th:href="@{/products}">Shop</a>
                                         <ul>
                                             <li><h5>men’s wear</h5>
                                                 <ul>
@@ -133,14 +133,14 @@
             </div>
             <div class="col-md-2">
                 <div class="cart-itmes">
-                    <a class="cart-itme-a" href="cart.html">
+                    <a class="cart-itme-a" th:href="@{/cart}">
                         <i class="mdi mdi-cart"></i>
                         02 items :  <strong>$86.00</strong>
                     </a>
                     <div class="cartdrop">
                         <div class="sin-itme clearfix">
                             <i class="mdi mdi-close"></i>
-                            <a class="cart-img" href="cart.html"><img th:src="@{/client/img/cart/1.webp}" alt="" /></a>
+                            <a class="cart-img" th:href="@{/cart}"><img th:src="@{/client/img/cart/1.webp}" alt="" /></a>
                             <div class="menu-cart-text">
                                 <a href="#"><h5>men’s black t-shirt</h5></a>
                                 <span>Color :  Black</span>
@@ -151,8 +151,8 @@
                         <div class="total">
                             <span>total <strong>= $306.00</strong></span>
                         </div>
-                        <a class="goto" href="cart.html">go to cart</a>
-                        <a class="out-menu" href="checkout.html">Check out</a>
+                        <a class="goto" th:href="@{/cart}">go to cart</a>
+                        <a class="out-menu" th:href="@{/checkout}">Check out</a>
                     </div>
                 </div>
             </div>
