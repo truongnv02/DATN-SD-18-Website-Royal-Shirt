@@ -1,2 +1,10 @@
-package com.poly.datn.sd18.dto.request;public class DiscountRequest {
+package com.poly.datn.sd18.dto.request;
+
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+public class DiscountRequest {
+    private String name;
 }
