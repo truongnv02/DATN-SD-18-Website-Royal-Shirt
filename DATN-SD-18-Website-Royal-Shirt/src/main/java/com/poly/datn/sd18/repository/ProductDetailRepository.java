@@ -1,5 +1,6 @@
 package com.poly.datn.sd18.repository;
 
+import com.poly.datn.sd18.dto.response.ProductDetailCounterResponse;
 import com.poly.datn.sd18.dto.response.ProductDetailResponse;
 import com.poly.datn.sd18.dto.response.SizeResponse;
 import com.poly.datn.sd18.entity.ProductDetail;
@@ -58,4 +59,6 @@ public interface ProductDetailRepository extends JpaRepository<ProductDetail, In
             "              AND size_id = sizes.id\n" +
             "              AND product_id = :productId)",nativeQuery = true)
     List<SizeResponse> getListSizeAddProductDetail(@Param("productId") Integer productId,@Param("colorId") Integer colorId);
+
+//    List<ProductDetailCounterResponse> getListProductDetailCounter();
 }
