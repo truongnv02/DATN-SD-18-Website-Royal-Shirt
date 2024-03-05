@@ -17,7 +17,7 @@ create table [roles] (
 );
 go
 
-create table [admins] (
+create table [staffs] (
 	[id] int primary key identity(1, 1),
 	[name] nvarchar(max),
 	[email] nvarchar(max),
@@ -232,10 +232,10 @@ create table [orders] (
 	[success_date] datetime,
 	[created_date] datetime,
 	[updated_date] datetime,
-	[admin_id] int,
+	[staff_id] int,
 	[customer_id] int,
 	[transaction_id] int,
-	foreign key (admin_id) references [admins](id),
+	foreign key (staff_id) references [staffs](id),
 	foreign key (customer_id) references [customers](id),
 	foreign key (transaction_id) references [transactions](id),
 );
