@@ -5,6 +5,8 @@ import com.poly.datn.sd18.model.response.ProductResponse;
 import com.poly.datn.sd18.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,31 +27,19 @@ public class ProductClientController {
 
     @GetMapping("/products")
     public String getAllProducts(Model model,
-            @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
-            @RequestParam(name = "keyword", required = false) String keyword) {
+                                 @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
+                                 @RequestParam(name = "keyword", required = false) String keyword) {
         List<Brand> listBrands = brandService.getAllBrands();
         List<Category> listCategories = categoryService.getAllCategories();
-        Page<Product> listsProducts;
-
-        if (keyword != null && !keyword.isEmpty()) {
-            listsProducts = productService.searchProducts(keyword, pageNo);
-            model.addAttribute("keyword", keyword);
-        } else {
-            listsProducts = productService.pageProducts(pageNo);
-        }
-        for (Product p : listsProducts.getContent()) {
-            // Thực hiện các thao tác mong muốn với mỗi sản phẩm (product) ở đây
-            // Ví dụ:
-            System.out.println("Product ID: " + p.getId());
-            System.out.println("Product Name: " + p.getName());
-        }
+        Pageable pageable = PageRequest.of(pageNo - 1, 9);
+        Page<ProductResponse> listsProductResponse = productService.pageProductResponse(pageable);
 
         model.addAttribute("listBrand", listBrands);
         model.addAttribute("listCategory", listCategories);
 
-        model.addAttribute("totalPage", listsProducts.getTotalPages());
+        model.addAttribute("totalPage", listsProductResponse.getTotalPages());
         model.addAttribute("currentPage", pageNo);
-        model.addAttribute("listProducts", listsProducts);
+        model.addAttribute("listProducts", listsProductResponse);
         return "client/product/product";
     }
 

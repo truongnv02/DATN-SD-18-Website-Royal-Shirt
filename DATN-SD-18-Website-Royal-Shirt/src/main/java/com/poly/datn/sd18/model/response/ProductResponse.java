@@ -1,10 +1,6 @@
 package com.poly.datn.sd18.model.response;
 
-import com.poly.datn.sd18.entity.Color;
-import com.poly.datn.sd18.entity.Size;
 import lombok.*;
-
-import java.util.List;
 
 @Getter
 @Setter
@@ -12,7 +8,11 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 public class ProductResponse {
+    private Integer id;
     private String name;
     private String image;
-    private Float price;
+    private String description;
+    private Float minPrice;
+    private Float maxPrice;
+    private Integer status;
 }

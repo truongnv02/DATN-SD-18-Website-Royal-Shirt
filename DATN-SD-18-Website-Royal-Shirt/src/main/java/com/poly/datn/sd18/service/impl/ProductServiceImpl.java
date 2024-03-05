@@ -51,8 +51,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Page<ProductResponse> pageProductResponse(Integer pageNo) {
-        Pageable pageable = PageRequest.of(pageNo - 1, 9);
-        return null;
+    public Page<ProductResponse> pageProductResponse(Pageable pageable) {
+        return productRepository.pageProductResponse(pageable);
     }
 }

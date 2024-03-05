@@ -137,111 +137,46 @@
                         <div class="row">
                             <div class="tab-content grid-content">
                                 <div class="tab-pane fade show active text-center" id="grid">
-                                    <div class="row">
-                                        <!-- <div class="col-md-6 col-lg-4 mb-4">
-                                            <div class="single-product">
-                                                <div class="product-img">
-                                                    <div class="pro-type">
-                                                        <span>-15</span>
-                                                    </div>
-                                                    <a href="#"><img th:src="@{/client/img/products/8.webp}"
-                                                            alt="Product Title" /></a>
-                                                    <div class="actions-btn">
-                                                        <a href="#"><i class="mdi mdi-cart"></i></a>
-                                                        <a href="#" data-bs-toggle="modal"
-                                                            data-bs-target="#quick-view"><i class="mdi mdi-eye"></i></a>
-                                                        <a href="#"><i class="mdi mdi-heart"></i></a>
-                                                    </div>
-                                                </div>
-                                                <div class="product-dsc">
-                                                    <p><a href="#">men’s Black t-shirt</a></p>
-                                                    <div class="ratting">
-                                                        <i class="mdi mdi-star"></i>
-                                                        <i class="mdi mdi-star"></i>
-                                                        <i class="mdi mdi-star"></i>
-                                                        <i class="mdi mdi-star-half"></i>
-                                                        <i class="mdi mdi-star-outline"></i>
-                                                    </div>
-                                                    <span>$65.20</span>
-                                                </div>
-                                            </div>
-                                        </div> -->
-                                        <!-- single product end -->
-                                        <div class="col-md-6 col-lg-4 mb-4" th:each="product : ${listProducts}">
-                                            <div class="single-product">
-                                                <div class="product-img">
-                                                    <div class="pro-type">
-                                                        <span>-15</span>
-                                                    </div>
-                                                    <a th:href="@{/single-product/{id}(id=${product.id})}">
-                                                        <img th:src="@{/client/img/products/12.webp}"
-                                                            alt="Product Title" />
-                                                    </a>
-                                                    <div class="actions-btn">
-                                                        <a href="#"><i class="mdi mdi-cart"></i></a>
-                                                        <a href="#" data-bs-toggle="modal"
-                                                            data-bs-target="#quick-view"><i class="mdi mdi-eye"></i></a>
-                                                        <a href="#"><i class="mdi mdi-heart"></i></a>
-                                                    </div>
-                                                </div>
-                                                <div class="product-dsc">
-                                                    <p>
-                                                        <a href="#" th:text="${product.name}"></a>
-                                                    </p>
-                                                    <div class="ratting">
-                                                        <i class="mdi mdi-star"></i>
-                                                        <i class="mdi mdi-star"></i>
-                                                        <i class="mdi mdi-star"></i>
-                                                        <i class="mdi mdi-star-half"></i>
-                                                        <i class="mdi mdi-star-outline"></i>
-                                                    </div>
-                                                    <span
-                                                        th:text="${product.productDetails[1].price} + ' $'">65.20$</span>
-<!--                                                <span th:text="'$' + ${product.price}"></span>-->
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- <div class="tab-pane fade" id="list">
-                                <div class="col-12">
-                                    <div class="single-list-view">
+                                    <div th:if="${listProducts != null}">
                                         <div class="row">
-                                            <div class="col-md-4">
-                                                <div class="list-img">
-                                                    <div class="product-img">
-                                                        <div class="pro-type sell">
-                                                            <span>sell</span>
+                                            <div class="col-md-6 col-lg-4 mb-4" th:each="product : ${listProducts}">
+                                                <div class="single-product">
+                                                        <div class="product-img">
+                                                            <div class="pro-type">
+                                                                <span>-15</span>
+                                                            </div>
+                                                            <a th:href="@{/single-product/{id}(id=${product.id})}">
+                                                                <img th:src="${product.image}" style="width:200px; height:200px;"
+                                                                     alt="Product Title" />
+                                                            </a>
+                                                            <div class="actions-btn">
+                                                                <a href="#"><i class="mdi mdi-cart"></i></a>
+                                                                <a href="#" data-bs-toggle="modal"
+                                                                   data-bs-target="#quick-view"><i class="mdi mdi-eye"></i></a>
+                                                                <a href="#"><i class="mdi mdi-heart"></i></a>
+                                                            </div>
                                                         </div>
-                                                        <a href="#"><img th:src="@{/client/img/products/8.webp}" alt="Product Title" /></a>
+                                                        <div class="product-dsc">
+                                                            <p>
+                                                                <a href="#" th:text="${product.name}"></a>
+                                                            </p>
+                                                            <div class="ratting">
+                                                                <i class="mdi mdi-star"></i>
+                                                                <i class="mdi mdi-star"></i>
+                                                                <i class="mdi mdi-star"></i>
+                                                                <i class="mdi mdi-star-half"></i>
+                                                                <i class="mdi mdi-star-outline"></i>
+                                                            </div>
+                                                            <span th:text="${product.minPrice} + ' - ' + ${product.maxPrice} + ' $'"></span>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-8">
-                                                <div class="list-text">
-                                                    <h3>men’s Black t-shirt</h3>
-                                                    <span>Summer men’s fashion</span>
-                                                    <div class="ratting floatright">
-                                                        <p>( 27 Rating )</p>
-                                                        <i class="mdi mdi-star"></i>
-                                                        <i class="mdi mdi-star"></i>
-                                                        <i class="mdi mdi-star"></i>
-                                                        <i class="mdi mdi-star-half"></i>
-                                                        <i class="mdi mdi-star-outline"></i>
-                                                    </div>
-                                                    <h5><del>$79.30</del> $69.30</h5>
-                                                    <p>There are many variations of passages of Lorem Ipsum available, but the majority have be suffered alteration in some form, by injected humour, or randomised words which donot look even slightly believable. If you are going to use a passage of Lorem Ipsum, you neede be sure there isn't anything embarrassing.</p>
-                                                    <div class="list-btn">
-                                                        <a href="#">add to cart</a>
-                                                        <a href="#">wishlist</a>
-                                                        <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view">zoom</a>
-                                                    </div>
-                                                </div>
                                             </div>
                                         </div>
                                     </div>
+                                    <div th:unless="${listProducts != null}">
+                                        <p>No products found.</p>
+                                    </div>
                                 </div>
-                            </div> -->
                             </div>
                         </div>
                         <div class="row">
