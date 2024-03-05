@@ -8,6 +8,8 @@ import com.poly.datn.sd18.entity.ProductDetail;
 import java.util.List;
 
 public interface ProductDetailService {
+    List<ProductDetail> getAll();
+
     List<ProductDetailResponse> getAllByProductId(Integer productId);
 
     List<SizeResponse> getListSizeAddProductDetail(Integer productId, Integer colorId);

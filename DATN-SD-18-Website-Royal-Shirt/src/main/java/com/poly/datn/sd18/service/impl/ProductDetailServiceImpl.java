@@ -19,6 +19,11 @@ public class ProductDetailServiceImpl implements ProductDetailService {
     ProductDetailRepository productDetailRepository;
 
     @Override
+    public List<ProductDetail> getAll() {
+        return productDetailRepository.findAll();
+    }
+
+    @Override
     public List<ProductDetailResponse> getAllByProductId(Integer productId) {
         return productDetailRepository.getAllByProductId(productId);
     }
