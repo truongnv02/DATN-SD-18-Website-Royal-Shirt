@@ -129,7 +129,7 @@ function toggleStatus(checkbox) {
 }
 
 // Hàm để cập nhật biểu mẫu với dữ liệu Sản phẩm
-function updateProductForm(element) {
+function customerid(element) {
     // Sự kiện khi click sửa
     $('#thumbbox').empty();
     $("#myfileupload").html('<input type="file" id="uploadfile" name="ImageUpload" multiple onchange="readURL(this)"/>');

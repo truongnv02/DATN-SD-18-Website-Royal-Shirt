@@ -1,9 +1,11 @@
 package com.poly.datn.sd18.controller.rest;
 
 import com.poly.datn.sd18.dto.ProductDetailRequest;
+import com.poly.datn.sd18.dto.ProductResponse;
 import com.poly.datn.sd18.entity.ProductDetail;
 import com.poly.datn.sd18.exceptions.DataNotFoundException;
 import com.poly.datn.sd18.service.ProductDetailService;
+import com.poly.datn.sd18.service.ProductService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +18,9 @@ import java.util.List;
 @AllArgsConstructor
 public class ProductDetailRestController {
     ProductDetailService productDetailService;
+
+    @Autowired
+    ProductService productService;
 
     @GetMapping("")
     public ResponseEntity<List<ProductDetail>> getAllProductDetails() {
@@ -34,6 +39,10 @@ public class ProductDetailRestController {
         } catch (DataNotFoundException e) {
             return ResponseEntity.badRequest().body("Không tìm thấy sản phẩm");
         }
+    }
+    @GetMapping("1")
+    public ResponseEntity<List<ProductResponse>> getAllProductDetails1() {
+        return ResponseEntity.ok().body(productService.getAll());
     }
 
 

@@ -1,5 +1,6 @@
 // 90 %
 // globle Variable
+
 const defaultImage =
   "https://res.cloudinary.com/da30qcqmf/image/upload/v1699778968/No-Image-Placeholder.svg_jlyb5v.png";
 const token = "234a71c7-7b2c-11ee-af43-6ead57e9219a";
@@ -118,8 +119,8 @@ function formInOrder(id) {
                                                       <th>Tên sản phẩm</th>
                                                       <th>Giá</th>
                                                       <th>Số lượng</th>
-                                                      <th>Hoa văn</th>
                                                       <th>Kích thước</th>
+                                                      <th>Màu sắc</th>
                                                   </tr>
                                               </thead>
                                               <tbody></tbody>
@@ -984,7 +985,7 @@ function resetServiceShip(orderId) {
 function fillAllEmployee(orderId) {
   const thisOrder = document.getElementById(`hoaDon${orderId}`);
   var select = thisOrder.querySelector('select[name="employee"]');
-  fetch("/admin/counter/customers", {
+  fetch("/admin/rest/staffs", {
     method: "GET",
   })
     .then((res) => res.json())
@@ -1037,6 +1038,7 @@ function getFirstProductPage(orderId) {
 //load data end
 // add san pham in to order
 async function addProductIntoOrder(idorderdetail, id) {
+console.log(idorderdetail,id);
   const form = document.getElementById(`hoaDon${idorderdetail}`);
   try {
     const product = await getProductDetails(id);
@@ -1087,7 +1089,8 @@ function createProductRow(product, idorderdetail) {
         <td>
         <strong>Tên:</strong> ${product.product.name} <strong>Kích thước</strong> ${
     product.size?.name ?? ""
-  } </td>
+  }
+  </td>
         <td>${formatToVND(product.price)}</td>
         <td>
         <div class="d-flex w-100">
@@ -1263,6 +1266,7 @@ async function handleOrderSubmit(event) {
   formData.fullAddress = form.querySelector("#FullAddress").value;
   formData.specificAddress = form.querySelector("input#address").value;
   formData.note = form.querySelector("textarea#note").value;
+  console.log(formData);
 
   resetErrorElement(form.querySelector("#tenKhachHang"));
   resetErrorElement(form.querySelector("#soDienThoai"));

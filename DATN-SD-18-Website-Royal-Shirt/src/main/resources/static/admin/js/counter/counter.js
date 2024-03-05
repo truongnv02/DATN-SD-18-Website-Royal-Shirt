@@ -33,8 +33,8 @@
     today = day + ', ' + dd + '/' + mm + '/' + yyyy;
     tmp = '<span class="date"> <i class="bx bxs-calendar" ></i> ' + today + ' | <i class="fa fa-clock-o" aria-hidden="true"></i>  : ' + nowTime +
             '</span>';
-    document.getElementById("clock").innerHTML = tmp;
-    clocktime = setTimeout("time()", "1000", "Javascript");
+//    document.getElementById("clock").innerHTML = tmp;
+//    clocktime = setTimeout("time()", "1000", "Javascript");
 
     function checkTime(i) {
       if (i < 10) {
@@ -65,17 +65,17 @@
   });
 
   // Modal popup
-  var modal = document.getElementById("myModal");
-  var btn = document.getElementById("myBtn");
-  var span = document.getElementsByClassName("close")[0];
-  btn.onclick = function () {
-    modal.style.display = "block";
-  }
-  span.onclick = function () {
-    modal.style.display = "none";
-  }
-  window.onclick = function (event) {
-    if (event.target == modal) {
-      modal.style.display = "none";
-    }
-  }
+//  var modal = document.getElementById("myModal");
+//  var btn = document.getElementById("myBtn");
+//  var span = document.getElementsByClassName("close")[0];
+//  btn.onclick = function () {
+//    modal.style.display = "block";
+//  }
+//  span.onclick = function () {
+//    modal.style.display = "none";
+//  }
+//  window.onclick = function (event) {
+//    if (event.target == modal) {
+//      modal.style.display = "none";
+//    }
+//  }

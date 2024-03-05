@@ -3,10 +3,7 @@ package com.poly.datn.sd18.controller.rest;
 import com.poly.datn.sd18.service.StaffService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -17,5 +14,10 @@ public class StaffRestController {
     @PostMapping("/setStatus/{id}")
     public ResponseEntity<?> setStatusStaff(@PathVariable("id") Integer id) {
         return ResponseEntity.ok(staffService.setStatusStaff(id));
+    }
+
+    @GetMapping("")
+    public ResponseEntity<?> getStaffs() {
+        return ResponseEntity.ok(staffService.getAllStaff());
     }
 }

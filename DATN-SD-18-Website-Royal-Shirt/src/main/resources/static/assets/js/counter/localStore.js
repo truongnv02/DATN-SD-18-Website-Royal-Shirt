@@ -78,7 +78,7 @@ function removeSanPham(idhoadon, idproduct) {
 function fillAllEmployeeByValue(orderId, value) {
   const thisOrder = document.getElementById(`hoaDon${orderId}`);
   var select = thisOrder.querySelector('select[name="employee"]');
-  fetch("/admin/counter/customers", {
+  fetch("/admin/rest/staffs", {
     method: "GET",
   })
     .then((res) => res.json())
