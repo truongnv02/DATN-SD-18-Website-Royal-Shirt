@@ -17,7 +17,7 @@
     background-color: #00bb00;
 }
 
-.stt, .trang_thai, .tinh_nang {
+.stt, .phan_tram_giam, .ngay_bat_dau, .ngay_ket_thuc, .trang_thai, .tinh_nang {
     text-align: center;
     justify-content: center;
 }
@@ -78,4 +78,9 @@ input:checked + .slider:before {
     -webkit-transform: translateX(26px);
     -ms-transform: translateX(26px);
     transform: translateX(26px);
+}
+
+#phan_tram_giam::after{
+    content: attr(data-raw-value) "%";
+    width: 100%; /* Đảm bảo nằm ở cuối cùng */
 }

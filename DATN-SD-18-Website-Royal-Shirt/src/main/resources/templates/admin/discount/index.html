@@ -74,7 +74,7 @@
                                 </div>
                                 <div class="modal-body">
                                     <!-- Your form fields for discount name and description go here -->
-                                    <form id="DiscountForm">
+                                    <form id="discountForm">
                                         <div class="form-group">
                                             <label for="discountName">Tên Giảm Giá:</label>
                                             <input type="text" class="form-control" id="discountName"
@@ -82,16 +82,30 @@
                                                    placeholder="Tên giảm giá...">
                                         </div>
                                         <div class="form-group">
-                                            <label for="discountName">Phần Trăm Giảm:</label>
-                                            <input type="text" class="form-control" id="discountDiscount"
+                                            <label for="discountName">Phần Trăm Giảm(%):</label>
+                                            <input type="number" class="form-control" id="discountDiscount"
                                                    name="discountDiscount"
                                                    placeholder="Phần trăm giảm...">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="discountName">Ngày Bắt Đầu:</label>
+                                            <input type="date" class="form-control" id="discountStartDate"
+                                                   name="discountDiscount"
+                                                   placeholder="Ngày bắt đầu...">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="discountName">Ngày Kết Thúc:</label>
+                                            <input type="date" class="form-control" id="discountEndDate"
+                                                   name="discountDiscount"
+                                                   placeholder="Ngày kết thúc...">
                                         </div>
                                     </form>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-primary" onclick="saveDiscount()">Lưu</button>
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal" id="closeFormDiscount">Đóng</button>
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                                            id="closeFormDiscount">Đóng
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -104,6 +118,9 @@
                         <tr>
                             <th class="stt" width="20">STT</th>
                             <th class="ten_danh_muc">Tên Giảm Giá</th>
+                            <th class="phan_tram_giam">Phần Trăm Giảm</th>
+                            <th class="ngay_bat_dau">Ngày Bắt Đầu</th>
+                            <th class="ngay_ket_thuc">Ngày Kết Thúc</th>
                             <th class="trang_thai" width="100">Trạng Thái</th>
                             <th class="tinh_nang" width="150">Tính Năng</th>
                         </tr>
@@ -119,9 +136,15 @@
                         <tr th:each="discount, index : ${lists}">
                             <td class="stt" th:text="${index.index + 1}"></td>
                             <td class="ten_danh_muc" th:text="${discount.name}"></td>
+                            <td class="phan_tram_giam" id="phan_tram_giam" th:text="${discount.discount}"></td>
+                            <td class="ngay_bat_dau" th:text="${#dates.format(discount.startDate, 'dd-MM-yyyy')}"></td>
+                            <td class="ngay_ket_thuc" th:text="${#dates.format(discount.endDate, 'dd-MM-yyyy')}"></td>
+
                             <td class="trang_thai">
                                 <label class="switch">
-                                    <input type="checkbox" onclick="toggleStatus(this)" th:attr="data-discount-id=${discount.id},id=#{${discount.id}}" th:checked="${discount.status == 0}">
+                                    <input type="checkbox" onclick="toggleStatus(this)"
+                                           th:attr="data-discount-id=${discount.id},id=#{${discount.id}}"
+                                           th:checked="${discount.status == 0}">
                                     <span class="slider"></span>
                                 </label>
                             </td>

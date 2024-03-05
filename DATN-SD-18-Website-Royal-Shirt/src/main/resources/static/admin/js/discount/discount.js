@@ -13,18 +13,24 @@ $(document).ready(function () {
 function saveDiscount() {
     // Lấy dữ liệu từ biểu mẫu
     var discountName = $("#discountName").val().trim();
+    var discountDiscount = $("#discountDiscount").val();
+    var discountStartDate = $("#discountStartDate").val();
+    var discountEndDate = $("#discountEndDate").val();
     var currentTime = moment().format('YYYY-MM-DD');
     var status = 0;
     var discountId = $("#discountForm").attr("discount-id-update");
 
     // Check thông tin
-    if (!checkInputDiscount(discountName)) {
+    if (!checkInputDiscount(discountName, discountDiscount, discountStartDate, discountEndDate)) {
         return;
     }
 
     var dataToSend = {
         name: discountName,
-        status: status,
+        discount: discountDiscount,
+        startDate: discountStartDate,
+        endDate: discountEndDate,
+        status: status
     }
 
     // Nếu discountId tồn tại -> update, ngược lại -> add
@@ -79,9 +85,9 @@ function saveDiscount() {
 }
 
 // Check thông tin
-function checkInputDiscount(discountName) {
+function checkInputDiscount(discountName, discountDiscount, discountStartDate, discountEndDate) {
     // Kiểm tra xem các trường có rỗng không
-    if (discountName === "") {
+    if (discountName === "" || discountDiscount === "" || discountStartDate === "" || discountEndDate === "") {
         Swal.fire({
             icon: 'error',
             title: 'Lỗi!',
@@ -91,16 +97,41 @@ function checkInputDiscount(discountName) {
     }
 
     //Check Tên giảm giá
-    var nameRegex = /^[a-zA-ZÀ-ỹ\s]+$/;
-    if (!nameRegex.test(discountName)) {
+    // var nameRegex = /^[a-zA-ZÀ-ỹ\s]+$/;
+    // if (!nameRegex.test(discountName)) {
+    //     Swal.fire({
+    //         icon: 'error',
+    //         title: 'Lỗi!',
+    //         text: 'Tên giảm giá chỉ được chứa chữ cái và khoảng trắng!'
+    //     });
+    //     return false;
+    // }
+
+    var numberRegex = /^\d+$/;
+    if (!numberRegex.test(discountDiscount)) {
         Swal.fire({
             icon: 'error',
             title: 'Lỗi!',
-            text: 'Tên giảm giá chỉ được chứa chữ cái và khoảng trắng!'
+            text: 'Phần Trăm Giảm không được chứa chữ cái và ký tự đặc biệt!'
         });
         return false;
     }
-
+    if (discountDiscount <= 0 || discountDiscount >= 100) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Lỗi!',
+            text: 'Phần Trăm Giảm không hợp lệ!'
+        });
+        return false;
+    }
+    if (discountStartDate > discountEndDate) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Lỗi!',
+            text: 'Thời gian không hợp lệ!'
+        });
+        return false;
+    }
     return true;
 }
 
@@ -144,6 +175,9 @@ function updateDiscountForm(element) {
 
             // Điền dữ liệu vào các trường biểu mẫu
             $('#discountName').val(discount.name);
+            $("#discountDiscount").val(discount.discount);
+            $("#discountStartDate").val(discount.startDate);
+            $("#discountEndDate").val(discount.endDate);
 
             // Lắng nghe sự kiện đóng modal
             $('#DiscountModal').on('hidden.bs.modal', function () {
@@ -151,6 +185,9 @@ function updateDiscountForm(element) {
                 $('#discountForm').removeAttr('discount-id-update');
                 // Làm mới input
                 $('#discountName').val(null);
+                $("#discountDiscount").val(null);
+                $("#discountStartDate").val(null);
+                $("#discountEndDate").val(null);
             });
         },
         error: function (error) {
