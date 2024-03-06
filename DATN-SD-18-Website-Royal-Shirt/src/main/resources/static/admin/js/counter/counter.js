@@ -41,3 +41,4 @@ function addToCart(button) {
 function removeFromCart(button) {
     $(button).closest("tr").remove();
 }
+

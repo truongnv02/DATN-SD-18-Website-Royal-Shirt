@@ -222,3 +222,45 @@ input:checked + .slider:before {
     border-radius: 10px;
 }
 
+.tile {
+    margin-bottom: 20px;
+    /*padding: 5px;*/
+}
+
+.tile-counter {
+    padding: 5px;
+}
+
+.btn-add-counter, .btn-add-order{
+    margin: 0px;
+    height: 50px;
+}
+
+.btn-add-counter{
+    margin-left: 15px;
+    margin-right: 5px;
+}
+
+.btn-add-order{
+    margin-right: 5px;
+}
+
+.btn-active {
+    background-color: #28a745; /* Màu sắc khi button active */
+    color: #fff; /* Màu chữ khi button active */
+}
+
+#tong-cong-thanh-toan::after, #khach-hang-con-no::after {
+    content: attr(data-raw-value) " VNĐ";
+    width: 100%; /* Đảm bảo nằm ở cuối cùng */
+}
+
+#tong-cong-thanh-toan::before {
+    content: attr(data-raw-value) "= ";
+    width: 100%; /* Đảm bảo nằm ở cuối cùng */
+}
+
+#khach-hang-con-no::before {
+    content: attr(data-raw-value) "- ";
+    width: 100%; /* Đảm bảo nằm ở cuối cùng */
+}
