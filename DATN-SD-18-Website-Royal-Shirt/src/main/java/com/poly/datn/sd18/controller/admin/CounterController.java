@@ -1,6 +1,8 @@
 package com.poly.datn.sd18.controller.admin;
 
+import com.poly.datn.sd18.dto.response.ProductDetailCounterResponse;
 import com.poly.datn.sd18.entity.ProductDetail;
+import com.poly.datn.sd18.service.CounterService;
 import com.poly.datn.sd18.service.ProductDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,11 +16,11 @@ import java.util.List;
 @RequestMapping("/admin/counter")
 public class CounterController {
     @Autowired
-    ProductDetailService productDetailService;
+    CounterService counterService;
 
     @GetMapping()
     public String getAll(Model model){
-        List<ProductDetail> lists = productDetailService.getAll();
+        List<ProductDetailCounterResponse> lists = counterService.getListProductDetailCounter();
         model.addAttribute("lists",lists);
         return "/admin/counter/index";
     }

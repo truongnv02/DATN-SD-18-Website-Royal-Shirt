@@ -59,6 +59,4 @@ public interface ProductDetailRepository extends JpaRepository<ProductDetail, In
             "              AND size_id = sizes.id\n" +
             "              AND product_id = :productId)",nativeQuery = true)
     List<SizeResponse> getListSizeAddProductDetail(@Param("productId") Integer productId,@Param("colorId") Integer colorId);
-
-//    List<ProductDetailCounterResponse> getListProductDetailCounter();
 }
