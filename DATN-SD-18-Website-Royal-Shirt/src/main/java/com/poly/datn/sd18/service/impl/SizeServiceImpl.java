@@ -17,4 +17,9 @@ public class SizeServiceImpl implements SizeService {
     public List<Size> getAllSizes() {
         return sizeRepository.findAll();
     }
+
+    @Override
+    public List<Size> findDistinctByIdAndName(Integer productId) {
+        return sizeRepository.findDistinctByIdAndName(productId);
+    }
 }

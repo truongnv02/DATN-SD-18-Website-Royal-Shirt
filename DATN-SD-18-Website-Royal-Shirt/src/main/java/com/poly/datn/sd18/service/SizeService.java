@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface SizeService {
     List<Size> getAllSizes();
+    List<Size> findDistinctByIdAndName(Integer productId);
 }

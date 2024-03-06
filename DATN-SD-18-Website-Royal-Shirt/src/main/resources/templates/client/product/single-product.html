@@ -89,7 +89,6 @@
                 <div class="quick-right">
                     <div class="list-text">
                         <h3 th:text="${product.name}"></h3>
-<!--                        <span th:text="${product.category.name}"></span>-->
                         <div class="ratting floatright">
                             <p>( 27 Rating )</p>
                             <i class="mdi mdi-star"></i>
@@ -108,24 +107,24 @@
                             <div class="s-shoose">
                                 <h5>Color</h5>
                                 <div class="color-select clearfix">
-                                    <p th:each="color : ${listColor}" th:style="'background-color: ' + ${color}"></p>
+                                    <a th:each="color : ${listColor}"
+                                       th:style="'background-color: ' + ${color.name} + ';
+                                         width: 20px; height: 20px; margin-left: 5px; display: inline-block;'"
+                                       th:value="${color.id}"
+                                       class="btn"
+                                       onclick="console.log('Màu được chọn có ID là: ' + this.getAttribute('value'));"></a>
                                 </div>
                             </div>
                             <div class="s-shoose">
                                 <h5>size</h5>
                                 <div class="size-drop">
                                     <div class="btn-group">
-                                        <button type="button" class="btn">XL</button>
-                                        <button type="button" class="btn dropdown-toggle" data-bs-toggle="dropdown"
-                                                aria-haspopup="true" aria-expanded="false">
-                                            <span class=""><i class="mdi mdi-chevron-down"></i></span>
-                                        </button>
-                                        <ul class="dropdown-menu">
-                                            <li><a href="#">Xl</a></li>
-                                            <li><a href="#">SL</a></li>
-                                            <li><a href="#">S</a></li>
-                                            <li><a href="#">L</a></li>
-                                        </ul>
+                                        <select class="form-select" aria-label="Default select example">
+                                            <option th:value="null" selected>--Size--</option>
+                                            <option th:each="size : ${listSize}"
+                                                    th:value="${size.id}"
+                                                    th:text="${size.name}"></option>
+                                        </select>
                                     </div>
                                 </div>
                             </div>
@@ -616,6 +615,7 @@
 <!-- all js here -->
 <!-- jquery latest version -->
 <div th:replace="~{client/layout/script::script}"></div>
+
 </body>
 
 </html>

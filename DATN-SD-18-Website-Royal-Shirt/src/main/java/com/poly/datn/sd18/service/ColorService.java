@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface ColorService {
     List<Color> getAllColors();
+    Color findByIdColor(Integer id);
+    List<Color> getColorForProduct(Integer productId);
 }

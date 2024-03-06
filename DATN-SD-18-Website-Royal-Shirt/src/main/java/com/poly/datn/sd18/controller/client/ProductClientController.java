@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
@@ -44,10 +45,11 @@ public class ProductClientController {
     }
 
     @GetMapping("/single-product/{id}")
-    public String singleProduct(Model model, @PathVariable("id") Integer id) {
+    public String singleProduct(Model model,
+                                @PathVariable("id") Integer id) {
         Product product = productService.findProductById(id);
-        List<Size> listsSize = sizeService.getAllSizes();
-        List<Color> listsColor = colorService.getAllColors();
+        List<Color> listsColor = colorService.getColorForProduct(id);
+        List<Size> listsSize = sizeService.findDistinctByIdAndName(id);
         model.addAttribute("listSize", listsSize);
         model.addAttribute("listColor", listsColor);
         model.addAttribute("product", product);

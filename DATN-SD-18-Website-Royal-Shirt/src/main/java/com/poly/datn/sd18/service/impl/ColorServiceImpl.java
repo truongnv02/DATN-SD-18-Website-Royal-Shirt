@@ -17,4 +17,14 @@ public class ColorServiceImpl implements ColorService {
     public List<Color> getAllColors() {
         return colorRepository.findAll();
     }
+
+    @Override
+    public Color findByIdColor(Integer id) {
+        return colorRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public List<Color> getColorForProduct(Integer productId) {
+        return colorRepository.findDistinctByProductDetails_ProductId(productId);
+    }
 }
