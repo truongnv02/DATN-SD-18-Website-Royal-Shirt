@@ -99,11 +99,18 @@
                                 <td class="anh"><img th:src="${productDetail.image}" alt="Hình ảnh sản phẩm"></td>
                                 <td class="mau_sac" th:text="${productDetail.colorName}"></td>
                                 <td class="kich_thuoc" th:text="${productDetail.sizeName}"></td>
+<!--                                <td class="gia_ban" id="gia_ban"-->
+<!--                                    th:text="${productDetail.discount == 0 ?-->
+<!--                                    productDetail.price :-->
+<!--                                    (productDetail.price/100*(100 - productDetail.discount))}">-->
+<!--                                </td>-->
+
                                 <td class="gia_ban" id="gia_ban"
-                                    th:text="${productDetail.discount == 0 ?
+                                    th:text="${#numbers.formatDecimal((productDetail.discount == 0 ?
                                     productDetail.price :
-                                    (productDetail.price/100*(100 - productDetail.discount))}">
-                                </td>
+                                    (productDetail.price/100*(100 - productDetail.discount))), 0, 'POINT', 0, 'POINT')}"
+                                ></td>
+
                                 <td class="table-td-center tinh_nang">
                                     <button class="btn btn-success add-button" type="button"
                                             th:attr="data-product-detail-id=${productDetail.id},
@@ -123,9 +130,10 @@
             <div class="col-md-4">
                 <div class="tile">
                     <h3 class="tile-title">Thông tin thanh toán</h3>
+
                     <div class="row">
                         <div class="form-group col-md-12">
-                            <label class="control-label">Họ tên khách hàng</label>
+                            <label class="control-label">Họ tên khách hàng:</label>
                             <div class="d-flex">
                                 <input style="margin-right: 10px" class="form-control" type="text"
                                        placeholder="Tìm kiếm khách hàng">
@@ -134,9 +142,8 @@
                                 </button>
                             </div>
                         </div>
-
                         <div class="form-group  col-md-12">
-                            <label class="control-label">Nhân viên bán hàng</label>
+                            <label class="control-label">Nhân viên bán hàng:</label>
                             <select class="form-control" id="exampleSelect1">
                                 <option>--- Chọn nhân viên bán hàng ---</option>
                                 <option>Võ Trường</option>
@@ -146,15 +153,14 @@
                             </select>
                         </div>
                         <div class="form-group  col-md-12">
-                            <label class="control-label">Ghi chú đơn hàng</label>
+                            <label class="control-label">Ghi chú đơn hàng:</label>
                             <textarea class="form-control" rows="4" placeholder="Ghi chú thêm đơn hàng"></textarea>
                         </div>
-
                     </div>
-                    <div class="row">
 
+                    <div class="row">
                         <div class="form-group  col-md-12">
-                            <label class="control-label">Hình thức thanh toán</label>
+                            <label class="control-label">Hình thức thanh toán:</label>
                             <select class="form-control" id="exampleSelect2" required>
                                 <option>Thanh toán chuyển khoản</option>
                                 <option>Trả tiền mặt tại quầy</option>
@@ -175,7 +181,6 @@
                         <div class="tile-footer col-md-12">
                             <button class="btn btn-primary luu-san-pham" type="button"> Lưu đơn hàng</button>
                             <button class="btn btn-primary luu-va-in" type="button">Lưu và in hóa đơn</button>
-
                             <a class="btn btn-secondary luu-va-in" href="index.html">Quay về</a>
                         </div>
                     </div>

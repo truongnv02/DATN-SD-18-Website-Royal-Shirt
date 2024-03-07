@@ -1,6 +1,5 @@
 var orderTabId = 0;
 
-
 //Counter page
 function addCounterPage() {
     if (orderTabId < 5) {
