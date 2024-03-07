@@ -9,4 +9,8 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class CustomerServiceImpl implements CustomerService {
     private final CustomerRepository customerRepository;
+
+    public int countCustomer() {
+        return customerRepository.countCustomer();
+    }
 }

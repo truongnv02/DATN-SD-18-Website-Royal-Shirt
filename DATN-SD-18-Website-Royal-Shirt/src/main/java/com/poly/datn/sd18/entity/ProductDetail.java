@@ -22,13 +22,13 @@ public class ProductDetail extends BaseEntity implements Serializable {
     private Integer quantity;
 
     @Column(name = "cost")
-    private Float cost; //TODO giá nhập
+    private Float cost; // giá nhập
 
     @Column(name = "price")
-    private Float price; //TODO giá bán
+    private Float price; // giá bán
 
     @Column(name = "weight")
-    private Float weight; //TODO khối lượng của áo
+    private Float weight; // khối lượng của áo
 
     @Column(name = "status")
     private Integer status;

@@ -20,58 +20,94 @@
                 <div id="clock"></div>
             </div>
         </div>
-    </div>
+    </div> 
     <div class="row">
-        <div class="col-md-6 col-lg-6">
+        <div class="col-md-6 col-lg-3">
             <div class="widget-small primary coloured-icon"><i class='icon  bx bxs-user fa-3x'></i>
                 <div class="info">
-                    <h4>Tổng doanh thu</h4>
-                    <p><b>2400 đơn hàng / 104.890.000 đ</b></p>
+                    <h4>Tất cả doanh thu</h4>
+                    <p><b><span th:text="${countOrders == null ? '0' : countOrders} + ' đơn hàng'"></span>  / <span th:text="${totalOrders == null ? '0' : #numbers.formatDecimal(totalOrders, 0,0, 'POINT')} + ' VNĐ'"></span></b></p>
+                </div>
+            </div> 
+        </div>
+        <div class="col-md-6 col-lg-3">
+            <div class="widget-small info coloured-icon"><i class='icon bx bxs-purchase-tag-alt fa-3x'></i>
+                <div class="info">
+                    <h4>Doanh số tháng này</h4>
+                    <p><b><span th:text="${countOrdersByMonth == null ? '0' : countOrdersByMonth} + ' đơn hàng'"></span> / <span th:text="${totalOrdersByMonth == null ? '0' : #numbers.formatDecimal(totalOrdersByMonth, 0,0, 'POINT')} + ' VNĐ'"></span></b></p>
                 </div>
             </div>
         </div>
-        <div class="col-md-6 col-lg-6">
-            <div class="widget-small info coloured-icon"><i class='icon bx bxs-purchase-tag-alt fa-3x'></i>
+        <div class="col-md-6 col-lg-3">
+            <div class="widget-small primary coloured-icon"><i class='icon fa-3x bx bxs-chart'></i>
                 <div class="info">
-                    <h4>Doanh thu tháng này</h4>
-                    <p><b>120 đơn hàng / 10.000.000 đ</b></p>
+                    <h4>Doanh số hôm nay</h4>
+                    <p><b><span th:text="${countOrdersByDate == null ? '0' : countOrdersByDate} + ' đơn hàng'"></span> / <span th:text="${totalOrdersByDate == null ? '0' : #numbers.formatDecimal(totalOrdersByDate, 0,0, 'POINT')} + ' VNĐ'"></span>
+                    </b></p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-3">
+            <div class="widget-small info coloured-icon"><i class='icon fa-3x bx bxs-user-badge'></i>
+                <div class="info">
+                    <h4>Doanh số năm nay</h4>
+                    <p><b><span th:text="${countOrdersByYear == null ? '0' : countOrdersByYear} + ' đơn hàng'"></span> / <span th:text="${totalOrdersByYear == null ? '0' : #numbers.formatDecimal(totalOrdersByYear, 0,0, 'POINT')} + ' VNĐ'"></span></b></p>
                 </div>
             </div>
         </div>
     </div>
     <div class="row">
-        <div class="col-md-6 col-lg-6">
-            <div class="widget-small primary coloured-icon"><i class='icon fa-3x bx bxs-chart'></i>
+        <div class="col-md-6 col-lg-3">
+            <div class="widget-small primary coloured-icon"><i class='icon bx bxs-user-account fa-3x'></i>
                 <div class="info">
-                    <h4>Doanh thu hôm nay</h4>
-                    <p><b>3 dơn hàng / 890.000 đ</b></p>
+                    <h4>Số khách hàng</h4>
+                    <p><b><span th:text="${countCustomer == null ? '0' : countCustomer} + ' khách hàng'"></span></b></p>
+                    <p class="info-tong">Tổng số khách hàng được quản lý.</p>
                 </div>
             </div>
         </div>
-        <div class="col-md-6 col-lg-6">
-            <div class="widget-small info coloured-icon"><i class='icon fa-3x bx bxs-user-badge'></i>
+        <!-- col-6 -->
+        <div class="col-md-6 col-lg-3">
+            <div class="widget-small info coloured-icon"><i class='icon bx bxs-data fa-3x'></i>
                 <div class="info">
-                    <h4>Doanh thu năm nay</h4>
-                    <p><b>1300 dơn hàng / 58.090.000 đ</b></p>
+                    <h4>Tổng sản phẩm</h4>
+                    <p><b><span th:text="${countOrder == null ? '0' : countOrder} + ' sản phẩm'"></span></b></p>
+                    <p class="info-tong">Tổng số sản phẩm được quản lý.</p>
+                </div>
+            </div>
+        </div>
+        <!-- col-6 -->
+        <div class="col-md-6 col-lg-3">
+            <div class="widget-small warning coloured-icon"><i class='icon bx bxs-shopping-bags fa-3x'></i>
+                <div class="info">
+                    <h4>Tổng đơn hàng</h4>
+                    <p><b><span th:text="${countOrdersByMonth == null ? '0' : countOrdersByMonth} + ' đơn hàng'"></span></b></p>
+                    <p class="info-tong">Tổng số hóa đơn bán hàng trong tháng.</p>
+                </div>
+            </div>
+        </div>
+        <!-- col-6 -->
+        <div class="col-md-6 col-lg-3">
+            <div class="widget-small danger coloured-icon"><i class='icon bx bxs-error-alt fa-3x'></i>
+                <div class="info">
+                    <h4>Sắp hết hàng</h4>
+                    <p><b><span th:text="${countProduct == null ? '0' : countProduct} + ' sản phẩm'"></span></b></p>
+                    <p class="info-tong">Số sản phẩm cảnh báo hết cần nhập thêm.</p>
                 </div>
             </div>
         </div>
     </div>
 
     <div class="row">
-        <div class="col-md-6">
-            <div class="tile">
-                <h3 class="tile-title">DỮ LIỆU HÀNG THÁNG</h3>
-                <div class="embed-responsive embed-responsive-16by9">
-                    <canvas class="embed-responsive-item" id="lineChartDemo"></canvas>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6">
+        <div class="col-sm-12">
             <div class="tile">
                 <h3 class="tile-title">THỐNG KÊ DOANH SỐ</h3>
+                <div class="d-flex">
+                   <div class="d-flex justify-content-between align-items-center"> <div style="width: 35px; height: 15px; background-color: brown;"></div> &nbsp; Số đơn hàng đã bán</div> &nbsp; &nbsp;
+                   <div class="d-flex justify-content-between align-items-center"> <div style="width: 35px; height: 15px; background-color: rgba(204, 102, 0)"></div> &nbsp; Số sản phẩm đã bán</div>
+                </div>
                 <div class="embed-responsive embed-responsive-16by9">
-                    <canvas class="embed-responsive-item" id="barChartDemo"></canvas>
+                    <canvas style="height: 550px !important;" class="embed-responsive-item" id="barChartDemo"></canvas>
                 </div>
             </div>
         </div>
@@ -93,35 +129,11 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            <td>71309005</td>
-                            <td>Bàn ăn gỗ Theresa</td>
-                            <td>5.600.000 đ</td>
-                            <td>Bàn ăn</td>
-                        </tr>
-                        <tr>
-                            <td>62304003</td>
-                            <td>Bàn ăn Vitali mặt đá</td>
-                            <td>33.235.000 đ</td>
-                            <td>Bàn ăn</td>
-                        </tr>
-                        <tr>
-                            <td>72109004</td>
-                            <td>Ghế làm việc Zuno</td>
-                            <td>3.800.000 đ</td>
-                            <td>Ghế gỗ</td>
-                        </tr>
-                        <tr>
-                            <td>83826226</td>
-                            <td>Tủ ly - tủ bát</td>
-                            <td>2.450.000 đ</td>
-                            <td>Tủ</td>
-                        </tr>
-                        <tr>
-                            <td>71304041</td>
-                            <td>Bàn ăn mở rộng Vegas</td>
-                            <td>21.550.000 đ</td>
-                            <td>Bàn thông minh</td>
+                        <tr th:each="h : ${hotSelling}">
+                            <td th:text="${h[0]}"></td>
+                            <td th:text="${h[1]}">Bàn ăn gỗ Theresa</td>
+                            <td th:text="${h[4]}">5.600.000 đ</td>
+                            <td th:text="${h[3]}">Bàn ăn</td>
                         </tr>
                         </tbody>
                     </table>
@@ -141,31 +153,18 @@
                         <tr>
                             <th>Mã sản phẩm</th>
                             <th>Tên sản phẩm</th>
-                            <th>Ảnh</th>
                             <th>Số lượng</th>
                             <th>Tình trạng</th>
                             <th>Giá tiền</th>
-                            <th>Danh mục</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            <td>83826226</td>
-                            <td>Tủ ly - tủ bát</td>
-                            <td><img src="/img-sanpham/tu.jpg" alt="" width="100px;"></td>
-                            <td>0</td>
-                            <td><span class="badge bg-danger">Hết hàng</span></td>
-                            <td>2.450.000 đ</td>
-                            <td>Tủ</td>
-                        </tr>
-                        <tr>
-                            <td>83826226</td>
-                            <td>Tủ ly - tủ bát</td>
-                            <td><img src="/img-sanpham/tu.jpg" alt="" width="100px;"></td>
-                            <td>0</td>
-                            <td><span class="badge bg-danger">Hết hàng</span></td>
-                            <td>2.450.000 đ</td>
-                            <td>Tủ</td>
+                        <tr th:each="product : ${listProduct}">
+                            <td th:text="${product.product.id}"></td>
+                            <td th:text="${product.product.name}"></td>
+                            <td th:text="${product.quantity}"></td>
+                            <td th:text="${product.product.status == 1 ? 'Hết hàng' : 'Còn hàng'}"></td>
+                            <td th:text="${product.price}"></td>
                         </tr>
                         </tbody>
                     </table>
@@ -188,36 +187,47 @@
 <script type="text/javascript">$('#sampleTable2').DataTable();</script>
 <!-- Page specific javascripts-->
 <script type="text/javascript" src="/admin/doc/js/plugins/chart.js"></script>
-<script type="text/javascript">
+<script th:inline="javascript">
+    //Nhận dữ liệu từ mảng thống kê số đơn hàng
+    var soDonHang = /*[[${thongkedonhang}]]*/ null;
+    var donhang = [];
+    //Duyệt qua vòng lặp để lấy ra các phần tử ghi số liệu
+    for (var i = 0; i < soDonHang.length; i++) {
+        donhang.push(soDonHang[i][1])
+		}
+
+    //Tương tự ở trên
+    var soSanPham = /*[[${thongKeSoSanPham}]]*/ null;
+    var sanpham = [];
+    
+    for (var i = 0; i < soSanPham.length; i++) {
+        sanpham.push(soSanPham[i][1])
+		}
+        
     var data = {
         labels: ["Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5", "Tháng 6", "Tháng 7", "Tháng 8", "Tháng 9", "Tháng 10", "Tháng 11", "Tháng 12"],
         datasets: [{
-            label: "Dữ liệu đầu tiên",
-            fillColor: "rgba(255, 255, 255, 0.158)",
-            strokeColor: "black",
-            pointColor: "rgb(220, 64, 59)",
+            label: "Số đơn hàng",
+            fillColor: "rgba(153, 0, 0)",
+            strokeColor: "rgb(120, 64, 59)",
+            pointColor: "rgb(120, 64, 59)",
             pointStrokeColor: "#fff",
             pointHighlightFill: "#fff",
             pointHighlightStroke: "green",
-            data: [20, 59, 90, 51, 56, 100, 40, 60, 78, 53, 33, 81]
+            data: donhang
         },
             {
-                label: "Dữ liệu kế tiếp",
-                fillColor: "rgba(255, 255, 255, 0.158)",
+                label: "Số sản phẩm",
+                fillColor: "rgba(204, 102, 0)",
                 strokeColor: "rgb(220, 64, 59)",
                 pointColor: "black",
                 pointStrokeColor: "#fff",
                 pointHighlightFill: "#fff",
                 pointHighlightStroke: "green",
-                data: [48, 48, 49, 39, 86, 10, 50, 70, 60, 70, 75, 90]
+                data: sanpham
             }
         ]
     };
-
-
-    var ctxl = $("#lineChartDemo").get(0).getContext("2d");
-    var lineChart = new Chart(ctxl).Line(data);
-
     var ctxb = $("#barChartDemo").get(0).getContext("2d");
     var barChart = new Chart(ctxb).Bar(data);
 </script>
