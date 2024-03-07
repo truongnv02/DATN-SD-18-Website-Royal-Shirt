@@ -28,7 +28,7 @@ public class Order extends BaseEntity implements Serializable {
     @Column(name = "total_price")
     private Float totalPrice;
 
-    @Column(name = "ship_cost   ")
+    @Column(name = "ship_cost")
     private Float shipCost;
 
     @Column(name = "note")

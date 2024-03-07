@@ -231,17 +231,17 @@ input:checked + .slider:before {
     padding: 5px;
 }
 
-.btn-add-counter, .btn-add-order{
+.btn-add-counter, .btn-add-order {
     margin: 0px;
     height: 50px;
 }
 
-.btn-add-counter{
+.btn-add-counter {
     margin-left: 15px;
     margin-right: 5px;
 }
 
-.btn-add-order{
+.btn-add-order {
     margin-right: 5px;
 }
 
@@ -250,7 +250,7 @@ input:checked + .slider:before {
     color: #fff; /* Màu chữ khi button active */
 }
 
-#tong-cong-thanh-toan::after, #khach-hang-con-no::after {
+#tong-cong-thanh-toan::after, #tra-lai-khach::after, #khach-hang-con-thieu::after {
     content: attr(data-raw-value) " VNĐ";
     width: 100%; /* Đảm bảo nằm ở cuối cùng */
 }
@@ -260,7 +260,29 @@ input:checked + .slider:before {
     width: 100%; /* Đảm bảo nằm ở cuối cùng */
 }
 
-#khach-hang-con-no::before {
-    content: attr(data-raw-value) "- ";
+#tra-lai-khach::before {
+    content: attr(data-raw-value) "= ";
     width: 100%; /* Đảm bảo nằm ở cuối cùng */
+}
+
+#khach-hang-con-thieu::before {
+    content: attr(data-raw-value) "= ";
+    width: 100%; /* Đảm bảo nằm ở cuối cùng */
+}
+
+#tra-lai-khach {
+    color: #ffa702;
+}
+
+.selectize-input {
+    height: 45px;
+    display: flex;
+}
+
+.item {
+    align-self: center;
+}
+
+.btn-them {
+    margin-left: 5px;
 }
