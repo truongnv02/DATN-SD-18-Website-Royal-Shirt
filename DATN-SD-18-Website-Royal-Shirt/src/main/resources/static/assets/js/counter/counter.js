@@ -1505,7 +1505,7 @@ async function thanhtoan(formValuesJSON, idform) {
       }
       return;
     } else {
-      printBill(data.id);
+      printBill(data.order.id);
       handleOrderSuccess(idform);
     }
   } catch (error) {
@@ -1514,32 +1514,31 @@ async function thanhtoan(formValuesJSON, idform) {
 }
 function printBill(id) {
   axios
-    .get(`/admin/api/bill/${id}`)
+    .get(`/admin/counter/bill/${id}`)
     .then((response) => {
       const billData = response.data;
       console.log(billData);
-      $("#bill #billcode").text(billData.code);
-      $("#bill #customername").text(billData.customer_name);
-      $("#bill #phonenumber").text(billData.phone);
-      $("#bill #fulladdress").text(billData.address);
+      $("#bill #billcode").text(billData.order.id);
+      $("#bill #customername").text(billData.order.username);
+      $("#bill #phonenumber").text(billData.order.phone);
+      $("#bill #fulladdress").text(billData.order.address);
       // Update employee information
-      $("#bill #hoadoncode").text(billData.code);
-      $("#bill #employename").text(billData.employee?.name);
-      $("#bill #orderstatus").html(getStatusBadge(billData.status)); // Assuming orderstatus is a property in your billData
+      $("#bill #employename").text(billData.order.staff?.name);
+      $("#bill #orderstatus").html(getStatusBadge(billData.order.status)); // Assuming orderstatus is a property in your billData
       // Assuming ordertype is a property in your billData
-      if (billData.loaiDon === 0) {
-        $("#bill #ordertype").text("tại quầy");
-      } else if (billData.loaiDon === 1) {
-        $("#bill #ordertype").text("Online");
-      }
+      // if (billData.loaiDon === 0) {
+      //   $("#bill #ordertype").text("tại quầy");
+      // } else if (billData.loaiDon === 1) {
+      //   $("#bill #ordertype").text("Online");
+      // }
       // Update table with product details
       const productsTable = $("#bill #sanphaminbill");
       productsTable.empty(); // Clear existing rows
-      billData.billDetail.forEach((product, index) => {
+      billData.order_details.forEach((product, index) => {
         const row = `<tr>
                   <th scope="row">${index + 1}</th>
-                  <td>${product.productDetail.name}</td>
-                  <td>${product.quantity}</td>
+                  <td>${product.productDetail.product.name}</td>
+                  <td>${product.productDetail.quantity}</td>
                   <td>${formatToVND(product.productDetail.price)}</td>
                   <td>${formatToVND(
                     product.quantity * product.productDetail.price
@@ -1548,10 +1547,10 @@ function printBill(id) {
         productsTable.append(row);
       });
       $("#bill #note").text(billData.note);
-      $("#bill #total-products").text(formatToVND(billData.total_money));
-      $("#bill #discount").text(formatToVND(billData.reduction_amount));
-      $("#bill #shipping-cost").text(formatToVND(billData.money_ship));
-      $("#bill #total-price").text(formatToVND(billData.deposit));
+      $("#bill #total-products").text(formatToVND(billData.order.totalPrice));
+      // $("#bill #discount").text(formatToVND(billData.reduction_amount));
+      // $("#bill #shipping-cost").text(formatToVND(billData.money_ship));
+      $("#bill #total-price").text(formatToVND(billData.order.totalPrice));
       $("#billPrint").modal("show");
     })
     .catch((error) => {

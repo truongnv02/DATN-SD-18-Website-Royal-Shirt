@@ -1,11 +1,12 @@
 package com.poly.datn.sd18.controller.rest;
 
 import com.poly.datn.sd18.entity.Customer;
+import com.poly.datn.sd18.entity.Order;
 import com.poly.datn.sd18.exceptions.DataNotFoundException;
+import com.poly.datn.sd18.requests.OrderCounterRequest;
 import com.poly.datn.sd18.service.CustomerService;
-import lombok.AllArgsConstructor;
+import com.poly.datn.sd18.service.OrderService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,11 +14,12 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/admin/counter")
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class CounterRestController {
 
 
-    CustomerService customerService;
+    private final CustomerService customerService;
+    private final OrderService orderService;
 
     @PostMapping("/add-bill")
     public ResponseEntity<?> addBill() {
@@ -30,9 +32,25 @@ public class CounterRestController {
     }
 
     @PostMapping("/checkout")
-    public ResponseEntity<?> checkOut() {
-        return null;
+    public ResponseEntity<?> checkOut(@RequestBody OrderCounterRequest orderCounterRequest) {
+        try {
+            System.out.println("Handle checkout");
+            System.out.println(orderCounterRequest.toString());
+            return ResponseEntity.ok(orderService.createOrder(orderCounterRequest));
+        } catch (DataNotFoundException e) {
+            return ResponseEntity.badRequest().body("Something wrong when save bill");
+        }
     }
+
+    @GetMapping("/bill/{id}")
+    public ResponseEntity<?> getBill(@PathVariable("id") Integer orderId) {
+        try {
+            return ResponseEntity.ok(orderService.getBill(orderId));
+        } catch (DataNotFoundException e) {
+            return ResponseEntity.badRequest().body("Something wrong!");
+        }
+    }
+
     @GetMapping("customers/search")
     public ResponseEntity<List<Customer>> getAllCustomer(@RequestParam("searchtext") String searchtext) {
         return ResponseEntity.ok().body(customerService.searchEmployees(searchtext));

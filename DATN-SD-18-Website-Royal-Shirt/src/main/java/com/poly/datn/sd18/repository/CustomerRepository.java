@@ -14,6 +14,9 @@ import java.util.UUID;
 public interface CustomerRepository extends JpaRepository<Customer, Integer> {
 
     @Query(value = "SELECT cus FROM Customer cus WHERE LOWER(cus.name) LIKE CONCAT('%', :searchText, '%') OR LOWER(cus.phone) LIKE CONCAT('%', :searchText, '%')")
-    public List<Customer> searchByText(@Param("searchText") String searchText);
+    List<Customer> searchByText(@Param("searchText") String searchText);
 //    Optional<Customer> findByAccountId(Integer accountId);
+
+    Optional<Customer> findCustomerByName(String customerName);
+
 }
