@@ -48,4 +48,7 @@ public class ProductDetail extends BaseEntity implements Serializable {
 
     @OneToMany(mappedBy = "productDetail")
     private List<Evaluate> evaluates;
+
+    @OneToMany(mappedBy = "productDetail")
+    private List<CartDetail> cartDetails;
 }

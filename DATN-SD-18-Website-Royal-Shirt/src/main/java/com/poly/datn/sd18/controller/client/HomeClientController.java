@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class HomeClientController {
 
-    @GetMapping("/")
+    @GetMapping("")
     public String homeClient() {
         return "client/index";
     }

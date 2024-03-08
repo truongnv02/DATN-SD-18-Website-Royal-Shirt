@@ -72,4 +72,10 @@ public class LoginClientController {
             return "client/login/login";
         }
     }
+
+    @GetMapping("/logout")
+    public String logout() {
+        session.removeAttribute("customer");
+        return "redirect:/";
+    }
 }

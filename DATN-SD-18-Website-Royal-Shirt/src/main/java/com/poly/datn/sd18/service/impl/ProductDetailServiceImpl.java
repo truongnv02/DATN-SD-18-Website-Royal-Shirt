@@ -27,4 +27,16 @@ public class ProductDetailServiceImpl implements ProductDetailService {
 
         return null;
     }
+
+    @Override
+    public ProductDetail findByProductIdAndColorIdAndSizeId(Integer productId,
+                                                                    Integer colorId,
+                                                                    Integer sizeId) {
+        return productDetailRepository.findByProductIdAndColorIdAndSizeId(productId, colorId, sizeId);
+    }
+
+    @Override
+    public ProductDetail findProductDetailById(Integer id) {
+        return productDetailRepository.findById(id).orElse(null);
+    }
 }

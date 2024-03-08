@@ -22,4 +22,9 @@ public class SizeServiceImpl implements SizeService {
     public List<Size> findDistinctByIdAndName(Integer productId) {
         return sizeRepository.findDistinctByIdAndName(productId);
     }
+
+    @Override
+    public Size findSizeById(Integer id) {
+        return sizeRepository.findById(id).orElse(null);
+    }
 }

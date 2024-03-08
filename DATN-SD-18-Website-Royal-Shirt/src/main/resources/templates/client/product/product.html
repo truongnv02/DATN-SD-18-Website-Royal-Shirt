@@ -140,7 +140,8 @@
                                     <div th:if="${listProducts != null}">
                                         <div class="row">
                                             <div class="col-md-6 col-lg-4 mb-4" th:each="product : ${listProducts}">
-                                                <div class="single-product">
+                                                <form action="" method="post">
+                                                    <div class="single-product">
                                                         <div class="product-img">
                                                             <div class="pro-type">
                                                                 <span>-15</span>
@@ -159,7 +160,7 @@
                                                         <div class="product-dsc">
                                                             <p>
                                                                 <a th:href="@{/single-product/{id}(id=${product.id})}"
-                                                                   >[[${product.name}]]</a>
+                                                                >[[${product.name}]]</a>
                                                             </p>
                                                             <div class="ratting">
                                                                 <i class="mdi mdi-star"></i>
@@ -171,6 +172,7 @@
                                                             <span th:text="${product.minPrice} + ' - ' + ${product.maxPrice} + ' $'"></span>
                                                         </div>
                                                     </div>
+                                                </form>
                                             </div>
                                         </div>
                                     </div>
