@@ -5,6 +5,7 @@ import lombok.*;
 
 import java.io.Serializable;
 import java.sql.Date;
+import java.time.LocalDateTime;
 
 @Setter
 @Getter
@@ -50,7 +51,7 @@ public class Order extends BaseEntity implements Serializable {
     private Date shipDate;
 
     @Column(name = "success_date")
-    private Date successDate;
+    private LocalDateTime successDate;
 
     @ManyToOne
     @JoinColumn(name = "staff_id", referencedColumnName = "id")

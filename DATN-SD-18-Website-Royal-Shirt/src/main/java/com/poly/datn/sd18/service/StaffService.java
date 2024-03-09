@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface StaffService {
     List<Staff> getAllActive();
+    Staff findById(Integer id);
 }

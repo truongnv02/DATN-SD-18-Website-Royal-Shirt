@@ -6,6 +6,7 @@ public interface ProductDetailCounterResponse {
     String getImage();
     String getColorName();
     String getSizeName();
+    Integer getQuantity();
     Float getPrice();
     Integer getDiscount();
 }

@@ -80,13 +80,14 @@
                                id="sampleTable">
                             <thead>
                             <tr>
-                                <th class="stt" width="20">STT</th>
-                                <th class="ten_san_pham" width="180">Tên Sản Phẩm</th>
-                                <th class="anh" width="80">Ảnh</th>
-                                <th class="mau_sac" width="70">Màu Sắc</th>
-                                <th class="kich_thuoc" width="70">Size</th>
-                                <th class="gia_ban" width="130">Giá Bán</th>
-                                <th class="tinh_nang" width="80">Tính Năng</th>
+                                <th class="stt">STT</th>
+                                <th class="ten_san_pham">Tên Sản Phẩm</th>
+                                <th class="anh">Ảnh</th>
+                                <th class="mau_sac">Màu Sắc</th>
+                                <th class="kich_thuoc">Size</th>
+                                <th class="so_luong">Số Lượng</th>
+                                <th class="gia_ban">Giá Bán</th>
+                                <th class="tinh_nang">Tính Năng</th>
                             </tr>
                             </thead>
 
@@ -103,12 +104,7 @@
                                 <td class="anh"><img th:src="${productDetail.image}" alt="Hình ảnh sản phẩm"></td>
                                 <td class="mau_sac" th:text="${productDetail.colorName}"></td>
                                 <td class="kich_thuoc" th:text="${productDetail.sizeName}"></td>
-                                <!--                                <td class="gia_ban" id="gia_ban"-->
-                                <!--                                    th:text="${productDetail.discount == 0 ?-->
-                                <!--                                    productDetail.price :-->
-                                <!--                                    (productDetail.price/100*(100 - productDetail.discount))}">-->
-                                <!--                                </td>-->
-
+                                <td class="so_luong" th:text="${productDetail.quantity}"></td>
                                 <td class="gia_ban" id="gia_ban"
                                     th:text="${#numbers.formatDecimal((productDetail.discount == 0 ?
                                     productDetail.price :
@@ -151,7 +147,7 @@
                         </div>
                         <div class="form-group  col-md-12">
                             <label class="control-label">Nhân viên bán hàng:</label>
-                            <select class="form-control">
+                            <select class="form-control" id="select-staff">
                                 <option value="" disabled selected hidden>--- Chọn nhân viên bán hàng ---</option>
                                 <option th:each="staff : ${listStaff}" th:value="${staff.id}"
                                         th:text="${staff.name}"></option>
@@ -159,16 +155,16 @@
                         </div>
                         <div class="form-group  col-md-12">
                             <label class="control-label">Ghi chú đơn hàng:</label>
-                            <textarea class="form-control" rows="4" placeholder="Ghi chú thêm đơn hàng"></textarea>
+                            <textarea id="input-note" class="form-control" rows="4" placeholder="Ghi chú thêm đơn hàng"></textarea>
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="form-group  col-md-12">
                             <label class="control-label">Hình thức thanh toán:</label>
-                            <select class="form-control" id="exampleSelect2" required>
-                                <option value="0">Trả tiền mặt tại quầy</option>
-                                <option value="1">Thanh toán chuyển khoản</option>
+                            <select class="form-control" id="select-shopping" required>
+                                <option value="Trả tiền mặt tại quầy">Trả tiền mặt tại quầy</option>
+                                <option value="Thanh toán chuyển khoản">Thanh toán chuyển khoản</option>
                             </select>
                         </div>
                         <div class="form-group col-md-12">
@@ -189,7 +185,7 @@
                             <p class="control-all-money" id="khach-hang-con-thieu">0</p>
                         </div>
                         <div class="tile-footer col-md-12">
-                            <button class="btn btn-primary luu-san-pham" type="button"> Lưu đơn hàng</button>
+                            <button class="btn btn-primary luu-san-pham" type="button" onclick="saveOrder()"> Lưu đơn hàng</button>
                             <button class="btn btn-primary luu-va-in" type="button">Lưu và in hóa đơn</button>
                             <a class="btn btn-secondary luu-va-in" href="index.html">Quay về</a>
                         </div>

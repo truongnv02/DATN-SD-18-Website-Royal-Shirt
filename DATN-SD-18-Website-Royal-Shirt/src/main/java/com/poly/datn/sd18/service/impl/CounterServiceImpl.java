@@ -1,6 +1,7 @@
 package com.poly.datn.sd18.service.impl;
 
 import com.poly.datn.sd18.dto.response.ProductDetailCounterResponse;
+import com.poly.datn.sd18.entity.ProductDetail;
 import com.poly.datn.sd18.repository.CounterRepository;
 import com.poly.datn.sd18.service.CounterService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,5 +17,10 @@ public class CounterServiceImpl implements CounterService {
     @Override
     public List<ProductDetailCounterResponse> getListProductDetailCounter() {
         return counterRepository.getListProductDetailCounter();
+    }
+
+    @Override
+    public ProductDetail updateQuantity(Integer quantity, Integer idProductDetail) {
+        return counterRepository.updateQuantity(quantity,idProductDetail);
     }
 }

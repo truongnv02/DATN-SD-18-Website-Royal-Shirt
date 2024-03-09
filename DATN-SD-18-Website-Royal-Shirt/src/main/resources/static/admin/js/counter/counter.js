@@ -175,8 +175,8 @@ function addToCart(button) {
     var productImage = $(button).closest("tr").find(".anh img").attr("src");
     var productColor = $(button).closest("tr").find(".mau_sac").text();
     var productSize = $(button).closest("tr").find(".kich_thuoc").text();
+    var productQuantity = $(button).closest("tr").find(".so_luong").text();
     var productPrice = $(button).closest("tr").find(".gia_ban").text();
-
 
     // Kiểm tra xem sản phẩm đã có trong giỏ hàng chưa
     var existingRow = $("#cartTable").find("tr[data-product-detail-id='" + productDetailId + "']");
@@ -184,8 +184,13 @@ function addToCart(button) {
     if (existingRow.length > 0) {
         // Tăng số lượng nếu đã có trong giỏ hàng
         var quantity = parseInt(existingRow.find(".so_luong input").val()) + 1;
-        existingRow.find(".so_luong input").val(quantity);
 
+        if(!checkQuantityAddToCart(quantity, productQuantity)){
+            return;
+        }
+
+        existingRow.find(".so_luong input").val(quantity);
+        existingRow.find(".so_luong input").attr("previous-quantity",quantity);
         // Cập nhật số lượng trong listProductCart
         var existingProduct = listProductCart.find(function (product) {
             return product.id === productDetailId;
@@ -203,12 +208,11 @@ function addToCart(button) {
             "<td class='anh'><img src='" + productImage + "' alt='Hình ảnh sản phẩm'></td>" +
             "<td class='mau_sac'>" + productColor + "</td>" +
             "<td class='kich_thuoc'>" + productSize + "</td>" +
-            "<td class='so_luong' data-quantity='" + quantity + "'><input class='input_so_luong' type='number' value='" + quantity + "' min='1' onchange='updateQuantity(this)'></td>" +
+            "<td class='so_luong' data-quantity='" + quantity + "'><input class='input_so_luong' type='number' value='" + quantity + "' min='1' onchange='updateQuantity(this," + productQuantity + ")' previous-quantity='" + quantity + "'></td>" +
             "<td class='gia_ban' id='gia_ban'>" + productPrice + "</td>" +
             "<td class='tinh_nang'><button class='btn btn-danger remove-button' onclick='removeFromCart(this)'><i class='fa-solid fa-minus fa-2xl remove-icon'></i></button></td>" +
             "</tr>";
         $("#cartTable").append(newRow);
-
         var productCart = {
             id: productDetailId,
             quantity: quantity,
@@ -217,14 +221,37 @@ function addToCart(button) {
 
         listProductCart.push(productCart);
     }
+
     getTotalPrice();
     console.log(listProductCart);
 }
 
-function updateQuantity(input) {
+function checkQuantityAddToCart(quantity, productQuantity){
+    if(quantity > productQuantity){
+        Swal.fire({
+            icon: 'error',
+            title: 'Lỗi!',
+            text: 'Vượt số lượng sản phẩm!'
+        });
+        return false;
+    }
+    return true;
+}
+
+function updateQuantity(input,productQuantity) {
     var row = $(input).closest("tr");
     var productDetailId = row.data("product-detail-id");
     var newQuantity = parseInt($(input).val());
+
+    var previousQuantity = row.find(".so_luong input").attr("previous-quantity");
+
+    if (!checkQuantityAddToCart(newQuantity, productQuantity)) {
+        // Đặt lại giá trị trường nhập liệu về số lượng trước nếu kiểm tra thất bại
+        $(input).val(previousQuantity);
+        return;
+    }
+
+    row.find(".so_luong input").attr("previous-quantity",newQuantity);
 
     // Cập nhật số lượng trong giỏ hàng
     row.find(".so_luong input").val(newQuantity);
@@ -292,6 +319,136 @@ function tinhNo() {
     }
 }
 
+function saveOrder(){
+    if(listProductCart.length === 0){
+        Swal.fire({
+            icon: 'error',
+            title: 'Lỗi!',
+            text: 'Giỏ hàng trống!'
+        });
+        return;
+    }
+
+    var staffId = $("#select-staff").val();
+    var customerId = $("#select-customer").val();
+    // var totalPrice = totalPrice;
+    var note = $("#input-note").val();
+    var shopping = $("#select-shopping").val()
+    var status = 0;
+    var successDate = moment().format("YYYY-MM-DDTHH:mm:ss");
+
+    if(!checkInputSaveOrder(staffId,customerId,totalPrice,shopping)){
+        return;
+    }
+
+    var dataToSend = {
+        staffId: staffId,
+        customerId: customerId,
+        totalPrice: totalPrice,
+        note: note,
+        shopping: shopping,
+        status: status,
+        successDate: successDate,
+    }
+
+    // Gửi yêu cầu AJAX
+    $.ajax({
+        type: "POST",
+        url: "/admin/rest/orderCounter/add",
+        contentType: "application/json",
+        data: JSON.stringify(dataToSend),
+        success: function (response) {
+            console.log("Lưu Hóa đơn thành công!");
+            var orderId = response.id;
+
+            if(!saveOrderDetail(orderId)){
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi!',
+                    text: 'Có lỗi xảy ra khi lưu Danh sách hóa đơn chi tiết!'
+                });
+                return;
+            }
+
+            Swal.fire({
+                icon: 'success',
+                title: 'Thành công!',
+                text: 'Lưu Hóa đơn thành công!',
+                didClose: function () {
+                    // window.location.href = "/admin/product";
+                }
+            });
+        },
+        error: function (error) {
+            console.error("Lỗi khi lưu Hóa đơn:", error);
+
+            Swal.fire({
+                icon: 'error',
+                title: 'Lỗi!',
+                text: 'Có lỗi xảy ra khi lưu Hóa đơn!'
+            });
+        }
+    });
+
+}
+
+function checkInputSaveOrder(staffId,customerId,totalPrice,shopping){
+    if(staffId === "" || customerId === "" || totalPrice === "" || shopping === ""){
+        Swal.fire({
+            icon: 'error',
+            title: 'Lỗi!',
+            text: 'Vui lòng chọn đầy đủ thông tin!'
+        });
+        return false;
+    }
+
+    if(!checkPrice()){
+        return false;
+    }
+
+    return true;
+}
+
+function checkPrice(){
+    var tienNo = $("#khach-hang-dua-tien").val() - totalPrice;
+    if (tienNo < 0){
+        Swal.fire({
+            icon: 'error',
+            title: 'Lỗi!',
+            text: 'Khách hàng chưa trả đủ tiền!'
+        });
+        return false;
+    }
+    return true;
+}
+
+function saveOrderDetail(orderId){
+    for (var i = 0; i < listProductCart.length; i++) {
+        var dataToSend = {
+            orderId: orderId,
+            productDetailId: listProductCart[i].id,
+            quantity: listProductCart[i].quantity,
+            price: listProductCart[i].price,
+            status: 0
+        }
+
+        // Gửi yêu cầu AJAX
+        $.ajax({
+            type: "POST",
+            url: "/admin/rest/orderDetailCounter/add",
+            contentType: "application/json",
+            data: JSON.stringify(dataToSend),
+            success: function (response) {
+                console.log("Lưu Hóa đơn chi tiết thành công!");
+            },
+            error: function (error) {
+                console.error("Lỗi khi lưu Hóa đơn chi tiết:", error);
+                return false;
+            }
+        });
+    }
+    return true;
+}
 
 
 

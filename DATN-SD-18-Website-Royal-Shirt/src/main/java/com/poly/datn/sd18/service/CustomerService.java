@@ -10,4 +10,6 @@ public interface CustomerService {
     Customer add(Customer customer);
 
     List<Customer> findByPhone(String phone);
+
+    Customer findById(Integer id);
 }

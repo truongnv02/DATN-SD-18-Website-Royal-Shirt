@@ -29,4 +29,9 @@ public class CustomerServiceImpl implements CustomerService {
     public List<Customer> findByPhone(String phone) {
         return customerRepository.findByPhone(phone);
     }
+
+    @Override
+    public Customer findById(Integer id) {
+        return customerRepository.findById(id).get();
+    }
 }

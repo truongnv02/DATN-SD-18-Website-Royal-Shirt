@@ -4,6 +4,7 @@ import com.poly.datn.sd18.dto.response.ProductDetailCounterResponse;
 import com.poly.datn.sd18.entity.ProductDetail;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -33,6 +34,7 @@ public interface CounterRepository extends JpaRepository<ProductDetail, Integer>
             "    ImagesOrder.url_image as image,\n" +
             "    dbo.colors.name AS colorName,\n" +
             "    dbo.sizes.name AS sizeName,\n" +
+            "    dbo.product_details.quantity AS quantity,\n" +
             "    dbo.product_details.price AS price,\n" +
             "    COALESCE(dbo.discounts.discount, 0) AS discount\n" +
             "FROM   \n" +
@@ -49,6 +51,7 @@ public interface CounterRepository extends JpaRepository<ProductDetail, Integer>
             "    ImagesOrder.url_image,\n" +
             "    dbo.colors.name,\n" +
             "    dbo.sizes.name,\n" +
+            "    dbo.product_details.quantity,\n" +
             "    dbo.product_details.price,\n" +
             "    COALESCE(dbo.discounts.discount, 0),\n" +
             "    SizesOrder.SizeOrder\n" +
@@ -57,4 +60,9 @@ public interface CounterRepository extends JpaRepository<ProductDetail, Integer>
             "    dbo.colors.name,\n" +
             "    SizesOrder.SizeOrder;\n", nativeQuery = true)
     List<ProductDetailCounterResponse> getListProductDetailCounter();
+
+    @Query(value = "UPDATE [dbo].[product_details]\n" +
+            "   SET [quantity] = [quantity] - :quantity\n" +
+            " WHERE [id] = :idProductDetail",nativeQuery = true)
+    ProductDetail updateQuantity(@Param("quantity") Integer quantity,@Param("idProductDetail") Integer idProductDetail);
 }

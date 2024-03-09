@@ -19,4 +19,9 @@ public class StaffServiceImpl implements StaffService {
     public List<Staff> getAllActive() {
         return staffRepository.getAllActive();
     }
+
+    @Override
+    public Staff findById(Integer id) {
+        return staffRepository.findById(id).get();
+    }
 }
