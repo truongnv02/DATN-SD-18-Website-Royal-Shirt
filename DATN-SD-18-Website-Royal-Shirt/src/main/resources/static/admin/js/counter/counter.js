@@ -178,6 +178,15 @@ function addToCart(button) {
     var productQuantity = $(button).closest("tr").find(".so_luong").text();
     var productPrice = $(button).closest("tr").find(".gia_ban").text();
 
+    if(productQuantity <= 0){
+        Swal.fire({
+            icon: 'error',
+            title: 'Lỗi!',
+            text: 'Sản phẩm đã hết hàng!'
+        });
+        return;
+    }
+
     // Kiểm tra xem sản phẩm đã có trong giỏ hàng chưa
     var existingRow = $("#cartTable").find("tr[data-product-detail-id='" + productDetailId + "']");
 
@@ -185,12 +194,12 @@ function addToCart(button) {
         // Tăng số lượng nếu đã có trong giỏ hàng
         var quantity = parseInt(existingRow.find(".so_luong input").val()) + 1;
 
-        if(!checkQuantityAddToCart(quantity, productQuantity)){
+        if (!checkQuantityAddToCart(quantity, productQuantity)) {
             return;
         }
 
         existingRow.find(".so_luong input").val(quantity);
-        existingRow.find(".so_luong input").attr("previous-quantity",quantity);
+        existingRow.find(".so_luong input").attr("previous-quantity", quantity);
         // Cập nhật số lượng trong listProductCart
         var existingProduct = listProductCart.find(function (product) {
             return product.id === productDetailId;
@@ -208,13 +217,16 @@ function addToCart(button) {
             "<td class='anh'><img src='" + productImage + "' alt='Hình ảnh sản phẩm'></td>" +
             "<td class='mau_sac'>" + productColor + "</td>" +
             "<td class='kich_thuoc'>" + productSize + "</td>" +
-            "<td class='so_luong' data-quantity='" + quantity + "'><input class='input_so_luong' type='number' value='" + quantity + "' min='1' onchange='updateQuantity(this," + productQuantity + ")' previous-quantity='" + quantity + "'></td>" +
+            "<td class='so_luong' data-quantity='" + quantity + "'><input class='input_so_luong' type='number' value='" + quantity + "' min='1' onchange='updateQuantityAddToCart(this," + productQuantity + ")' previous-quantity='" + quantity + "'></td>" +
             "<td class='gia_ban' id='gia_ban'>" + productPrice + "</td>" +
             "<td class='tinh_nang'><button class='btn btn-danger remove-button' onclick='removeFromCart(this)'><i class='fa-solid fa-minus fa-2xl remove-icon'></i></button></td>" +
             "</tr>";
         $("#cartTable").append(newRow);
         var productCart = {
             id: productDetailId,
+            name: productName,
+            color: productColor,
+            size: productSize,
             quantity: quantity,
             price: parseFloat(productPrice.replace(/\./g, ''))
         }
@@ -226,8 +238,8 @@ function addToCart(button) {
     console.log(listProductCart);
 }
 
-function checkQuantityAddToCart(quantity, productQuantity){
-    if(quantity > productQuantity){
+function checkQuantityAddToCart(quantity, productQuantity) {
+    if (quantity > productQuantity) {
         Swal.fire({
             icon: 'error',
             title: 'Lỗi!',
@@ -238,7 +250,7 @@ function checkQuantityAddToCart(quantity, productQuantity){
     return true;
 }
 
-function updateQuantity(input,productQuantity) {
+function updateQuantityAddToCart(input, productQuantity) {
     var row = $(input).closest("tr");
     var productDetailId = row.data("product-detail-id");
     var newQuantity = parseInt($(input).val());
@@ -251,7 +263,7 @@ function updateQuantity(input,productQuantity) {
         return;
     }
 
-    row.find(".so_luong input").attr("previous-quantity",newQuantity);
+    row.find(".so_luong input").attr("previous-quantity", newQuantity);
 
     // Cập nhật số lượng trong giỏ hàng
     row.find(".so_luong input").val(newQuantity);
@@ -319,8 +331,8 @@ function tinhNo() {
     }
 }
 
-function saveOrder(){
-    if(listProductCart.length === 0){
+async function saveOrder() {
+    if (listProductCart.length === 0) {
         Swal.fire({
             icon: 'error',
             title: 'Lỗi!',
@@ -329,15 +341,18 @@ function saveOrder(){
         return;
     }
 
+    if (!await checkQuantitySaveOrderDetail()) {
+        return;
+    }
+
     var staffId = $("#select-staff").val();
     var customerId = $("#select-customer").val();
-    // var totalPrice = totalPrice;
     var note = $("#input-note").val();
     var shopping = $("#select-shopping").val()
     var status = 0;
     var successDate = moment().format("YYYY-MM-DDTHH:mm:ss");
 
-    if(!checkInputSaveOrder(staffId,customerId,totalPrice,shopping)){
+    if (!checkInputSaveOrder(staffId, customerId, totalPrice, shopping)) {
         return;
     }
 
@@ -354,18 +369,27 @@ function saveOrder(){
     // Gửi yêu cầu AJAX
     $.ajax({
         type: "POST",
-        url: "/admin/rest/orderCounter/add",
+        url: "/admin/rest/counter/addOrder",
         contentType: "application/json",
         data: JSON.stringify(dataToSend),
         success: function (response) {
             console.log("Lưu Hóa đơn thành công!");
             var orderId = response.id;
 
-            if(!saveOrderDetail(orderId)){
+            if (!saveOrderDetail(orderId)) {
                 Swal.fire({
                     icon: 'error',
                     title: 'Lỗi!',
                     text: 'Có lỗi xảy ra khi lưu Danh sách hóa đơn chi tiết!'
+                });
+                return;
+            }
+
+            if(!updateQuantitySaveOrderDetail()){
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi!',
+                    text: 'Có lỗi xảy ra khi cập nhật số lượng!'
                 });
                 return;
             }
@@ -392,8 +416,8 @@ function saveOrder(){
 
 }
 
-function checkInputSaveOrder(staffId,customerId,totalPrice,shopping){
-    if(staffId === "" || customerId === "" || totalPrice === "" || shopping === ""){
+function checkInputSaveOrder(staffId, customerId, totalPrice, shopping) {
+    if (staffId === "" || customerId === "" || totalPrice === "" || shopping === "") {
         Swal.fire({
             icon: 'error',
             title: 'Lỗi!',
@@ -402,16 +426,16 @@ function checkInputSaveOrder(staffId,customerId,totalPrice,shopping){
         return false;
     }
 
-    if(!checkPrice()){
+    if (!checkPrice()) {
         return false;
     }
 
     return true;
 }
 
-function checkPrice(){
+function checkPrice() {
     var tienNo = $("#khach-hang-dua-tien").val() - totalPrice;
-    if (tienNo < 0){
+    if (tienNo < 0) {
         Swal.fire({
             icon: 'error',
             title: 'Lỗi!',
@@ -422,7 +446,7 @@ function checkPrice(){
     return true;
 }
 
-function saveOrderDetail(orderId){
+function saveOrderDetail(orderId) {
     for (var i = 0; i < listProductCart.length; i++) {
         var dataToSend = {
             orderId: orderId,
@@ -435,7 +459,7 @@ function saveOrderDetail(orderId){
         // Gửi yêu cầu AJAX
         $.ajax({
             type: "POST",
-            url: "/admin/rest/orderDetailCounter/add",
+            url: "/admin/rest/counter/addOrderDetail",
             contentType: "application/json",
             data: JSON.stringify(dataToSend),
             success: function (response) {
@@ -443,6 +467,70 @@ function saveOrderDetail(orderId){
             },
             error: function (error) {
                 console.error("Lỗi khi lưu Hóa đơn chi tiết:", error);
+                return false;
+            }
+        });
+    }
+    return true;
+}
+
+async function checkQuantitySaveOrderDetail() {
+    for (let i = 0; i < listProductCart.length; i++) {
+        var dataToSend = {
+            idProductDetail: listProductCart[i].id,
+            quantity: listProductCart[i].quantity
+        }
+
+        try {
+            // Sử dụng async/await để chờ yêu cầu AJAX hoàn thành
+            await $.ajax({
+                type: "GET",
+                url: "/admin/rest/counter/checkQuantity",
+                contentType: "application/json",
+                data: dataToSend,
+                success: function (response) {
+                    console.log("Kiểm tra số lượng thành công!");
+                    if (response !== "") {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Lỗi!',
+                            text: listProductCart[i].name + " [" + listProductCart[i].color + " " + listProductCart[i].size + "] " + ' vượt quá số lượng!'
+                        });
+                        // Nếu có lỗi, nên sử dụng throw để kết thúc hàm và ngăn chặn việc tiếp tục
+                        throw new Error("Lỗi khi kiểm tra số lượng");
+                    }
+                },
+                error: function (error) {
+                    console.error("Lỗi khi kiểm tra số lượng:", error);
+                    throw new Error("Lỗi khi kiểm tra số lượng");
+                }
+            });
+        } catch (error) {
+            // Xử lý lỗi nếu cần thiết
+            return false;
+        }
+    }
+    return true;
+}
+
+
+function updateQuantitySaveOrderDetail(){
+    for (let i = 0; i < listProductCart.length; i++) {
+        var dataToSend = {
+            idProductDetail: listProductCart[i].id,
+            quantity: listProductCart[i].quantity
+        }
+        // Gửi yêu cầu AJAX
+        $.ajax({
+            type: "PUT" ,
+            url: "/admin/rest/counter/updateQuantity",
+            contentType: "application/json",
+            data: JSON.stringify(dataToSend),
+            success: function (response) {
+                console.log("Cập nhật số lượng thành công!");
+            },
+            error: function (error) {
+                console.error("Lỗi khi cập nhật số lượng:", error);
                 return false;
             }
         });

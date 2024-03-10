@@ -11,6 +11,7 @@ import lombok.Setter;
 @Setter
 public class ProductDetailRequest {
     private Integer productId;
+    private Integer idProductDetail;
     private Integer quantity;
     private Float price;
     private Float weight;

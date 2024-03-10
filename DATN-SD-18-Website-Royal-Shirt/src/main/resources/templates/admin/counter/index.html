@@ -93,7 +93,7 @@
 
                             <tbody th:if="${listProductDetail.empty}">
                             <tr>
-                                <td colspan="7" class="text-center">Danh sách trống!</td>
+                                <td colspan="8" class="text-center">Danh sách trống!</td>
                             </tr>
                             </tbody>
 
@@ -110,13 +110,11 @@
                                     productDetail.price :
                                     (productDetail.price/100*(100 - productDetail.discount))), 0, 'POINT', 0, 'POINT')}"
                                 ></td>
-
                                 <td class="table-td-center tinh_nang">
                                     <button class="btn btn-success add-button" type="button"
                                             th:attr="data-product-detail-id=${productDetail.id},
                                                  id=#{${productDetail.id}}"
-                                            onclick="addToCart(this)"
-                                    >
+                                            onclick="addToCart(this)">
                                         <i class="fa-solid fa-plus fa-2xl add-icon"></i>
                                     </button>
                                 </td>
@@ -136,9 +134,7 @@
                             <label class="control-label">Họ tên khách hàng:</label>
                             <div class="d-flex">
                                 <select class="form-control" id="select-customer" style="margin-right: 10px">
-                                    <!--                                    <option value="" disabled selected hidden>-&#45;&#45; Chọn khách hàng -&#45;&#45;</option>-->
-                                    <!--                                    <option th:each="customer : ${listCustomer}" th:value="${customer.id}"-->
-                                    <!--                                            th:text="${customer.name}"></option>-->
+
                                 </select>
                                 <button id="showFormCustomer" class="btn btn-primary btn-them" data-toggle="modal"
                                         data-target="#exampleModalCenter"><i class="fas fa-user-plus"></i>
@@ -155,7 +151,8 @@
                         </div>
                         <div class="form-group  col-md-12">
                             <label class="control-label">Ghi chú đơn hàng:</label>
-                            <textarea id="input-note" class="form-control" rows="4" placeholder="Ghi chú thêm đơn hàng"></textarea>
+                            <textarea id="input-note" class="form-control" rows="4"
+                                      placeholder="Ghi chú thêm đơn hàng"></textarea>
                         </div>
                     </div>
 
@@ -185,7 +182,9 @@
                             <p class="control-all-money" id="khach-hang-con-thieu">0</p>
                         </div>
                         <div class="tile-footer col-md-12">
-                            <button class="btn btn-primary luu-san-pham" type="button" onclick="saveOrder()"> Lưu đơn hàng</button>
+                            <button class="btn btn-primary luu-san-pham" type="button" onclick="saveOrder()"> Lưu đơn
+                                hàng
+                            </button>
                             <button class="btn btn-primary luu-va-in" type="button">Lưu và in hóa đơn</button>
                             <a class="btn btn-secondary luu-va-in" href="index.html">Quay về</a>
                         </div>

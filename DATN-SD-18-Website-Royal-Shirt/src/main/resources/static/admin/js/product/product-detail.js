@@ -218,11 +218,11 @@ function saveUpdate() {
     var productDetailPrice = $("#product-detail-price").val();
     var productDetailStatus = 0;
 
-    if (productDetailWeight == 0 || productDetailQuantity == 0 || productDetailPrice == 0) {
+    if (productDetailWeight <= 0 || productDetailQuantity < 0 || productDetailPrice <= 0) {
         Swal.fire({
             icon: 'error',
             title: 'Lỗi!',
-            text: 'Vui lòng nhập đầy đủ thông tin!'
+            text: 'Thông tin không hợp lệ!'
         });
         return;
     }

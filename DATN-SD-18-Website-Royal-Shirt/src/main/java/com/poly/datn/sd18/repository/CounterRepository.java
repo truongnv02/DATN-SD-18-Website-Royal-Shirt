@@ -2,7 +2,9 @@ package com.poly.datn.sd18.repository;
 
 import com.poly.datn.sd18.dto.response.ProductDetailCounterResponse;
 import com.poly.datn.sd18.entity.ProductDetail;
+import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -61,8 +63,25 @@ public interface CounterRepository extends JpaRepository<ProductDetail, Integer>
             "    SizesOrder.SizeOrder;\n", nativeQuery = true)
     List<ProductDetailCounterResponse> getListProductDetailCounter();
 
+    @Query(value = "SELECT [id]\n" +
+            "      ,[quantity]\n" +
+            "      ,[cost]\n" +
+            "      ,[price]\n" +
+            "      ,[weight]\n" +
+            "      ,[status]\n" +
+            "      ,[created_date]\n" +
+            "      ,[updated_date]\n" +
+            "      ,[product_id]\n" +
+            "      ,[size_id]\n" +
+            "      ,[color_id]\n" +
+            "  FROM [dbo].[product_details]\n" +
+            "  WHERE [id] = :idProductDetail AND [quantity] < :quantity", nativeQuery = true)
+    ProductDetail checkQuantity(@Param("idProductDetail") Integer idProductDetail,@Param("quantity") Integer quantity);
+
+    @Transactional
+    @Modifying
     @Query(value = "UPDATE [dbo].[product_details]\n" +
             "   SET [quantity] = [quantity] - :quantity\n" +
             " WHERE [id] = :idProductDetail",nativeQuery = true)
-    ProductDetail updateQuantity(@Param("quantity") Integer quantity,@Param("idProductDetail") Integer idProductDetail);
+    void updateQuantity(@Param("idProductDetail") Integer idProductDetail,@Param("quantity") Integer quantity);
 }
