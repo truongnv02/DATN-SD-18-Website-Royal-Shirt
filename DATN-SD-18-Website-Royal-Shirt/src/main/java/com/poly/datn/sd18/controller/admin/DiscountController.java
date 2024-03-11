@@ -1,7 +1,9 @@
 package com.poly.datn.sd18.controller.admin;
 
+import com.poly.datn.sd18.dto.response.ProductResponse;
 import com.poly.datn.sd18.entity.Discount;
 import com.poly.datn.sd18.service.DiscountService;
+import com.poly.datn.sd18.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,10 +18,15 @@ public class DiscountController {
     @Autowired
     DiscountService discountService;
 
+    @Autowired
+    ProductService productService;
+
     @GetMapping()
     public String getAll(Model model) {
         List<Discount> lists = discountService.getAll();
         model.addAttribute("lists", lists);
+        List<ProductResponse> listProduct = productService.getAll();
+        model.addAttribute("listProduct", listProduct);
         return "/admin/discount/index";
     }
 

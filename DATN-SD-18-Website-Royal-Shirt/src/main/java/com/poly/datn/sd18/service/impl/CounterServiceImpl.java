@@ -52,6 +52,4 @@ public class CounterServiceImpl implements CounterService {
     public void updateQuantity(Integer idProductDetail, Integer quantity) {
         counterRepository.updateQuantity(idProductDetail,quantity);
     }
-
-
 }

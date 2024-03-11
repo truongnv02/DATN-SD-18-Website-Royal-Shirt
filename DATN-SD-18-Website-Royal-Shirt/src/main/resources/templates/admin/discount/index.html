@@ -111,6 +111,77 @@
                         </div>
                     </div>
 
+                    <!-- Modal List Product -->
+                    <div class="modal fade" id="ProductModal" tabindex="-1" role="dialog"
+                         aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Danh sách sản phẩm</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <!-- Table -->
+                                    <table class="table table-hover table-bordered js-copytextarea" cellpadding="0"
+                                           cellspacing="0"
+                                           border="0"
+                                           id="sampleTableProduct">
+                                        <thead>
+                                        <tr>
+                                            <th class="stt" width="20">STT</th>
+                                            <th class="ten_san_pham" width="250">Tên Sản Phẩm</th>
+                                            <th class="anh">Ảnh</th>
+                                            <th class="mo_ta" width="250">Mô Tả</th>
+                                            <th class="so_luong_ton" width="90">Số Lượng Tồn</th>
+                                            <th class="trang_thai" width="90">Trạng Thái</th>
+                                            <th class="tinh_nang" width="90">Tính Năng</th>
+                                        </tr>
+                                        </thead>
+
+                                        <tbody th:if="${listProduct.empty}">
+                                        <tr>
+                                            <td colspan="7" class="text-center">Danh sách trống!</td>
+                                        </tr>
+                                        </tbody>
+
+                                        <tbody>
+                                        <tr th:each="product, index : ${listProduct}">
+                                            <td class="stt" th:text="${index.index + 1}"></td>
+                                            <td class="ten_san_pham" th:text="${product.name}"></td>
+                                            <td class="anh"><img th:src="${product.image}" alt="Hình ảnh sản phẩm"></td>
+                                            <td class="mo_ta" th:utext="${product.description}"></td>
+                                            <td class="so_luong_ton" th:text="${product.quantity}"></td>
+                                            <td class="trang_thai">
+                                                <label class="switch">
+                                                    <input type="checkbox" onclick="toggleStatus(this)"
+                                                           th:attr="data-product-id=${product.id},id=#{${product.id}}"
+                                                           th:checked="${product.status == 0}">
+                                                    <span class="slider"></span>
+                                                </label>
+                                            </td>
+                                            <td class="table-td-center tinh_nang">
+                                                <button class="btn btn-primary btn-sm edit" type="button"
+                                                        th:attr="data-product-id=${product.id},id=#{${product.id}}"
+                                                        onclick="updateProductForm(this)"><i class="fas fa-edit"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+
+                                </div>
+                                <div class="modal-footer">
+<!--                                    <button type="button" class="btn btn-primary" onclick="saveDiscount()">Lưu</button>-->
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                                            id="closeFormProduct">Đóng
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <table class="table table-hover table-bordered js-copytextarea" cellpadding="0" cellspacing="0"
                            border="0"
                            id="sampleTable">
@@ -149,9 +220,11 @@
                                 </label>
                             </td>
                             <td class="table-td-center tinh_nang">
-                                <button class="btn btn-primary btn-sm edit" type="button"
+                                <button class="btn btn-primary" id="showListProduct"><i class="fa-solid fa-eye" style="color: #6626fd;"></i>
+                                </button>
+                                <button class="btn btn-primary" type="button"
                                         th:attr="data-discount-id=${discount.id},id=#{${discount.id}}"
-                                        onclick="updateDiscountForm(this)"><i class="fas fa-edit"></i>
+                                        onclick="updateDiscountForm(this)"><i class="fa-solid fa-pen-to-square"></i>
                                 </button>
                             </td>
                         </tr>
