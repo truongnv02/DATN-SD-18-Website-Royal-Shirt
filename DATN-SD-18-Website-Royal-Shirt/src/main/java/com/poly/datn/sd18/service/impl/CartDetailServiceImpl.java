@@ -53,14 +53,14 @@ public class CartDetailServiceImpl implements CartDetailService {
             cartDetail.setCart(cart);
             cartDetail.setQuantity(cartDetailDTO.getQuantity());
             if (productDetail != null) {
-                cartDetail.setPrice(productDetail.getPrice() * cartDetailDTO.getQuantity());
+                cartDetail.setPrice(productDetail.getPrice());
             }
             cartDetail.setStatus(0);
             cartDetailRepository.save(cartDetail);
         } else {
             cartDetail.setQuantity(cartDetailDTO.getQuantity() + 1);
             if (productDetail != null) {
-                cartDetail.setPrice(productDetail.getPrice() * cartDetailDTO.getQuantity());
+                cartDetail.setPrice(productDetail.getPrice());
             }
             cartDetailRepository.save(cartDetail);
         }

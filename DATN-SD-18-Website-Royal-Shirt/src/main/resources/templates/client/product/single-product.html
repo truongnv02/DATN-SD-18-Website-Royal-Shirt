@@ -383,13 +383,25 @@
                 data: JSON.stringify(cartDetailDTO),
                 success: function (response) {
                     if (response === 'Successfully') {
-                        alert('Sản phẩm đã được thêm vào giỏ hàng.');
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Thành công!',
+                            text: 'Thêm vào giỏ hàng thành công!'
+                        });
                     } else {
-                        alert('Đã xảy ra lỗi khi thêm sản phẩm vào giỏ hàng.');
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Thành công!',
+                            text: 'Thêm vào giỏ hàng thành công!'
+                        });
                     }
                 },
                 error: function () {
-                    alert('Đã xảy ra lỗi khi thêm sản phẩm vào giỏ hàng.');
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Thành công!',
+                        text: 'Thêm vào giỏ hàng thành công!'
+                    });
                 }
             });
         });

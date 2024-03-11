@@ -100,7 +100,7 @@
                                 </script>
                             </td>
                             <td>
-                                <strong th:text="${cartDetail.price}" id="totalPrice"></strong>
+                                <strong th:text="${cartDetail.productDetail.price * cartDetail.quantity}" id="totalPrice"></strong>
                             </td>
                             <td>
                                 <a th:href="@{/cart/{id}(id=${cartDetail.productDetail.id})}">
