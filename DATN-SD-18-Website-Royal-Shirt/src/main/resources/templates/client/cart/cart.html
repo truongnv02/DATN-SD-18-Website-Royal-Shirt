@@ -43,38 +43,70 @@
                             <th>Remove</th>
                         </tr>
                         </thead>
+                        <tbody th:if="${cartDetails.empty}">
+                            <tr>
+                                <td colspan="5">Danh sách trống</td>
+                            </tr>
+                        </tbody>
                         <tbody>
                         <tr th:each="cartDetail : ${cartDetails}">
                             <td class="td-img text-left">
-                                <a href="#"><img th:src="${cartDetail.productDetail.product.images[0].urlImage}" alt="Add Product" /></a>
+                                <a th:href="@{/single-product/__${cartDetail.productDetail.product.id}__}">
+                                    <img th:src="${cartDetail.productDetail.product.images[0].urlImage}" alt="Add Product" />
+                                </a>
                                 <div class="items-dsc">
                                     <h5><a href="#" th:text="${cartDetail.productDetail.product.name}"></a></h5>
                                     <p class="itemcolor" >
-                                        Color : <span
-                                            th:style="'background-color: ' + ${cartDetail.productDetail.color.name} + ';
-                                                width: 15px; height: 15px; margin-left: 3px; display: inline-block;'"
-                                            ></span>
+                                        Color : <span th:text="${cartDetail.productDetail.color.name}"></span>
                                     </p>
                                     <p class="itemcolor">
                                         Size   : <span th:text="${cartDetail.productDetail.size.name}"></span>
                                     </p>
                                 </div>
                             </td>
-                            <td th:text="${cartDetail.productDetail.price}">$56.00</td>
+                            <td th:text="${cartDetail.productDetail.price}" class="price"></td>
                             <td>
-                                <form action="#">
+                                <form th:action="@{/cart/update/{id}(id=${cartDetail.productDetail.id})}" method="post">
                                     <div class="plus-minus">
-                                        <a class="dec qtybutton">-</a>
-                                        <input type="text" th:value="${cartDetail.quantity}" min="0" step="1"
-                                               name="qtybutton" class="plus-minus-box">
-                                        <a class="inc qtybutton">+</a>
+                                        <button class="dec qtybutton btn btn-outline-secondary" type="submit"
+                                                onclick="decrement_${cartDetail.productDetail.id}()"
+                                                style="height: 34px;">-</button>
+                                        <input type="number" th:value="${cartDetail.quantity}"
+                                               id="quantity_${cartDetail.productDetail.id}"
+                                               min="0" max="${cartDetail.productDetail.quantity}"
+                                               step="1" name="quantity" class="plus-minus-box">
+                                        <button class="inc qtybutton btn btn-outline-secondary" type="submit"
+                                                onclick="increment_${cartDetail.productDetail.id}()"
+                                                style="height: 34px;">+</button>
                                     </div>
                                 </form>
+                                <script>
+                                    function decrement_${cartDetail.productDetail.id}() {
+                                        var quantityInput = document.getElementById("quantity_${cartDetail.productDetail.id}");
+                                        var currentValue = parseInt(quantityInput.value);
+                                        if (currentValue > 1) {
+                                            quantityInput.value = currentValue - 1;
+                                        }
+                                    }
+                                    function increment_${cartDetail.productDetail.id}() {
+                                        var quantityInput = document.getElementById("quantity_${cartDetail.productDetail.id}");
+                                        var currentValue = parseInt(quantityInput.value);
+                                        var maxValue = parseInt(quantityInput.getAttribute('max'));
+
+                                        if (currentValue < maxValue) {
+                                            quantityInput.value = currentValue + 1;
+                                        }
+                                    }
+                                </script>
                             </td>
                             <td>
-                                <strong th:text="'$' + ${cartDetail.price}"></strong>
+                                <strong th:text="${cartDetail.price}" id="totalPrice"></strong>
                             </td>
-                            <td><i class="mdi mdi-close" title="Remove this product"></i></td>
+                            <td>
+                                <a th:href="@{/cart/{id}(id=${cartDetail.productDetail.id})}">
+                                    <i class="mdi mdi-close" title="Remove this product"></i>
+                                </a>
+                            </td>
                         </tr>
                         </tbody>
                     </table>
@@ -108,8 +140,14 @@
                             <tbody>
                             <tr>
                                 <th>Cart Subtotal</th>
-                                <td>$155.00</td>
+                                <td th:text="${sumPrice}" id="sumPrice"></td>
                             </tr>
+                            <script>
+                                var tongTienElement = document.getElementById("sumPrice");
+                                var tongTienText = tongTienElement.innerText;
+                                var formattedTongTien = parseInt(tongTienText.replace(/[^\d]/g, '')).toLocaleString('en-US');
+                                tongTienElement.innerText = formattedTongTien + " VNĐ";
+                            </script>
                             <tr>
                                 <th>Shipping and Handing</th>
                                 <td>$15.00</td>

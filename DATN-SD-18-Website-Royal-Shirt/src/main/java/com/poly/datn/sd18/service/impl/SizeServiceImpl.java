@@ -27,4 +27,9 @@ public class SizeServiceImpl implements SizeService {
     public Size findSizeById(Integer id) {
         return sizeRepository.findById(id).orElse(null);
     }
+
+    @Override
+    public List<Size> findSizeByProductIdAndColorId(Integer productId, Integer colorId) {
+        return sizeRepository.findSizeByProductIdAndColorId(productId, colorId);
+    }
 }

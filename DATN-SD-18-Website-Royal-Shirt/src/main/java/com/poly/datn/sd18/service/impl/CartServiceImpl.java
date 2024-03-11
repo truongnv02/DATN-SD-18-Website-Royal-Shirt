@@ -23,4 +23,9 @@ public class CartServiceImpl implements CartService {
     public Cart findByCustomerId(Integer customerId) {
         return cartRepository.findByCustomerId(customerId);
     }
+
+    @Override
+    public Cart saveCart(Cart cart) {
+        return cartRepository.save(cart);
+    }
 }

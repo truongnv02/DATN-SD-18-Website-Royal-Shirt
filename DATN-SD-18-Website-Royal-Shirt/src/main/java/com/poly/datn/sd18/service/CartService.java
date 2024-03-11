@@ -10,4 +10,5 @@ import java.util.List;
 
 public interface CartService {
     Cart findByCustomerId(Integer customerId);
+    Cart saveCart(Cart cart);
 }

@@ -44,9 +44,9 @@ public class ProductClientController {
         return "client/product/product";
     }
 
-    @GetMapping("/single-product/{id}")
+    @GetMapping("/single-product/{productId}")
     public String singleProduct(Model model,
-                                @PathVariable("id") Integer id) {
+                                @PathVariable("productId") Integer id) {
         Product product = productService.findProductById(id);
         List<Color> listsColor = colorService.getColorForProduct(id);
         List<Size> listsSize = sizeService.findDistinctByIdAndName(id);
@@ -55,6 +55,20 @@ public class ProductClientController {
         model.addAttribute("product", product);
         return "client/product/single-product";
     }
+
+//    @GetMapping("/single-product/{productId}/{colorId}")
+//    public String singleProductAndColorAndSize(Model model,
+//                                @PathVariable("productId") Integer id,
+//                                @PathVariable("colorId") Integer colorId) {
+//        Product product = productService.findProductById(id);
+//        List<Color> listsColor = colorService.getColorForProduct(id);
+//        List<Size> listsSize = sizeService.findSizeByProductIdAndColorId(product.getId(), colorId);
+//        model.addAttribute("listSize", listsSize);
+//        model.addAttribute("listColor", listsColor);
+//        model.addAttribute("colorId", colorId);
+//        model.addAttribute("product", product);
+//        return "client/product/single-product";
+//    }
 
     @GetMapping("/filter")
     public String filter() {

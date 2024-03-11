@@ -11,9 +11,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.annotation.Rollback;
 
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DataJpaTest
@@ -31,9 +28,9 @@ public class CartTest {
 
     @Test
     public void testAddOneCartItem() {
-        Product product = entityManager.find(Product.class, 1);
-        Size size = entityManager.find(Size.class, 1);
-        Color color = entityManager.find(Color.class, 2);
+        Product product = entityManager.find(Product.class, 2);
+        Size size = entityManager.find(Size.class, 2);
+        Color color = entityManager.find(Color.class, 1);
 
         ProductDetail productDetail = productDetailRepository
                 .findByProductIdAndColorIdAndSizeId(
