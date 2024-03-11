@@ -18,15 +18,10 @@ public class DiscountController {
     @Autowired
     DiscountService discountService;
 
-    @Autowired
-    ProductService productService;
-
     @GetMapping()
     public String getAll(Model model) {
         List<Discount> lists = discountService.getAll();
         model.addAttribute("lists", lists);
-        List<ProductResponse> listProduct = productService.getAll();
-        model.addAttribute("listProduct", listProduct);
         return "/admin/discount/index";
     }
 

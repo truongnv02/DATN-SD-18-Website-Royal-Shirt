@@ -7,11 +7,6 @@ $(document).ready(function () {
     $('#closeFormDiscount').click(function () {
         $('#DiscountModal').modal('hide');
     });
-
-    $("#showListProduct").click(function () {
-       $("#ProductModal").modal("show");
-    });
-
 });
 
 //Add and update discount

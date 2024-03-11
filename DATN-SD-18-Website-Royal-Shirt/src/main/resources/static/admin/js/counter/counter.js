@@ -1,3 +1,53 @@
+var orderTabId = 0;
+var preTab = 0;
+var currentTab = 0;
+
+//Counter page
+function addCounterPage() {
+    if (orderTabId < 5) {
+        orderTabId++;
+        renderButtonOrderTab(orderTabId);
+    } else {
+        Swal.fire({
+            icon: 'error',
+            title: 'Lỗi!',
+            text: 'Tối đa 5 hóa đơn!'
+        });
+        return;
+    }
+}
+
+function renderButtonOrderTab(orderTabId) {
+    var buttonOrderTab = "<button class=\"btn btn-add-order\" data-order-tab-id='" + orderTabId + "'>Hóa đơn " + orderTabId + "</button>";
+
+    $("#listCounter").append(buttonOrderTab);
+
+    // Khi click vào button
+    $('.btn-add-order').click(function () {
+        // Lấy giá trị của thuộc tính 'data-order-tab-id'
+        currentTab = $(this).data('order-tab-id');
+
+        // Lưu dữ liệu trước khi chuyển tab
+        if (preTab != 0) {
+            saveData(preTab);
+        }
+
+        // Lấy dữ liệu cho tab mới
+        getData(currentTab);
+
+        preTab = currentTab;
+
+        // Xóa class 'btn-active' từ tất cả các button
+        $('.btn-add-order').removeClass('btn-active');
+
+        // Thêm class 'btn-active' cho button được click
+        $(this).addClass('btn-active');
+    });
+
+    // Kích hoạt sự kiện click cho nút mới thêm vào
+    $('.btn-add-order[data-order-tab-id="' + orderTabId + '"]').click();
+}
+
 var sttCounter = 1;
 var listProductCart = [];
 var totalPrice = 0;
@@ -178,7 +228,7 @@ function addToCart(button) {
     var productQuantity = $(button).closest("tr").find(".so_luong").text();
     var productPrice = $(button).closest("tr").find(".gia_ban").text();
 
-    if(productQuantity <= 0){
+    if (productQuantity <= 0) {
         Swal.fire({
             icon: 'error',
             title: 'Lỗi!',
@@ -221,13 +271,15 @@ function addToCart(button) {
             "<td class='gia_ban' id='gia_ban'>" + productPrice + "</td>" +
             "<td class='tinh_nang'><button class='btn btn-danger remove-button' onclick='removeFromCart(this)'><i class='fa-solid fa-minus fa-2xl remove-icon'></i></button></td>" +
             "</tr>";
-        $("#cartTable").append(newRow);
+        $("#listCart").append(newRow);
         var productCart = {
             id: productDetailId,
             name: productName,
+            image: productImage,
             color: productColor,
             size: productSize,
             quantity: quantity,
+            productQuantity: productQuantity,
             price: parseFloat(productPrice.replace(/\./g, ''))
         }
 
@@ -236,6 +288,26 @@ function addToCart(button) {
 
     getTotalPrice();
     console.log(listProductCart);
+}
+
+function renderListProductCart(){
+    $("#listCart").empty();
+
+    for (var i = 0; i < listProductCart.length; i++) {
+        var newRow = "<tr data-product-detail-id='" + listProductCart[i].id + "'>" +
+            "<td class='stt'>" + (i+1) + "</td>" +
+            "<td class='ten_san_pham'>" + listProductCart[i].name + "</td>" +
+            "<td class='anh'><img src='" + listProductCart[i].image + "' alt='Hình ảnh sản phẩm'></td>" +
+            "<td class='mau_sac'>" + listProductCart[i].color + "</td>" +
+            "<td class='kich_thuoc'>" + listProductCart[i].size + "</td>" +
+            "<td class='so_luong' data-quantity='" + listProductCart[i].quantity + "'><input class='input_so_luong' type='number' value='" + listProductCart[i].quantity + "' min='1' onchange='updateQuantityAddToCart(this," + listProductCart[i].productQuantity + ")' previous-quantity='" + listProductCart[i].quantity + "'></td>" +
+            "<td class='gia_ban' id='gia_ban'>" + listProductCart[i].price + "</td>" +
+            "<td class='tinh_nang'><button class='btn btn-danger remove-button' onclick='removeFromCart(this)'><i class='fa-solid fa-minus fa-2xl remove-icon'></i></button></td>" +
+            "</tr>";
+        $("#listCart").append(newRow);
+    }
+
+    getTotalPrice();
 }
 
 function checkQuantityAddToCart(quantity, productQuantity) {
@@ -385,7 +457,7 @@ async function saveOrder() {
                 return;
             }
 
-            if(!updateQuantitySaveOrderDetail()){
+            if (!updateQuantitySaveOrderDetail()) {
                 Swal.fire({
                     icon: 'error',
                     title: 'Lỗi!',
@@ -393,6 +465,8 @@ async function saveOrder() {
                 });
                 return;
             }
+
+            clearOrder();
 
             Swal.fire({
                 icon: 'success',
@@ -513,8 +587,7 @@ async function checkQuantitySaveOrderDetail() {
     return true;
 }
 
-
-function updateQuantitySaveOrderDetail(){
+function updateQuantitySaveOrderDetail() {
     for (let i = 0; i < listProductCart.length; i++) {
         var dataToSend = {
             idProductDetail: listProductCart[i].id,
@@ -522,7 +595,7 @@ function updateQuantitySaveOrderDetail(){
         }
         // Gửi yêu cầu AJAX
         $.ajax({
-            type: "PUT" ,
+            type: "PUT",
             url: "/admin/rest/counter/updateQuantity",
             contentType: "application/json",
             data: JSON.stringify(dataToSend),
@@ -538,7 +611,43 @@ function updateQuantitySaveOrderDetail(){
     return true;
 }
 
+// Lưu trữ dữ liệu vào Local Storage
+function saveData(orderTabId) {
+    var staffId = $("#select-staff").val();
+    var customerId = $("#select-customer").val();
+    var khachHangDuaTien = $("#khach-hang-dua-tien").val();
 
+    // Lấy dữ liệu hiện tại từ Local Storage
+    var existingData = JSON.parse(localStorage.getItem(orderTabId)) || {};
 
+    // Cập nhật thông tin giỏ hàng, khách hàng, và nhân viên
+    existingData.listProductCart = listProductCart;
+    existingData.customerId = customerId;
+    existingData.staffId = staffId;
+    existingData.khachHangDuaTien = khachHangDuaTien;
 
+    // Lưu lại dữ liệu vào Local Storage
+    localStorage.setItem(orderTabId, JSON.stringify(existingData));
+}
 
+// Lấy dữ liệu từ Local Storage
+function getData(orderTabId) {
+    var storedData = JSON.parse(localStorage.getItem(orderTabId));
+
+    if (storedData) {
+        listProductCart = storedData.listProductCart;
+        renderListProductCart();
+        $("#select-customer")[0].selectize.setValue(storedData.customerId);
+        $("#select-staff").val(storedData.staffId);
+        $("#khach-hang-dua-tien").val(storedData.khachHangDuaTien);
+    }
+}
+
+function clearOrder(){
+    listProductCart = [];
+    renderListProductCart();
+    $("#select-customer")[0].selectize.setValue(null);
+    $("#select-staff").val(null);
+    $("#khach-hang-dua-tien").val(0);
+    getTotalPrice();
+}

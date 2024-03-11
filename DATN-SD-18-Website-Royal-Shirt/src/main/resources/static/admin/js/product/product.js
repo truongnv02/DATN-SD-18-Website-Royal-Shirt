@@ -165,12 +165,12 @@ function updateProductForm(element) {
     });
 }
 
-function getListURL(productId){
+function getListURL(productId) {
     listUrlImage = [];
     $.ajax({
         type: "GET",
         url: "/admin/rest/image/findByProductId/" + productId,
-        success: function (response){
+        success: function (response) {
             console.log("Lấy ảnh thành công!");
             for (var i = 0; i < response.length; i++) {
                 listUrlImage.push(response[i].urlImage);
@@ -235,7 +235,7 @@ function save() {
     });
 }
 
-function saveImage(productId){
+function saveImage(productId) {
     // Clear tất cả sản phẩm có id = productId
     $.ajax({
         type: "DELETE",
@@ -272,7 +272,7 @@ function saveImage(productId){
     });
 }
 
-function getListProductDetail(){
+function getListProductDetail() {
     var productId = $('#ProductModal').attr("product-id-update");
     window.location.href = "/admin/product-detail/" + productId;
 }
