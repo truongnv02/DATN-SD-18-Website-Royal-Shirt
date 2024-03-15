@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -38,5 +40,15 @@ public class ProductDetailServiceImpl implements ProductDetailService {
     @Override
     public ProductDetail findProductDetailById(Integer id) {
         return productDetailRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public List<ProductDetail> findProductDetailIdByCartDetailId(List<Integer> cartDetailId) {
+        return productDetailRepository.findProductDetailIdByCartDetailId(cartDetailId);
+    }
+
+    @Override
+    public List<ProductDetail> getProductDetailsByIds(List<Integer> id) {
+        return productDetailRepository.findAllById(id);
     }
 }

@@ -140,22 +140,9 @@
                 <div class="cart-itmes">
                     <a class="cart-itme-a" th:href="@{/cart}">
                         <i class="mdi mdi-cart"></i>
-                        02 items :  <strong>$86.00</strong>
+                        02
                     </a>
                     <div class="cartdrop">
-                        <div class="sin-itme clearfix">
-                            <i class="mdi mdi-close"></i>
-                            <a class="cart-img" th:href="@{/cart}"><img th:src="@{/client/img/cart/1.webp}" alt="" /></a>
-                            <div class="menu-cart-text">
-                                <a href="#"><h5>men’s black t-shirt</h5></a>
-                                <span>Color :  Black</span>
-                                <span>Size :     SL</span>
-                                <strong>$122.00</strong>
-                            </div>
-                        </div>
-                        <div class="total">
-                            <span>total <strong>= $306.00</strong></span>
-                        </div>
                         <th:block th:if="${session.customer != null}">
                             <a class="goto" th:href="@{'/cart/' + ${session.customerId}}">go to cart</a>
                         </th:block>

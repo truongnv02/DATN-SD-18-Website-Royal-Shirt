@@ -41,32 +41,11 @@
                                      th:classappend="${index.index == 0} ? 'active' : ''">
                                     <a class="simpleLens-image" th:data-lens-image="${image.urlImage}" href="#">
                                         <img th:src="${image.urlImage}" alt="" class="simpleLens-big-image"
-                                             style="width:200px; height:200px;">
+                                             style="width:400px; height:400px;">
                                     </a>
                                 </div>
                             </div>
-                            <script>
-                                document.addEventListener("DOMContentLoaded", function () {
-                                    var thumbnails = document.querySelectorAll(".product-slider.nav li a");
 
-                                    thumbnails.forEach(function (thumbnail) {
-                                        thumbnail.addEventListener("click", function () {
-                                            // Lấy id của phần tử mục tiêu từ thuộc tính href
-                                            var targetId = this.getAttribute("href").replace("#", "");
-
-                                            // Xóa lớp active từ tất cả các phần tử trong tab-content
-                                            var tabContents = document.querySelectorAll(".tab-content .simpleLens-container");
-                                            tabContents.forEach(function (tabContent) {
-                                                tabContent.classList.remove("active");
-                                            });
-
-                                            // Thêm lớp active cho phần tử mục tiêu
-                                            var targetTab = document.getElementById(targetId);
-                                            targetTab.classList.add("active");
-                                        });
-                                    });
-                                });
-                            </script>
                         </div>
                     </div>
                     <div class="quick-thumb">
@@ -83,6 +62,29 @@
                             </li>
                         </ul>
                     </div>
+                    <script>
+                        document.addEventListener("DOMContentLoaded", function () {
+                            var thumbnails = document.querySelectorAll(".product-slider.nav li a");
+
+                            thumbnails.forEach(function (thumbnail) {
+                                thumbnail.addEventListener("click", function () {
+                                    // Lấy id của phần tử mục tiêu từ thuộc tính href
+                                    var targetId = this.getAttribute("href").replace("#", "");
+
+                                    // Xóa lớp active từ tất cả các phần tử trong tab-content
+                                    var tabContents = document.querySelectorAll(".tab-content .simpleLens-container");
+                                    tabContents.forEach(function (tabContent) {
+                                        tabContent.classList.remove("active");
+                                    });
+
+                                    // Thêm lớp active cho phần tử mục tiêu
+                                    var targetTab = document.getElementById(targetId);
+                                    targetTab.classList.add("active");
+                                });
+                            });
+                        });
+
+                    </script>
                 </div>
             </div>
             <div class="col-md-7 col-lg-8">
@@ -103,57 +105,55 @@
                         </h6>
                         <span th:utext="${product.description}"></span>
                         <br>
-                        <form>
-                            <div class="all-choose">
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <div class="s-shoose">
-                                            <h5>Color</h5>
+                        <div class="all-choose">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="s-shoose">
+                                        <h5>Color</h5>
+                                        <div class="btn-group">
+                                            <select class="form-select size-option" id="colorSelect"
+                                                    aria-label="Default select example">
+                                                <option th:each="color : ${listColor}"
+                                                        th:value="${color.id}"
+                                                        th:text="${color.name}"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="s-shoose">
+                                        <h5>size</h5>
+                                        <div class="size-drop">
                                             <div class="btn-group">
-                                                <select class="form-select size-option" id="colorSelect"
+                                                <select class="form-select size-option" id="sizeSelect"
                                                         aria-label="Default select example">
-                                                    <option th:each="color : ${listColor}"
-                                                            th:value="${color.id}"
-                                                            th:text="${color.name}"></option>
+                                                    <option th:each="size : ${listSize}"
+                                                            th:value="${size.id}"
+                                                            th:text="${size.name}"></option>
                                                 </select>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-4">
-                                        <div class="s-shoose">
-                                            <h5>size</h5>
-                                            <div class="size-drop">
-                                                <div class="btn-group">
-                                                    <select class="form-select size-option"
-                                                            aria-label="Default select example" id="sizeSelect">
-                                                        <option th:each="size : ${listSize}"
-                                                                th:value="${size.id}"
-                                                                th:text="${size.name}"></option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="input-group">
-                                    <p>QUANTITY</p>
-                                    <div class="">
-                                        <input type="number" value="1" min="1" max="${product.productDetail.quantity}"
-                                               step="1" id="quantity" name="quantity" class="plus-minus-box">
-                                    </div>
                                 </div>
                             </div>
-                            <div class="list-btn">
-                                <button type="submit" id="addToCartBtn"
-                                        class="btn btn-outline-dark btn-sm">ADD TO CART</button>
-                                <p class="text-danger ms-3 mt-2" id="textKichCo" style="display: none">Bạn cần chọn kích
-                                    cỡ</p>
-                                <p class="text-danger ms-3 mt-2" id="textMauSac" style="display: none">Bạn cần chọn màu
-                                    sắc</p>
-                                <button type="submit" id="wishlist"
-                                        class="btn btn-outline-dark btn-sm">WISHLIST</button>
+                            <div class="input-group">
+                                <p>QUANTITY</p>
+                                <div class="">
+                                    <input type="number" value="1" min="1" max="${product.productDetail.quantity}"
+                                           step="1" id="quantity" name="quantity" class="plus-minus-box">
+                                </div>
                             </div>
-                        </form>
+                        </div>
+                        <div class="list-btn">
+                            <button type="submit" id="addToCartBtn"
+                                    class="btn btn-outline-dark btn-sm">ADD TO CART</button>
+                            <p class="text-danger ms-3 mt-2" id="textKichCo" style="display: none">Bạn cần chọn kích
+                                cỡ</p>
+                            <p class="text-danger ms-3 mt-2" id="textMauSac" style="display: none">Bạn cần chọn màu
+                                sắc</p>
+                            <button type="submit" id="wishlist"
+                                    class="btn btn-outline-dark btn-sm">WISHLIST</button>
+                        </div>
                         <div class="share-tag clearfix">
                             <ul class="blog-share floatleft">
                                 <li>
@@ -352,7 +352,6 @@
 <!-- footer section end -->
 
 <div th:replace="~{client/layout/script::script}"></div>
-<script th:src="@{/client/js/cart/cart.js}"></script>
 <script th:inline="javascript">
     $(document).ready(function () {
         $('#addToCartBtn').click(function (event) {
@@ -378,36 +377,28 @@
 
             $.ajax({
                 type: 'POST',
-                url: "/add-to-cart/" + id,
+                url: '/add-to-cart/' + id,
                 contentType: 'application/json',
                 data: JSON.stringify(cartDetailDTO),
-                success: function (response) {
-                    if (response === 'Successfully') {
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Thành công!',
-                            text: 'Thêm vào giỏ hàng thành công!'
-                        });
-                    } else {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Thành công!',
-                            text: 'Thêm vào giỏ hàng thành công!'
-                        });
-                    }
+                error: function (response) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Thành công!',
+                        text: 'Sản phẩm đã được thêm vào giỏ hàng thành công!'
+                    });
                 },
-                error: function () {
+                success: function (xhr, status, error) {
                     Swal.fire({
                         icon: 'error',
-                        title: 'Thành công!',
-                        text: 'Thêm vào giỏ hàng thành công!'
+                        title: 'Thất bại!',
+                        text: 'Không thể thêm sản phẩm vào giỏ hàng.'
                     });
                 }
             });
         });
     });
 </script>
-
+<script th:src="@{/client/js/product/single-product.js}"></script>
 </body>
 
 </html>

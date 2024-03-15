@@ -9,12 +9,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
@@ -24,7 +23,6 @@ public class ProductClientController {
     private final CategoryService categoryService;
     private final ColorService colorService;
     private final ProductService productService;
-    private final ProductDetailService productDetailService;
 
     @GetMapping("/products")
     public String getAllProducts(Model model,
@@ -45,30 +43,16 @@ public class ProductClientController {
     }
 
     @GetMapping("/single-product/{productId}")
-    public String singleProduct(Model model,
-                                @PathVariable("productId") Integer id) {
+    public String singleProduct(@PathVariable("productId") Integer id,
+                                Model model) {
         Product product = productService.findProductById(id);
         List<Color> listsColor = colorService.getColorForProduct(id);
-        List<Size> listsSize = sizeService.findDistinctByIdAndName(id);
-        model.addAttribute("listSize", listsSize);
+        List<Size> listSize = sizeService.findDistinctByIdAndName(id);
+        model.addAttribute("listSize", listSize);
         model.addAttribute("listColor", listsColor);
         model.addAttribute("product", product);
         return "client/product/single-product";
     }
-
-//    @GetMapping("/single-product/{productId}/{colorId}")
-//    public String singleProductAndColorAndSize(Model model,
-//                                @PathVariable("productId") Integer id,
-//                                @PathVariable("colorId") Integer colorId) {
-//        Product product = productService.findProductById(id);
-//        List<Color> listsColor = colorService.getColorForProduct(id);
-//        List<Size> listsSize = sizeService.findSizeByProductIdAndColorId(product.getId(), colorId);
-//        model.addAttribute("listSize", listsSize);
-//        model.addAttribute("listColor", listsColor);
-//        model.addAttribute("colorId", colorId);
-//        model.addAttribute("product", product);
-//        return "client/product/single-product";
-//    }
 
     @GetMapping("/filter")
     public String filter() {

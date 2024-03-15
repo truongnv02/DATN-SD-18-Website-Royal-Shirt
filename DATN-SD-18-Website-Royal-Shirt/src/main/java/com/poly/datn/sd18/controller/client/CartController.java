@@ -10,7 +10,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
@@ -29,7 +31,7 @@ public class CartController {
             if (sumPrice == null) {
                 sumPrice = 0f;
             }
-            model.addAttribute("sumPrice", sumPrice.intValue());
+            model.addAttribute("sumPricePro", sumPrice.intValue());
             List<CartDetail> cartDetails = cartDetailService.findCartDetailByCustomer(customer.getId());
             model.addAttribute("cartDetails", cartDetails);
             return "client/cart/cart";
@@ -56,4 +58,17 @@ public class CartController {
         cartDetailService.updateByProductDetailIdAndCustomerId(idProductDetail, customer.getId(), quantity);
         return "redirect:/cart";
     }
+
+    @PostMapping("/sumPrice")
+    @ResponseBody
+    public Map<String, Float> sumPrice(@RequestBody List<Integer> selectedIds) {
+        float totalPrice = 0;
+        if (selectedIds != null && !selectedIds.isEmpty()) {
+            totalPrice = cartDetailService.sumPrice(selectedIds);
+        }
+        Map<String, Float> response = new HashMap<>();
+        response.put("totalPrice", totalPrice);
+        return response;
+    }
+
 }

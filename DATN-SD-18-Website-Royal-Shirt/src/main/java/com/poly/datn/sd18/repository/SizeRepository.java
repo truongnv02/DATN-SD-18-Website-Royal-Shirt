@@ -22,11 +22,14 @@ public interface SizeRepository extends JpaRepository<Size, Integer> {
     List<Size> findDistinctByIdAndName(@Param("productId") Integer productId);
 
     @Query(value = """
-            SELECT s.name
-            FROM sizes s
-            INNER JOIN product_details pd ON s.id = pd.size_id
-            WHERE
-                pd.product_id = :productId AND pd.color_id = :colorId
+                SELECT s.id, s.name, s.status, s.created_date, s.updated_date
+                FROM sizes s
+                INNER
+                    JOIN product_details pd ON s.id = pd.size_id
+                WHERE
+                    pd.product_id = :productId
+                    AND pd.color_id = :colorId
+                    AND pd.quantity > 0;
             """, nativeQuery = true)
     List<Size> findSizeByProductIdAndColorId(@Param("productId") Integer productId,
                                              @Param("colorId") Integer colorId);

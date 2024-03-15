@@ -32,37 +32,42 @@ public class CartDetailServiceImpl implements CartDetailService {
     }
 
     @Override
-    public void addToCart(Integer productId, Integer customerId, CartDetailDTO cartDetailDTO) {
+    public CartDetail addToCart(Integer productId, Customer customer, CartDetailDTO cartDetailDTO) {
+        //TODO Tìm ProductDetail tương ứng với productId, sizeId và colorId
         ProductDetail productDetail = productDetailRepository
                 .findByProductIdAndColorIdAndSizeId(
                         productId,
                         cartDetailDTO.getProductDetail().getSize().getId(),
                         cartDetailDTO.getProductDetail().getColor().getId());
-        if (productDetail == null) {
-            return;
-        }
-        Cart cart = cartRepository.findByCustomerId(customerId);
-        if (cart == null) {
-            return;
-        }
-        CartDetail cartDetail = cartDetailRepository.findByCartAndProductDetail(cart, productDetail);
-
-        if (cartDetail == null) {
-            cartDetail = new CartDetail();
-            cartDetail.setProductDetail(productDetail);
-            cartDetail.setCart(cart);
-            cartDetail.setQuantity(cartDetailDTO.getQuantity());
-            if (productDetail != null) {
-                cartDetail.setPrice(productDetail.getPrice());
+        if (productDetail != null) {
+            //TODO Tìm giỏ hàng của khách hàng
+            Cart cart = cartRepository.findByCustomerId(customer.getId());
+            //TODO Nếu không tìm thấy giỏ hàng, tạo mới
+            if (cart == null) {
+                cart = new Cart();
+                cart.setCustomer(customer);
+                cart.setStatus(0);
+                cart = cartRepository.save(cart);
             }
-            cartDetail.setStatus(0);
-            cartDetailRepository.save(cartDetail);
-        } else {
-            cartDetail.setQuantity(cartDetailDTO.getQuantity() + 1);
-            if (productDetail != null) {
+            //TODO Tìm xem đã có chi tiết giỏ hàng cho sản phẩm này trong giỏ hàng chưa
+            CartDetail cartDetail = cartDetailRepository.findByCartAndProductDetail(cart, productDetail);
+            if (cartDetail == null) {
+                //TODO Nếu chưa có, tạo mới chi tiết giỏ hàng
+                cartDetail = new CartDetail();
+                cartDetail.setProductDetail(productDetail);
+                cartDetail.setCart(cart);
+                cartDetail.setQuantity(cartDetailDTO.getQuantity());
                 cartDetail.setPrice(productDetail.getPrice());
+                cartDetail.setStatus(0);
+            } else {
+                //TODO Nếu đã có, cập nhật số lượng
+                cartDetail.setQuantity(cartDetailDTO.getQuantity() + cartDetail.getQuantity());
             }
-            cartDetailRepository.save(cartDetail);
+            //TODO Lưu hoặc cập nhật chi tiết giỏ hàng và trả về
+            return cartDetailRepository.save(cartDetail);
+        }else {
+            //TODO Trả về null nếu không tìm thấy ProductDetail
+            return null;
         }
     }
 
@@ -80,12 +85,23 @@ public class CartDetailServiceImpl implements CartDetailService {
         CartDetail cartDetail = cartDetailRepository.findByCartAndProductDetail(cart, productDetail);
 
         cartDetail.setQuantity(quantity);
-        cartDetail.setPrice(quantity * productDetail.getPrice());
         cartDetailRepository.save(cartDetail);
     }
 
     @Override
     public Float getSumPriceByCustomerId(Integer customerId) {
-        return cartDetailRepository.getSumPriceByCustomerId(customerId);
+        return cartDetailRepository.getSumPriceByCartDetailId(customerId);
+    }
+
+    @Override
+    public Float sumPrice(List<Integer> selectedId) {
+        float totalPrice = 0f;
+        for (Integer id : selectedId) {
+            CartDetail cartDetail = cartDetailRepository.findById(id).orElse(null);
+            if (cartDetail != null) {
+                totalPrice += cartDetail.getPrice() * cartDetail.getQuantity();
+            }
+        }
+        return totalPrice;
     }
 }

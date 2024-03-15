@@ -27,7 +27,7 @@
 <!-- pages-title-end -->
 <!-- Checkout content section start -->
 <section class="pages checkout section-padding">
-    <div class="container">
+    <div class="">
         <div class="row">
             <div class="col-md-6">
                 <div class="main-input single-cart-form padding60">
@@ -37,7 +37,6 @@
                     <div class="custom-input">
                         <form action="#">
                             <input type="text" name="name" placeholder="Your name" />
-                            <input type="text" name="email" placeholder="Email your here" />
                             <input type="text" name="phone" placeholder="Phone here" />
                             <input type="text" name="address" placeholder="Address here" />
                             <div class="row">
@@ -79,22 +78,21 @@
                     <div class="cart-form-text pay-details table-responsive">
                         <table>
                             <thead>
-                            <tr>
-                                <th>Product</th>
-                                <td>Total</td>
-                            </tr>
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Quantity</th>
+                                    <th>Price</th>
+                                </tr>
                             </thead>
                             <tbody>
-                            <tr>
-                                <th>Men’s White Shirt  x 2</th>
-                                <td>$86.00</td>
-                            </tr>
-                            <tr>
-                                <th>Men’s Black Shirt  x 1</th>
-                                <td>$69.00</td>
-                            </tr>
+                                <tr>
+                                    <td>$86.00</td>
+                                    <td>$86.00</td>
+                                    <td>$86.00</td>
+                                </tr>
                             </tbody>
-                            <hr>
+                        </table>
+                        <table>
                             <tr>
                                 <th>Tạm tính</th>
                                 <td>$155.00</td>
@@ -107,7 +105,6 @@
                                 <th>Vat</th>
                                 <td>$00.00</td>
                             </tr>
-
                             <tfoot>
                             <tr>
                                 <th>Tổng</th>
@@ -119,58 +116,6 @@
                 </div>
             </div>
         </div>
-        <div class="row margin-top">
-            <div class="col-md-6">
-                <div class="padding60">
-                    <div class="log-title">
-                        <h3><strong>Payment method</strong></h3>
-                    </div>
-                    <div class="categories">
-                        <ul id="accordion" class="panel-group clearfix">
-                            <li class="panel">
-                                <div data-bs-toggle="collapse" data-bs-target="#collapse1">
-                                    <div class="medium-a">
-                                        direct bank transfer
-                                    </div>
-                                </div>
-                                <div class="panel-collapse collapse show" id="collapse1" data-bs-parent="#accordion">
-                                    <div class="normal-a">
-                                        <p>Lorem Ipsum is simply in dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry.</p>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="panel">
-                                <div data-bs-toggle="collapse" data-bs-target="#collapse2">
-                                    <div class="medium-a">
-                                        cheque payment
-                                    </div>
-                                </div>
-                                <div class="paypal-dsc panel-collapse collapse" id="collapse2" data-bs-parent="#accordion">
-                                    <div class="normal-a">
-                                        <p>Lorem Ipsum is simply in dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry.</p>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="panel">
-                                <div data-bs-toggle="collapse" data-bs-target="#collapse3">
-                                    <div class="medium-a">
-                                        paypal
-                                    </div>
-                                </div>
-                                <div class="paypal-dsc panel-collapse collapse" id="collapse3" data-bs-parent="#accordion">
-                                    <div class="normal-a">
-                                        <p>Lorem Ipsum is simply in dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry.</p>
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
-                        <div class="submit-text">
-                            <a href="#">place order</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 </section>
 <!-- Checkout content section end -->
@@ -178,7 +123,6 @@
 <div th:replace="~{client/layout/footer::footer}"></div>
 <!-- footer section end -->
 
-<!-- all js here -->
 <!-- jquery latest version -->
 <div th:replace="~{client/layout/script::script}"></div>
 </body>

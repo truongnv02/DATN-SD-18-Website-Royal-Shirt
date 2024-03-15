@@ -33,6 +33,6 @@ public interface CartDetailRepository extends JpaRepository<CartDetail, Integer>
     void deleteIdProductDetailAndIdCustomer(@Param("productDetailId") Integer productDetailId,
                                             @Param("customerId") Integer customerId);
 
-    @Query("select sum(cd.price) from CartDetail cd where cd.cart.customer.id = :customerId")
-    Float getSumPriceByCustomerId(@Param("customerId") Integer customerId);
+    @Query("SELECT SUM(cd.price) FROM CartDetail cd WHERE cd.id = :cartDetailId")
+    Float getSumPriceByCartDetailId(@Param("cartDetailId") Integer cartDetailId);
 }

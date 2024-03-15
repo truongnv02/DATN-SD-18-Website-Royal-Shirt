@@ -41,4 +41,12 @@ public interface ProductDetailRepository extends JpaRepository<ProductDetail, In
                                                      @Param("colorId") Integer colorId);
     @Query("select pd from ProductDetail pd where pd.id = :productDetailId")
     ProductDetail findByProductDetailId(@Param("productDetailId") Integer productDetailId);
+
+    @Query(value = """
+                SELECT pd.*
+                FROM cart_details cd
+                INNER JOIN product_details pd ON cd.product_detail_id = pd.id
+                WHERE cd.id IN :cartDetailId
+            """, nativeQuery = true)
+    List<ProductDetail> findProductDetailIdByCartDetailId(@Param("cartDetailId") List<Integer> cartDetailId);
 }

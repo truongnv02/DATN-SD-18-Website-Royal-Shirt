@@ -36,6 +36,7 @@
                     <table class="wishlist-table text-center">
                         <thead>
                         <tr>
+                            <th></th>
                             <th>Product</th>
                             <th>Price</th>
                             <th>quantity</th>
@@ -50,6 +51,7 @@
                         </tbody>
                         <tbody>
                         <tr th:each="cartDetail : ${cartDetails}">
+                            <td><input type="checkbox" class="cart-checkbox" th:value="${cartDetail.id}"></td>
                             <td class="td-img text-left">
                                 <a th:href="@{/single-product/__${cartDetail.productDetail.product.id}__}">
                                     <img th:src="${cartDetail.productDetail.product.images[0].urlImage}" alt="Add Product" />
@@ -80,24 +82,6 @@
                                                 style="height: 34px;">+</button>
                                     </div>
                                 </form>
-                                <script>
-                                    function decrement_${cartDetail.productDetail.id}() {
-                                        var quantityInput = document.getElementById("quantity_${cartDetail.productDetail.id}");
-                                        var currentValue = parseInt(quantityInput.value);
-                                        if (currentValue > 1) {
-                                            quantityInput.value = currentValue - 1;
-                                        }
-                                    }
-                                    function increment_${cartDetail.productDetail.id}() {
-                                        var quantityInput = document.getElementById("quantity_${cartDetail.productDetail.id}");
-                                        var currentValue = parseInt(quantityInput.value);
-                                        var maxValue = parseInt(quantityInput.getAttribute('max'));
-
-                                        if (currentValue < maxValue) {
-                                            quantityInput.value = currentValue + 1;
-                                        }
-                                    }
-                                </script>
                             </td>
                             <td>
                                 <strong th:text="${cartDetail.productDetail.price * cartDetail.quantity}" id="totalPrice"></strong>
@@ -114,22 +98,7 @@
             </div>
         </div>
         <div class="row margin-top">
-            <div class="col-md-6">
-                <div class="single-cart-form padding60">
-                    <div class="log-title">
-                        <h3><strong>coupon discount</strong></h3>
-                    </div>
-                    <div class="cart-form-text custom-input">
-                        <p>Enter your coupon code if you have one!</p>
-                        <form action="#">
-                            <input type="text" name="subject" placeholder="Enter your code here..." />
-                            <div class="submit-text coupon">
-                                <button type="submit">apply coupon </button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
+            <div class="col-md-6"></div>
             <div class="col-md-6">
                 <div class="single-cart-form padding60">
                     <div class="log-title">
@@ -139,31 +108,14 @@
                         <table>
                             <tbody>
                             <tr>
-                                <th>Cart Subtotal</th>
-                                <td th:text="${sumPrice}" id="sumPrice"></td>
-                            </tr>
-                            <script>
-                                var tongTienElement = document.getElementById("sumPrice");
-                                var tongTienText = tongTienElement.innerText;
-                                var formattedTongTien = parseInt(tongTienText.replace(/[^\d]/g, '')).toLocaleString('en-US');
-                                tongTienElement.innerText = formattedTongTien + " VNĐ";
-                            </script>
-                            <tr>
-                                <th>Shipping and Handing</th>
-                                <td>$15.00</td>
-                            </tr>
-                            <tr>
-                                <th>Vat</th>
-                                <td>$00.00</td>
+                                <th>Tổng tiền</th>
+                                <td id="sumPrice"></td>
                             </tr>
                             </tbody>
-                            <tfoot>
-                            <tr>
-                                <th class="tfoot-padd">Order total</th>
-                                <td class="tfoot-padd">$170.00</td>
-                            </tr>
-                            </tfoot>
                         </table>
+                        <div class="submit-text coupon text-center">
+                            <a th:href="@{/checkout}" type="button" id="checkoutBtn">Mua hàng </a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -175,9 +127,28 @@
 <div th:replace="~{client/layout/footer::footer}"></div>
 <!-- footer section end -->
 
-<!-- all js here -->
 <!-- jquery latest version -->
 <div th:replace="~{client/layout/script::script}"></div>
+<script th:src="@{/client/js/cart/cart.js}"></script>
+<script>
+    function decrement_${cartDetail.productDetail.id}() {
+        var quantityInput = document.getElementById("quantity_${cartDetail.productDetail.id}");
+        var currentValue = parseInt(quantityInput.value);
+        if (currentValue > 1) {
+            quantityInput.value = currentValue - 1;
+        }
+    }
+    function increment_${cartDetail.productDetail.id}() {
+        var quantityInput = document.getElementById("quantity_${cartDetail.productDetail.id}");
+        var currentValue = parseInt(quantityInput.value);
+        var maxValue = parseInt(quantityInput.getAttribute('max'));
+
+        if (currentValue < maxValue) {
+            quantityInput.value = currentValue + 1;
+        }
+    }
+</script>
+
 </body>
 
 </html>
