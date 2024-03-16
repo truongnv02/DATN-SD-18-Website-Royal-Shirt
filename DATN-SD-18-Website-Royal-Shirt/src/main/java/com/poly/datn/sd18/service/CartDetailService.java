@@ -16,4 +16,7 @@ public interface CartDetailService {
     void updateByProductDetailIdAndCustomerId(Integer productDetailId, Integer customerId, Integer quantity);
     Float getSumPriceByCustomerId(Integer customerId);
     Float sumPrice(List<Integer> selectedId);
+
+    void incrementQuantity(Integer customerId, Integer productDetailId);
+    void decrementQuantity(Integer customerId, Integer productDetailId);
 }

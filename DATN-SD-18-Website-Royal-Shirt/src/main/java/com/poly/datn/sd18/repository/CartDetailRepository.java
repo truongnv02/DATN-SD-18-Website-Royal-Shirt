@@ -14,6 +14,7 @@ import java.util.List;
 @Repository
 public interface CartDetailRepository extends JpaRepository<CartDetail, Integer> {
     CartDetail findByCartAndProductDetail(Cart cart, ProductDetail productDetail);
+
     @Query(value = """
                 SELECT
                     cd.*
@@ -35,4 +36,23 @@ public interface CartDetailRepository extends JpaRepository<CartDetail, Integer>
 
     @Query("SELECT SUM(cd.price) FROM CartDetail cd WHERE cd.id = :cartDetailId")
     Float getSumPriceByCartDetailId(@Param("cartDetailId") Integer cartDetailId);
+
+    @Modifying
+    @Query(value = "UPDATE [dbo].[cart_details]\n" +
+            "   SET [quantity] = [quantity] + 1\n" +
+            "FROM [dbo].[cart_details]\n" +
+            "   JOIN [dbo].[carts] on [dbo].[cart_details].[cart_id] = [dbo].[carts].[id]\n" +
+            " WHERE [dbo].[carts].[customer_id] = :customerId AND \n" +
+            "\t   [dbo].[cart_details].[product_detail_id] = :productDetailId", nativeQuery = true)
+    void incrementQuantity(@Param("customerId") Integer customerId, @Param("productDetailId") Integer productDetailId);
+
+    @Modifying
+    @Query(value = "UPDATE [dbo].[cart_details]\n" +
+            "   SET [quantity] = [quantity] - 1\n" +
+            "FROM [dbo].[cart_details]\n" +
+            "   JOIN [dbo].[carts] on [dbo].[cart_details].[cart_id] = [dbo].[carts].[id]\n" +
+            " WHERE [quantity] > 1 AND \n" +
+            "\t   [dbo].[carts].[customer_id] = :customerId AND \n" +
+            "\t   [dbo].[cart_details].[product_detail_id] = :productDetailId", nativeQuery = true)
+    void decrementQuantity(@Param("customerId") Integer customerId, @Param("productDetailId") Integer productDetailId);
 }

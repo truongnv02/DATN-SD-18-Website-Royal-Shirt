@@ -65,7 +65,7 @@ public class CartDetailServiceImpl implements CartDetailService {
             }
             //TODO Lưu hoặc cập nhật chi tiết giỏ hàng và trả về
             return cartDetailRepository.save(cartDetail);
-        }else {
+        } else {
             //TODO Trả về null nếu không tìm thấy ProductDetail
             return null;
         }
@@ -103,5 +103,15 @@ public class CartDetailServiceImpl implements CartDetailService {
             }
         }
         return totalPrice;
+    }
+
+    @Override
+    public void incrementQuantity(Integer customerId, Integer productDetailId) {
+        cartDetailRepository.incrementQuantity(customerId, productDetailId);
+    }
+
+    @Override
+    public void decrementQuantity(Integer customerId, Integer productDetailId) {
+        cartDetailRepository.decrementQuantity(customerId, productDetailId);
     }
 }
