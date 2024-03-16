@@ -75,8 +75,9 @@
                                             style="height: 34px;">-
                                     </button>
                                     <input type="number" th:value="${cartDetail.quantity}"
-                                           th:attr="id='quantity_' + ${cartDetail.productDetail.id}"
-                                           min="1"
+                                           th:attr="id='quantity_' + ${cartDetail.productDetail.id},
+                                                    max=${cartDetail.productDetail.quantity},
+                                                    min=1"
                                            class="plus-minus-box">
                                     <button class="btn btn-outline-secondary"
                                             th:onclick="'incrementQuantity(' + ${cartDetail.productDetail.id} + ')'"
@@ -112,7 +113,7 @@
                             </tbody>
                         </table>
                         <div class="submit-text coupon text-center">
-                            <a th:href="@{/checkout}" type="button" id="checkoutBtn">Mua hàng </a>
+                            <a th:href="@{/checkout}" onclick="saveListProductToCheckout()" type="button" id="checkoutBtn">Mua hàng </a>
                         </div>
                     </div>
                 </div>
