@@ -4,6 +4,7 @@ var currentTab = 0;
 
 //Counter page
 function addCounterPage() {
+    $("#form-counter").css("display", "block");
     if (orderTabId < 5) {
         orderTabId++;
         renderButtonOrderTab(orderTabId);
@@ -644,6 +645,7 @@ function getData(orderTabId) {
 }
 
 function clearOrder(){
+    localStorage.removeItem(currentTab);
     listProductCart = [];
     renderListProductCart();
     $("#select-customer")[0].selectize.setValue(null);
