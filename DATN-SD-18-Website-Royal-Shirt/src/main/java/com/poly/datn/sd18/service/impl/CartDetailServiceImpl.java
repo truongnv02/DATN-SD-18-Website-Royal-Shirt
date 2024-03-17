@@ -114,4 +114,9 @@ public class CartDetailServiceImpl implements CartDetailService {
     public void decrementQuantity(Integer customerId, Integer productDetailId) {
         cartDetailRepository.decrementQuantity(customerId, productDetailId);
     }
+
+    @Override
+    public CartDetail findById(Integer id) {
+        return cartDetailRepository.findById(id).get();
+    }
 }

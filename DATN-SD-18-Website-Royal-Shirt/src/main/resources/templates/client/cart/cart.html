@@ -50,7 +50,9 @@
                         </tbody>
                         <tbody>
                         <tr th:each="cartDetail : ${cartDetails}">
-                            <td><input type="checkbox" class="cart-checkbox" th:value="${cartDetail.id}"></td>
+                            <td>
+                                <input type="checkbox" class="cart-checkbox" th:value="${cartDetail.id}"/>
+                            </td>
                             <td class="td-img text-left">
                                 <a th:href="@{/single-product/__${cartDetail.productDetail.product.id}__}">
                                     <img th:src="${cartDetail.productDetail.product.images[0].urlImage}"
@@ -113,7 +115,7 @@
                             </tbody>
                         </table>
                         <div class="submit-text coupon text-center">
-                            <a th:href="@{/checkout}" onclick="saveListProductToCheckout()" type="button" id="checkoutBtn">Mua hàng </a>
+                            <a onclick="saveListProductToCheckout()" type="button" id="checkoutBtn">Mua hàng </a>
                         </div>
                     </div>
                 </div>

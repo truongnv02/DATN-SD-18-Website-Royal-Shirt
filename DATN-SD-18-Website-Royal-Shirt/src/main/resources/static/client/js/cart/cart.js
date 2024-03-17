@@ -2,7 +2,7 @@
 var listProductChoice = [];
 
 // Xử lý sự kiện khi checkbox thay đổi trạng thái
-$('.cart-checkbox').change(function() {
+$('.cart-checkbox').change(function () {
     var cartDetailId = $(this).val(); // Lấy ID của cartDetail từ giá trị của checkbox
 
     // Kiểm tra xem checkbox có được chọn hay không
@@ -23,12 +23,23 @@ $('.cart-checkbox').change(function() {
 });
 
 function saveListProductToCheckout() {
-    var listProduct = JSON.parse(localStorage.getItem("listProductChoice")) || {};
+    if (listProductChoice.length === 0) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Lỗi!',
+            text: 'Vui lòng chọn sản phẩm!'
+        });
+        return;
+    } else {
+        var listProduct = JSON.parse(localStorage.getItem("listProductChoice")) || {};
 
-    listProduct.listProductChoice = listProductChoice;
+        listProduct.listProductChoice = listProductChoice;
 
-    // Lưu lại dữ liệu vào Local Storage
-    localStorage.setItem("listProductChoice", JSON.stringify(listProduct));
+        // Lưu lại dữ liệu vào Local Storage
+        localStorage.setItem("listProductChoice", JSON.stringify(listProduct));
+
+        window.location.href = "/checkout";
+    }
 }
 
 $(document).ready(function () {
