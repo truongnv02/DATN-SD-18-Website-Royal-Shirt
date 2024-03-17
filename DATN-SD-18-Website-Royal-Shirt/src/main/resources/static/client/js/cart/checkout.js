@@ -18,7 +18,7 @@ $(window).on("beforeunload", function() {
 async function renderListProductChoice(){
     for (var i = 0; i < listProductChoice.length; i++) {
         await $.ajax({
-            type: "POST",
+            type: "GET",
             url: "/cart-detail/" + listProductChoice[i],
             contentType: "application/json",
             success: function (response) {
