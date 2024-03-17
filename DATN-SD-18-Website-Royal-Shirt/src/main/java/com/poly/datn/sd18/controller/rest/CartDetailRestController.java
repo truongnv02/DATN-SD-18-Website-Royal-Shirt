@@ -38,7 +38,7 @@ public class CartDetailRestController {
     }
 
     @GetMapping("/cart-detail/{id}")
-    public ResponseEntity<?> findById(@PathVariable("id") Integer id){
-        return ResponseEntity.ok(cartDetailService.findById(id));
+    public ResponseEntity<?> findCartDetailById(@PathVariable("id") Integer id){
+        return ResponseEntity.ok(cartDetailService.findCartDetailById(id));
     }
 }

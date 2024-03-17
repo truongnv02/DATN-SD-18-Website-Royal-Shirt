@@ -1,5 +1,5 @@
 //Danh sách id cartDetail được chọn để checkout
-var listProductChoice = [];
+var listProductIdChoice = [];
 
 // Xử lý sự kiện khi checkbox thay đổi trạng thái
 $('.cart-checkbox').change(function () {
@@ -7,23 +7,23 @@ $('.cart-checkbox').change(function () {
 
     // Kiểm tra xem checkbox có được chọn hay không
     if ($(this).is(':checked')) {
-        // Nếu được chọn, thêm ID vào listProductChoice (nếu chưa có)
-        if (!listProductChoice.includes(cartDetailId)) {
-            listProductChoice.push(cartDetailId);
+        // Nếu được chọn, thêm ID vào listProductIdChoice (nếu chưa có)
+        if (!listProductIdChoice.includes(cartDetailId)) {
+            listProductIdChoice.push(cartDetailId);
         }
     } else {
-        // Nếu không được chọn, loại bỏ ID khỏi listProductChoice (nếu có)
-        var index = listProductChoice.indexOf(cartDetailId);
+        // Nếu không được chọn, loại bỏ ID khỏi listProductIdChoice (nếu có)
+        var index = listProductIdChoice.indexOf(cartDetailId);
         if (index !== -1) {
-            listProductChoice.splice(index, 1);
+            listProductIdChoice.splice(index, 1);
         }
     }
 
-    console.log('Danh sách được chọn:', listProductChoice);
+    console.log('Danh sách được chọn:', listProductIdChoice);
 });
 
 function saveListProductToCheckout() {
-    if (listProductChoice.length === 0) {
+    if (listProductIdChoice.length === 0) {
         Swal.fire({
             icon: 'error',
             title: 'Lỗi!',
@@ -31,12 +31,12 @@ function saveListProductToCheckout() {
         });
         return;
     } else {
-        var listProduct = JSON.parse(localStorage.getItem("listProductChoice")) || {};
+        var listProduct = JSON.parse(localStorage.getItem("listProductIdChoice")) || {};
 
-        listProduct.listProductChoice = listProductChoice;
+        listProduct.listProductIdChoice = listProductIdChoice;
 
         // Lưu lại dữ liệu vào Local Storage
-        localStorage.setItem("listProductChoice", JSON.stringify(listProduct));
+        localStorage.setItem("listProductIdChoice", JSON.stringify(listProduct));
 
         window.location.href = "/checkout";
     }

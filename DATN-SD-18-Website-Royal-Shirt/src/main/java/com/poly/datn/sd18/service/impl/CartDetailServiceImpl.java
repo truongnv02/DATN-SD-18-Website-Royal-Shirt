@@ -2,6 +2,7 @@ package com.poly.datn.sd18.service.impl;
 
 import com.poly.datn.sd18.entity.*;
 import com.poly.datn.sd18.model.dto.CartDetailDTO;
+import com.poly.datn.sd18.model.response.CartDetailRestponse;
 import com.poly.datn.sd18.repository.*;
 import com.poly.datn.sd18.service.CartDetailService;
 import com.poly.datn.sd18.service.ColorService;
@@ -116,7 +117,7 @@ public class CartDetailServiceImpl implements CartDetailService {
     }
 
     @Override
-    public CartDetail findById(Integer id) {
-        return cartDetailRepository.findById(id).get();
+    public CartDetailRestponse findCartDetailById(Integer cartDetailId) {
+        return cartDetailRepository.findCartDetaiToCheckoutlById(cartDetailId);
     }
 }

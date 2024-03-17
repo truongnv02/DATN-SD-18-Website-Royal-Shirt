@@ -2,6 +2,9 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head th:replace="~{client/layout/head::head}"></head>
+
+<link rel="stylesheet" th:href="@{/client/css/cart/checkout.css}">
+
 <body>
 
 <!-- header section start -->
@@ -29,16 +32,17 @@
 <section class="pages checkout section-padding">
     <div class="">
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-7">
                 <div class="main-input single-cart-form padding60">
                     <div class="log-title">
-                        <h3><strong>billing details</strong></h3>
+                        <h3><strong>Thông tin giao hàng</strong></h3>
                     </div>
                     <div class="custom-input">
                         <form action="#">
-                            <input type="text" name="name" placeholder="Your name" />
-                            <input type="text" name="phone" placeholder="Phone here" />
-                            <input type="text" name="address" placeholder="Address here" />
+                            <input type="text" name="name" placeholder="Họ tên"/>
+                            <input type="text" name="phone" placeholder="Số điện thoại"/>
+                            <input type="text" name="email" placeholder="Email"/>
+                            <input type="text" name="address" placeholder="Địa chỉ cụ thể"/>
                             <div class="row">
                                 <div class="col-md-4">
                                     <label>
@@ -70,48 +74,57 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-5">
                 <div class="padding60">
                     <div class="log-title">
-                        <h3><strong>Our order</strong></h3>
+                        <h3><strong>Thanh toán</strong></h3>
                     </div>
                     <div class="cart-form-text pay-details table-responsive">
                         <table>
                             <thead>
-                                <tr>
-                                    <th>Product</th>
-                                    <th>Quantity</th>
-                                    <th>Price</th>
-                                </tr>
+                            <tr>
+                                <th class="product">Product</th>
+                                <th class="quantity th-quantity">Quantity</th>
+                                <th class="price">Price</th>
+                            </tr>
                             </thead>
-                            <tbody>
-                                <tr>
-                                    <td>$86.00</td>
-                                    <td>$86.00</td>
-                                    <td>$86.00</td>
-                                </tr>
+                            <tbody id="listProduct">
+
                             </tbody>
                         </table>
                         <table>
                             <tr>
                                 <th>Tạm tính</th>
-                                <td>$155.00</td>
+                                <td id="totalPriceProducts"></td>
                             </tr>
                             <tr>
-                                <th>Shipping and Handing</th>
-                                <td>$15.00</td>
-                            </tr>
-                            <tr>
-                                <th>Vat</th>
-                                <td>$00.00</td>
+                                <th>Phí ship</th>
+                                <td>Liên hệ sau</td>
                             </tr>
                             <tfoot>
                             <tr>
                                 <th>Tổng</th>
-                                <td>$325.00</td>
+                                <td id="totalPrice"></td>
                             </tr>
                             </tfoot>
                         </table>
+                        <table>
+                            <tr>
+                                <td class="pay">
+                                    <input type="radio" name="paymentMethod" value="cod" checked>
+                                    <label>Thanh toán khi nhận hàng</label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="pay">
+                                    <input type="radio" name="paymentMethod" value="vnPay">
+                                    <label>VN PAY</label>
+                                </td>
+                            </tr>
+                        </table>
+                        <div class="submit-text coupon thanh-toan">
+                            <a onclick="" type="button" id="checkoutBtn">Thanh toán</a>
+                        </div>
                     </div>
                 </div>
             </div>

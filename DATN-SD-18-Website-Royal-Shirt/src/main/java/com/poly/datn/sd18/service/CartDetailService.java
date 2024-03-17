@@ -5,6 +5,7 @@ import com.poly.datn.sd18.entity.CartDetail;
 import com.poly.datn.sd18.entity.Customer;
 import com.poly.datn.sd18.entity.ProductDetail;
 import com.poly.datn.sd18.model.dto.CartDetailDTO;
+import com.poly.datn.sd18.model.response.CartDetailRestponse;
 
 import java.util.List;
 
@@ -19,5 +20,5 @@ public interface CartDetailService {
 
     void incrementQuantity(Integer customerId, Integer productDetailId);
     void decrementQuantity(Integer customerId, Integer productDetailId);
-    CartDetail findById(Integer id);
+    CartDetailRestponse findCartDetailById(Integer cartDetailId);
 }
