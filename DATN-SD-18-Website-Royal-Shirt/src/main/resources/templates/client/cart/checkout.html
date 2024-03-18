@@ -46,22 +46,22 @@
                             <div class="row">
                                 <div class="col-md-4">
                                     <label>
-                                        <select class="form-select">
-                                            <option th:value="null"> Chọn thành phố</option>
+                                        <select class="form-select" name="province" id="provinceSelect">
+                                            <option value=""> Chọn thành phố</option>
                                         </select>
                                     </label>
                                 </div>
                                 <div class="col-md-4">
                                     <label>
-                                        <select class="form-select">
-                                            <option th:value="null"> Chọn huyện</option>
+                                        <select class="form-select" name="district" id="districtSelect">
+                                            <option value=""> Chọn huyện</option>
                                         </select>
                                     </label>
                                 </div>
                                 <div class="col-md-4">
                                     <label>
-                                        <select class="form-select">
-                                            <option th:value="null"> Chọn xã phường</option>
+                                        <select class="form-select" name="ward" id="wardSelect">
+                                            <option value=""> Chọn xã phường</option>
                                         </select>
                                     </label>
                                 </div>
@@ -101,6 +101,10 @@
                                 <th>Phí ship</th>
                                 <td>Liên hệ sau</td>
                             </tr>
+                            <tr>
+                                <th>Thời gian dự kiến</th>
+                                <td id="estimatedDeliveryTime"></td>
+                            </tr>
                             <tfoot>
                             <tr>
                                 <th>Tổng</th>
@@ -139,6 +143,140 @@
 <!-- jquery latest version -->
 <div th:replace="~{client/layout/script::script}"></div>
 <script th:src="@{/client/js/cart/checkout.js}"></script>
+<script th:src="@{/client/js/cart/check-out.js}"></script>
+<script>
+    $(document).ready(function () {
+        // Gọi API để lấy dữ liệu tỉnh/thành phố
+        $.ajax({
+            url: 'https://dev-online-gateway.ghn.vn/shiip/public-api/master-data/province',
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Token': 'a76df0d2-77a1-11ee-b1d4-92b443b7a897'
+            },
+            success: function (data) {
+                if (data.code === 200) {
+                    const select = $('#provinceSelect');
+                    data.data.forEach(province => {
+                        const option = $('<option>').val(province.ProvinceID).text(province.ProvinceName);
+                        select.append(option);
+                    });
+                } else {
+                    console.error("Failed to fetch province data");
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error("Error fetching province data:", error);
+            }
+        });
+
+        // Gọi API để lấy dữ liệu quận/huyện khi thay đổi tỉnh/thành phố
+        $('#provinceSelect').change(function () {
+            const provinceID = $(this).val();
+            $.ajax({
+                url: 'https://dev-online-gateway.ghn.vn/shiip/public-api/master-data/district',
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Token': 'a76df0d2-77a1-11ee-b1d4-92b443b7a897'
+                },
+                data: {
+                    province_id: provinceID
+                },
+                success: function (data) {
+                    if (data.code === 200) {
+                        const select = $('#districtSelect');
+                        select.empty();
+                        data.data.forEach(district => {
+                            const option = $('<option>').val(district.DistrictID).text(district.DistrictName);
+                            select.append(option);
+                        });
+                    } else {
+                        console.error("Failed to fetch district data");
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error("Error fetching district data:", error);
+                }
+            });
+        });
+
+        // Gọi API để lấy dữ liệu phường/xã khi thay đổi quận/huyện
+        $('#districtSelect').change(function () {
+            const districtID = $(this).val();
+            $.ajax({
+                url: 'https://dev-online-gateway.ghn.vn/shiip/public-api/master-data/ward?district_id=' + districtID,
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Token': 'a76df0d2-77a1-11ee-b1d4-92b443b7a897'
+                },
+                success: function (data) {
+                    if (data.code === 200) {
+                        const select = $('#wardSelect');
+                        select.empty();
+                        data.data.forEach(ward => {
+                            const option = $('<option>').val(ward.WardCode).text(ward.WardName);
+                            select.append(option);
+                        });
+                    } else {
+                        console.error("Failed to fetch ward data");
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error("Error fetching ward data:", error);
+                }
+            });
+        });
+
+        // Xử lý khi có đủ thông tin để lấy thời gian dự kiến giao hàng
+        $('#wardSelect').change(function () {
+            // Lấy các ID cần thiết
+            const provinceID = $('#provinceSelect').val();
+            const districtID = $('#districtSelect').val();
+            const wardCode = $(this).val();
+
+            // Kiểm tra nếu các ID đã được chọn
+            if (provinceID && districtID && wardCode) {
+                // In ID của các địa chỉ đã được chọn
+                console.log('Province ID:', provinceID);
+                console.log('District ID:', districtID);
+                console.log('Ward Code:', wardCode);
+
+                // Gửi yêu cầu AJAX để lấy thời gian dự kiến giao hàng
+                $.ajax({
+                    url: 'https://dev-online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/leadtime',
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Token': 'a76df0d2-77a1-11ee-b1d4-92b443b7a897',
+                        'ShopId': '4960866'
+                    },
+                    data: JSON.stringify({
+                        'from_district_id': 1750,
+                        "from_ward_code": "511110",
+                        'to_district_id': districtID,
+                        "to_ward_code": wardCode,
+                        "service_id": 53320
+                    }),
+                    success: function (data) {
+                        // Xử lý dữ liệu thời gian dự kiến giao hàng
+                        if (data.code === 200) {
+                            const estimatedDeliveryTime = data.data.estimated_delivery_time;
+                            $('#estimatedDeliveryTime').text(estimatedDeliveryTime);
+                        } else {
+                            console.error("Failed to fetch estimated delivery time");
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error("Error fetching estimated delivery time:", error);
+                    }
+                });
+            }
+        });
+    });
+</script>
+
 </body>
 
 </html>
