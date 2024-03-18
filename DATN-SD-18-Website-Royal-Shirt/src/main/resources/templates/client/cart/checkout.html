@@ -186,6 +186,7 @@
                     if (data.code === 200) {
                         const select = $('#districtSelect');
                         select.empty();
+                        select.append('<option value="">Chọn huyện</option>'); // Thêm dòng này để không tự động chọn
                         data.data.forEach(district => {
                             const option = $('<option>').val(district.DistrictID).text(district.DistrictName);
                             select.append(option);
@@ -198,6 +199,9 @@
                     console.error("Error fetching district data:", error);
                 }
             });
+
+            // Reset dropdown xã/phường khi chọn tỉnh/thành phố mới
+            $('#wardSelect').empty().append('<option value="">Chọn xã phường</option>');
         });
 
         // Gọi API để lấy dữ liệu phường/xã khi thay đổi quận/huyện
@@ -214,6 +218,7 @@
                     if (data.code === 200) {
                         const select = $('#wardSelect');
                         select.empty();
+                        select.append('<option value="">Chọn xã phường</option>'); // Thêm dòng này để không tự động chọn
                         data.data.forEach(ward => {
                             const option = $('<option>').val(ward.WardCode).text(ward.WardName);
                             select.append(option);
