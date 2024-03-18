@@ -171,6 +171,14 @@
 
         // Gọi API để lấy dữ liệu quận/huyện khi thay đổi tỉnh/thành phố
         $('#provinceSelect').change(function () {
+            if($('#provinceSelect').val() === ""){
+                $('#districtSelect').empty();
+                $('#districtSelect').append('<option value="">Chọn huyện</option>');
+
+                $('#wardSelect').empty();
+                $('#wardSelect').append('<option value="">Chọn xã phường</option>');
+                return;
+            }
             const provinceID = $(this).val();
             $.ajax({
                 url: 'https://dev-online-gateway.ghn.vn/shiip/public-api/master-data/district',
@@ -206,6 +214,11 @@
 
         // Gọi API để lấy dữ liệu phường/xã khi thay đổi quận/huyện
         $('#districtSelect').change(function () {
+            if($('#districtSelect').val() === ""){
+                $('#wardSelect').empty();
+                $('#wardSelect').append('<option value="">Chọn xã phường</option>');
+                return;
+            }
             const districtID = $(this).val();
             $.ajax({
                 url: 'https://dev-online-gateway.ghn.vn/shiip/public-api/master-data/ward?district_id=' + districtID,
@@ -233,6 +246,8 @@
             });
         });
     });
+
+
 </script>
 
 </body>
