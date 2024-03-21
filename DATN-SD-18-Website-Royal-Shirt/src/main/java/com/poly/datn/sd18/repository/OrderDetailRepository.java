@@ -1,5 +1,6 @@
 package com.poly.datn.sd18.repository;
 
+import com.poly.datn.sd18.entity.Order;
 import com.poly.datn.sd18.entity.OrderDetail;
 import com.poly.datn.sd18.entity.Product;
 import com.poly.datn.sd18.entity.ProductDetail;
@@ -14,4 +15,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface OrderDetailRepository extends JpaRepository<OrderDetail, Integer> {
+    @Query("SELECT o FROM OrderDetail o WHERE o.productDetail.id = :productId and o.order.id = :orderId")
+    OrderDetail getByProductId(int productId, int orderId);
 }
