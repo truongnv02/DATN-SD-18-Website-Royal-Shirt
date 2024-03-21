@@ -13,6 +13,21 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Integer> {
+    @Query("SELECT o FROM Order o")
+    List<Order> getAll();
+
+    @Query("SELECT o FROM Order o WHERE o.type = :type")
+    List<Order> getByType(boolean type);
+
+    @Query("SELECT o FROM Order o WHERE o.status = :status")
+    List<Order> getByStatus(int status);
+
+    @Query("SELECT o FROM Order o WHERE o.id = :id")
+    Order getById(int id);
+
+    @Query("SELECT o FROM Order o WHERE o.status = :status AND o.type = :type")
+    List<Order> getByStatusAndType(int status, boolean type);
+
     @Query("Select SUM(o.totalPrice) From Order o")
     Float totalOrders();
 
