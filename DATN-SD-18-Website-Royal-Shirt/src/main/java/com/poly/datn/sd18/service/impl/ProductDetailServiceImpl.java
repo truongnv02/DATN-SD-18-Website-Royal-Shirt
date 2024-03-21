@@ -21,4 +21,8 @@ public class ProductDetailServiceImpl implements ProductDetailService {
     public List<ProductDetail> listProduct(int number) {
         return productDetailRepository.listProduct(number);
     }
+
+    public List<ProductDetail> getListProduct() {
+        return productDetailRepository.getListProduct();
+    }
 }
