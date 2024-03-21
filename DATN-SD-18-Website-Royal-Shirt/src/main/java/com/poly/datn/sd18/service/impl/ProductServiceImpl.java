@@ -1,5 +1,6 @@
 package com.poly.datn.sd18.service.impl;
 
+import com.poly.datn.sd18.entity.Order;
 import com.poly.datn.sd18.entity.Product;
 import com.poly.datn.sd18.repository.ProductRepository;
 import com.poly.datn.sd18.service.ProductService;
@@ -23,5 +24,10 @@ public class ProductServiceImpl implements ProductService {
     @Transactional
     public List<Object> listHotSelling(int num) {
         return productRepository.hotSelling(num);
+    }
+
+    @Override
+    public List<Product> getListProduct() {
+        return productRepository.getListProduct();
     }
 }
