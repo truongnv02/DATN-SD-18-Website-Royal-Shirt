@@ -5,6 +5,10 @@ import lombok.*;
 
 import java.io.Serializable;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -33,7 +37,7 @@ public class ProductDetail extends BaseEntity implements Serializable {
     @Column(name = "status")
     private Integer status;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "product_id", referencedColumnName = "id")
     private Product product;
 
