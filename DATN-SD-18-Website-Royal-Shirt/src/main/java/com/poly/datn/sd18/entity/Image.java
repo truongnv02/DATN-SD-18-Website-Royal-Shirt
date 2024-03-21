@@ -5,6 +5,8 @@ import lombok.*;
 
 import java.io.Serializable;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -27,7 +29,12 @@ public class Image extends BaseEntity implements Serializable {
     @Column(name = "status")
     private Integer status;
 
+    // @ManyToOne
+    // @JoinColumn(name = "product_id", referencedColumnName = "id")
+    // private Color color;
+
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "product_id", referencedColumnName = "id")
-    private Color color;
+    private Product product;
 }
