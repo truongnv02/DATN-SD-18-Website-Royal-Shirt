@@ -1,5 +1,6 @@
 package com.poly.datn.sd18.repository;
 
+import com.poly.datn.sd18.entity.Order;
 import com.poly.datn.sd18.entity.Product;
 
 import java.util.List;
@@ -17,4 +18,7 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 
     @Procedure(name = "hotSelling")
     List<Object> hotSelling(@Param("minQuantity") int minQuantity);
+
+    @Query("Select p From Product p")
+    List<Product> getListProduct();
 }
