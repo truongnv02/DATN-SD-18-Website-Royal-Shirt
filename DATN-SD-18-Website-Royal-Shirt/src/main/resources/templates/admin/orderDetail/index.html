@@ -559,23 +559,31 @@
                     cancelButtonText: 'No'
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        // Nếu người dùng xác nhận, gửi yêu cầu POST để thay đổi trạng thái đơn hàng
-                        $http.post("http://localhost:8080/admin/rest/order-detail/change-order-status/" + $scope.order.id + "/" + status)
-                            .then(function (response) {
-                                // Nạp lại trang sau khi thực hiện thay đổi
-                                $window.location.reload();
-                            }).catch(function (error) {
-                            console.error("Lỗi: " + error.data);
+
+                        // Nếu người dùng xác nhận, thực hiện submit form
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Thành công!',
+                            text: 'Đã chuyển đổi trạng thái đơn hàng!'
+                        }).then(() => {
+                            setTimeout(function () {
+
+                                // Nếu người dùng xác nhận, gửi yêu cầu POST để thay đổi trạng thái đơn hàng
+                                $http.post("http://localhost:8080/admin/rest/order-detail/change-order-status/" + $scope.order.id + "/" + status)
+                                    .then(function (response) {
+                                        // Nạp lại trang sau khi thực hiện thay đổi
+                                        $window.location.reload();
+                                    }).catch(function (error) {
+                                    console.error("Lỗi: " + error.data);
+                                });
+                            }, 1000); // Thời gian trễ 1000 ms (1 giây)
                         });
+
                     }
                 });
             }
         };
-
-
     });
-
-
 </script>
 </body>
 
