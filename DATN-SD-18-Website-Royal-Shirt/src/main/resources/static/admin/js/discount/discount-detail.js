@@ -1,33 +1,25 @@
+var initialDiscountName = $("#discountName").val().trim();
 //Show form
 $(document).ready(function () {
-    $('#showFormDiscount').click(function () {
-        $('.modal-title').text("Thêm Giảm Giá");
-        $('#DiscountModal').modal('show');
+    $("#sampleTableNoneDiscount").dataTable();
+
+    $('#showFormNoneDiscount').click(function () {
+        $('#NoneDiscountModal').modal('show');
     });
-    $('#closeFormDiscount').click(function () {
-        $('#DiscountModal').modal('hide');
+    $('#closeFormNoneDiscount').click(function () {
+        $('#NoneDiscountModal').modal('hide');
     });
 });
 
-function showDiscountDetail(button) {
-    // Lấy giá trị của thuộc tính data-discount-id từ nút
-    var discountId = button.getAttribute('data-discount-id');
-
-    // Chuyển hướng trình duyệt đến URL mới
-    window.location.href = '/admin/discount/' + discountId;
-}
-
-
-//Add and update discount
 function saveDiscount() {
     // Lấy dữ liệu từ biểu mẫu
+    var discountId = $("#discountForm").attr("discount-id");
     var discountName = $("#discountName").val().trim();
     var discountDiscount = $("#discountDiscount").val();
     var discountStartDate = $("#discountStartDate").val();
     var discountEndDate = $("#discountEndDate").val();
     var currentTime = moment().format('YYYY-MM-DD');
     var status = 0;
-    var discountId = $("#discountForm").attr("discount-id-update");
 
     // Check thông tin
     if (!checkInputDiscount(discountName, discountDiscount, discountStartDate, discountEndDate)) {
@@ -39,14 +31,11 @@ function saveDiscount() {
         discount: discountDiscount,
         startDate: discountStartDate,
         endDate: discountEndDate,
-        status: status
+        status: status,
+        updatedDate: currentTime
     }
 
-    // Nếu discountId tồn tại -> update, ngược lại -> add
-    if (discountId) {
-        dataToSend.id = discountId;
-        dataToSend.updatedDate = currentTime;
-    } else {
+    if (initialDiscountName !== discountName) {
         // Kiểm tra trùng tên Giảm Giá
         if (!checkDuplicateDiscount(discountName)) {
             Swal.fire({
@@ -56,17 +45,12 @@ function saveDiscount() {
             });
             return false;
         }
-        dataToSend.createdDate = currentTime;
     }
-
-    var url = discountId ? "/admin/rest/discount/update/" + discountId : "/admin/rest/discount/add";
-
-    var method = discountId ? "PUT" : "POST";
 
     // Gửi yêu cầu AJAX
     $.ajax({
-        type: method,
-        url: url,
+        type: "PUT",
+        url: "/admin/rest/discount/update/" + discountId,
         contentType: "application/json",
         data: JSON.stringify(dataToSend),
         success: function (response) {
@@ -133,7 +117,6 @@ function checkInputDiscount(discountName, discountDiscount, discountStartDate, d
     return true;
 }
 
-
 // Check trùng Tên giảm giá
 function checkDuplicateDiscount(discountName) {
     var isDuplicateName;
@@ -154,76 +137,88 @@ function checkDuplicateDiscount(discountName) {
     return isDuplicateName;
 }
 
+function setDiscount(button) {
+    var discountId = $("#discountForm").attr("discount-id");
+    var productId = button.getAttribute("data-product-id");
 
-// Hàm để cập nhật biểu mẫu với dữ liệu giảm giá
-function updateDiscountForm(element) {
-    //Chỉnh sửa tên modal
-    $('.modal-title').text("Chỉnh sửa Giảm giá");
+    console.log("discountId: " + discountId);
+    console.log("productId: " + productId);
 
-    var discountId = element.getAttribute("data-discount-id");
-    // Thêm thuộc tính để kiểm tra xem add hay update
-    $('#discountForm').attr('discount-id-update', discountId);
-    // Thực hiện AJAX request để lấy dữ liệu giảm giá từ backend
+    var dataToSend = {
+        discountId: discountId,
+        productId: productId
+    }
+
+    // Gửi yêu cầu AJAX
     $.ajax({
-        type: 'GET',
-        url: '/admin/rest/discount/formUpdate/' + discountId,
-        success: function (discount) {
-            // Hiển thị hộp thoại modal
-            $('#DiscountModal').modal('show');
+        type: "PUT",
+        url: "/admin/rest/discount/setDiscount",
+        contentType: "application/json",
+        data: JSON.stringify(dataToSend),
+        success: function (response) {
+            console.log("Áp dụng giảm giá thành công!");
 
-            // Điền dữ liệu vào các trường biểu mẫu
-            $('#discountName').val(discount.name);
-            $("#discountDiscount").val(discount.discount);
-            $("#discountStartDate").val(discount.startDate);
-            $("#discountEndDate").val(discount.endDate);
-
-            // Lắng nghe sự kiện đóng modal
-            $('#DiscountModal').on('hidden.bs.modal', function () {
-                // Xóa thuộc tính discount-id-update khi modal đóng
-                $('#discountForm').removeAttr('discount-id-update');
-                // Làm mới input
-                $('#discountName').val(null);
-                $("#discountDiscount").val(null);
-                $("#discountStartDate").val(null);
-                $("#discountEndDate").val(null);
+            Swal.fire({
+                icon: 'success',
+                title: 'Thành công!',
+                text: 'Áp dụng giảm giá thành công!',
+                didClose: function () {
+                    location.reload();
+                }
             });
         },
         error: function (error) {
-            console.log('Error fetching discount data:', error);
-            // Xử lý lỗi nếu cần
+            console.error("Lỗi khi áp dụng giảm giá:", error);
+
+            Swal.fire({
+                icon: 'error',
+                title: 'Lỗi!',
+                text: 'Có lỗi xảy ra khi áp dụng giảm giá!'
+            });
         }
     });
 }
 
-//Set Status
-function toggleStatus(checkbox) {
-    var discountId = checkbox.getAttribute("data-discount-id");
-    // Gửi yêu cầu AJAX để cập nhật trạng thái của giảm giá
-    //Sử dụng jQuery
-    $.ajax({
-        type: "POST",
-        url: "/admin/rest/discount/setStatus/" + discountId,
-        success: function (response) {
-            // Xử lý thành công, nếu cần
-            console.log("Cập nhật trạng thái thành công");
+function removeDiscountFromProduct(button) {
+    Swal.fire({
+        title: 'Bạn có chắc chắn muốn gỡ giảm giá?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Đồng ý',
+        cancelButtonText: 'Hủy'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Nếu người dùng nhấn Đồng ý
+            var productId = button.getAttribute("data-product-id");
 
-            // Hiển thị thông báo thành công sử dụng SweetAlert2
-            Swal.fire({
-                icon: 'success',
-                title: 'Thành công!',
-                text: 'Trạng thái đã được cập nhật thành công!'
-            });
+            // Gửi yêu cầu AJAX
+            $.ajax({
+                type: "PUT",
+                url: "/admin/rest/discount/removeDiscountFromProduct/" + productId,
+                contentType: "application/json",
+                success: function (response) {
+                    console.log("Gỡ giảm giá thành công!");
 
-        },
-        error: function (error) {
-            // Xử lý lỗi, nếu cần
-            console.error("Lỗi khi cập nhật trạng thái");
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Thành công!',
+                        text: 'Gỡ giảm giá thành công!',
+                        didClose: function () {
+                            location.reload();
+                        }
+                    });
+                },
+                error: function (error) {
+                    console.error("Lỗi khi gỡ giảm giá:", error);
 
-            // Hiển thị thông báo thất bại sử dụng SweetAlert2
-            Swal.fire({
-                icon: 'error',
-                title: 'Lỗi!',
-                text: 'Có lỗi xảy ra khi cập nhật trạng thái.'
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Lỗi!',
+                        text: 'Có lỗi xảy ra khi gỡ giảm giá!'
+                    });
+                }
             });
         }
     });
