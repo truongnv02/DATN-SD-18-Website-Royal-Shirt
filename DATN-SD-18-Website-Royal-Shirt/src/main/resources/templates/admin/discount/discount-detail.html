@@ -66,6 +66,7 @@
                                id="sampleTableNoneDiscount">
                             <thead>
                             <tr>
+                                <th></th>
                                 <th class="stt" width="20">STT</th>
                                 <th class="ten_san_pham" width="250">Tên Sản Phẩm</th>
                                 <th class="anh">Ảnh</th>
@@ -76,25 +77,31 @@
 
                             <tbody th:if="${listNoneDiscount.empty}">
                             <tr>
-                                <td colspan="7" class="text-center">Danh sách trống!</td>
+                                <td colspan="6" class="text-center">Danh sách trống!</td>
                             </tr>
                             </tbody>
 
                             <tbody>
                             <tr th:each="product, index : ${listNoneDiscount}">
+                                <td>
+                                    <input type="checkbox" class="cart-checkbox-add" th:value="${product.id}"/>
+                                </td>
                                 <td class="stt" th:text="${index.index + 1}"></td>
                                 <td class="ten_san_pham" th:text="${product.name}"></td>
                                 <td class="anh anh_img"><img th:src="${product.image}" alt="Hình ảnh sản phẩm"></td>
                                 <td class="mo_ta" th:utext="${product.description}"></td>
                                 <td class="table-td-center tinh_nang">
                                     <a class="btn btn-success btn-sm edit" type="button"
-                                            th:attr="data-product-id=${product.id},id=#{${product.id}}"
-                                            onclick="setDiscount(this)"><i class="fa-solid fa-plus"></i>
+                                       th:attr="data-product-id=${product.id},id=#{${product.id}}"
+                                       onclick="setDiscount(this)"><i class="fa-solid fa-plus"></i>
                                     </a>
                                 </td>
                             </tr>
                             </tbody>
                         </table>
+                        <div class="form-group modal-footer">
+                            <button class="btn btn-secondary col-md-2" onclick="setDiscountAll()">Áp dụng</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -111,6 +118,7 @@
                            id="sampleTable">
                         <thead>
                         <tr>
+                            <th></th>
                             <th class="stt" width="20">STT</th>
                             <th class="ten_san_pham" width="250">Tên Sản Phẩm</th>
                             <th class="anh">Ảnh</th>
@@ -128,6 +136,9 @@
 
                         <tbody>
                         <tr th:each="product, index : ${lists}">
+                            <td>
+                                <input type="checkbox" class="cart-checkbox-remove" th:value="${product.id}"/>
+                            </td>
                             <td class="stt" th:text="${index.index + 1}"></td>
                             <td class="ten_san_pham" th:text="${product.name}"></td>
                             <td class="anh"><img th:src="${product.image}" alt="Hình ảnh sản phẩm"></td>
@@ -142,6 +153,9 @@
                         </tr>
                         </tbody>
                     </table>
+                    <div class="form-group modal-footer" style="padding-right: 0px">
+                        <button class="btn btn-danger col-md-2" onclick="removeDiscountAll()">Gỡ giảm giá</button>
+                    </div>
                 </div>
             </div>
         </div>
