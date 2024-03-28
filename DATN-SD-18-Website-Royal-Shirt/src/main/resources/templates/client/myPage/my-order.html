@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{client/layout/head::head}"></head>
+<link rel="stylesheet" th:href="@{/client/css/myPages/my-order.css}">
+<body>
+
+<!-- header section start -->
+<header th:replace="~{client/layout/header::header}"></header>
+<!-- header section end -->
+<!-- pages-title-start -->
+<div class="pages-title section-padding">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="pages-title-text text-center">
+                    <h2>My Order</h2>
+                    <ul class="text-left">
+                        <li><a th:href="@{/}">Home </a></li>
+                        <li><span> // </span>Order</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- pages-title-end -->
+<!-- Checkout content section start -->
+<section class="pages checkout section-padding">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="main-input single-cart-form padding60">
+                    <div class="log-title">
+                        <h3 class="text-center"><strong>Đơn hàng của tôi</strong></h3>
+                    </div>
+                    <div>
+                        <table class="table">
+                            <thead>
+                                <tr class="head">
+                                    <td>Mã</td>
+                                    <td>Tổng sản phẩm</td>
+                                    <td>Tổng tiền</td>
+                                    <td>Ngày mua</td>
+                                    <td>Trạng thái</td>
+                                    <td>Thao tác</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="o : ${listOrders}">
+                                    <td th:text="${o.id}"></td>
+                                    <td></td>
+                                    <td th:text="${o.totalPrice}"></td>
+                                    <td th:text="${o.createdAt}"></td>
+                                    <td>
+                                        <span th:switch="${o.status}" class="badge bg-success">
+                                            <span th:case="1">Chờ xác nhận</span>
+                                            <span th:case="2">Xác nhận</span>
+                                            <span th:case="3">Chờ vận chuyển</span>
+                                            <span th:case="4">Đang vận chuyển</span>
+                                            <span th:case="5">Hoàn thành</span>
+                                            <span th:case="*">Hủy</span>
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-primary btn-sm edit" type="button"
+                                                th:attr="data-id=${o.id}"
+                                                title="Xem chi tiết" data-toggle="modal"
+                                                onclick="getOrderDetails(this)"
+                                                data-target="#showModal">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="submit-text coupon thanh-toan">
+                                <a th:href="@{/products}" type="button">Tiếp tục mua hàng</a>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="submit-text coupon thanh-toan">
+                                <a onclick="" type="button" id="">Tra cứu đơn hàng</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Checkout content section end -->
+
+<!--MODAL-->
+<div class="modal fade" id="showModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static"
+     data-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="row">-->
+                    <div class="form-group  col-md-12">
+                        <span class="thong-tin-thanh-toan">
+                            <h5>Chi tiết đơn hàng</h5>
+                        </span>
+                    </div>
+                </div>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <td>STT</td>
+                            <td>Ảnh</td>
+                            <td>Tên sản phẩm</td>
+                            <td>Giá sản phẩm</td>
+                            <td>Giá sau khi giảm</td>
+                            <td>Số lượng</td>
+                            <td>Tổng tiền</td>
+                        </tr>
+                    </thead>
+                    <tbody id="orderDetailBody">
+                        <!-- Dữ liệu chi tiết đơn hàng sẽ được thêm vào đây -->
+                    </tbody>
+                </table>
+                <BR>
+                <button type="button" class="btn btn-secondary"
+                        data-dismiss="modal" id="close">Đóng
+                </button>
+                <BR>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+<!--MODAL-->
+
+<!-- footer section start -->
+<div th:replace="~{client/layout/footer::footer}"></div>
+<!-- footer section end -->
+
+<!-- jQuery và Bootstrap JS -->
+<script th:replace="~{client/layout/script::script}"></script>
+<script th:src="@{/client/js/my-order/my-order.js}"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.edit').click(function () {
+            var orderId = $(this).data('id');
+            getOrderDetails(orderId);
+            $('#showModal').modal('show');
+        });
+    });
+
+    function getOrderDetails(button) {
+        var orderId = button.getAttribute("data-id");
+        $.ajax({
+            type: "GET",
+            url: "/rest/order-detail/" + orderId,
+            success: function(data) {
+                console.log(data);
+                $('#orderDetailBody').empty();
+                $.each(data, function(index, od) {
+                    var row = '<tr>' +
+                        '<td>' + (index + 1) + '</td>' +
+                        '<td><img src="' + od.productDetail.product.image + '" alt="Product Image" class="img-thumbnail" style="width: 50px; height: 50px;"></td>' +
+                        '<td>' + od.product.name + '</td>' +
+                        '<td>' + od.price + '</td>' +
+                        '<td>' + od.quantity + '</td>' +
+                        '<td>' + (od.price * od.quantity) + '</td>' +
+                        '</tr>';
+                    $('#orderDetailBody').append(row);
+                });
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.error("AJAX Error:", textStatus, errorThrown);
+                alert('Có lỗi xảy ra khi lấy chi tiết đơn hàng.');
+            }
+        });
+    }
+</script>
+
+</body>
+
+</html>

@@ -10,15 +10,21 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
-    @Autowired
-    OrderRepository orderRepository;
+    private final OrderRepository orderRepository;
 
     @Override
     public Order addOrder(OrderDTO orderDTO) {
         Order order = orderDTO.map(new Order());
         return orderRepository.save(order);
+    }
+
+    @Override
+    public List<Order> findOrderByCustomerId(Integer customerId) {
+        return orderRepository.findOrderByCustomerId(customerId);
     }
 }
